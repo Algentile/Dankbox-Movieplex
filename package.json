@@ -1,0 +1,19 @@
+{
+  "name": "dankbox-movieplex",
+  "version": "1.0.0",
+  "description": "A movie tracking website ",
+  "main": "app.js",
+  "scripts": {
+    "test": "\"echo \\ ErrorL no test specified\\\" && exit 1\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Algentile/Dankbox-Movieplex.git"
+  },
+  "author": "Team Blujay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Algentile/Dankbox-Movieplex/issues"
+  },
+  "homepage": "https://github.com/Algentile/Dankbox-Movieplex#readme"
+}
