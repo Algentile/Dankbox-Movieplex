@@ -14,7 +14,8 @@
 		<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 	</head>
 	<body>
-	
+		
+		<!--The about class, this will be our about handlebars template. !-->
 		<div class = "about">
 		<script id = "about-template" type = "text/x-handlebars-template">
 			//Doug this is where the log will go. -->
@@ -24,16 +25,26 @@
 		</script>
 		</div>
 
+		<!--script that provides data for our about handlebars template !-->
 		<script>
 		(function(){
 			
+			//Most of the data involved with selling our app, needs more content
 			var pitch = {
 				slogan : "The central hub for all your dank movie needs!"
 				description : ""
-			}
+				problems: "There is no real movie journal on the internet. There is no
+				place where you can effectively tag your own movie going experiences and
+				share those details among your friends in a user friendly way. New movie-going"
+			};
 
-			var problem = [
-				
+			//array that will be iterated over with handlebars to provide the reasons people want to use our app.
+			var uses = [
+				use1: 
+				use2:
+				use3:
+				use4:
+
 			];
 
 		})();
