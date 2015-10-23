@@ -69,7 +69,6 @@ app.use(testmw);
 var team = require('./lib/team.js');
 
 app.get('/', (req, res) => {
-  // TODO
   var result = team.all();
   if (!result.success) {
     notFound404(req, res);
@@ -81,58 +80,78 @@ app.get('/', (req, res) => {
   }
 });
 
-
-app.get('/team/mradford', (req, res) => {
-  // TODO
-  var result = team.one('mradford');
-  if (!result.success) {
-    notFound404(req, res);
+app.get('/team', (req, res) => {
+  var result = team.one(req.query.user);
+  if(!result.success){
+	result = team.all();
+	if (!result.success) {
+      notFound404(req, res);
+    } else {
+      res.render('team', {
+        members: result.data,
+        pageTestScript: '/qa/tests-team.js'
+      });
+    }
   } else {
     res.render('team', {
-      members: result.data,
-      pageTestScript: '/qa/tests-team.js'
-    });
+	  members: result.data,
+	  pageTestScript: '/qa/tests-team.js'
+	});
   }
 });
 
-app.get('/team/jjsherma', (req, res) => {
-  // TODO
-  var result = team.one('jjsherma');
-  if (!result.success) {
-    notFound404(req, res);
-  } else {
-    res.render('team', {
-      members: result.data,
-      pageTestScript: '/qa/tests-team.js'
-    });
-  }
-});
 
-app.get('/team/henryshepher', (req, res) => {
-  // TODO
-  var result = team.one('henryshepher');
-  if (!result.success) {
-    notFound404(req, res);
-  } else {
-    res.render('team', {
-      members: result.data,
-      pageTestScript: '/qa/tests-team.js'
-    });
-  }
-});
+//app.get('/team/mradford', (req, res) => {
+//  // TODO
+//  var result = team.one('mradford');
+//  if (!result.success) {
+//    notFound404(req, res);
+// } else {
+//    res.render('team', {
+//      members: result.data,
+//      pageTestScript: '/qa/tests-team.js'
+//    });
+//  }
+//});
 
-app.get('/team/dgandle', (req, res) => {
+//app.get('/team/jjsherma', (req, res) => {
   // TODO
-  var result = team.one('dgandle');
-  if (!result.success) {
-    notFound404(req, res);
-  } else {
-    res.render('team', {
-      members: result.data,
-      pageTestScript: '/qa/tests-team.js'
-    });
-  }
-});
+//  var result = team.one('jjsherma');
+//  if (!result.success) {
+//    notFound404(req, res);
+//  } else {
+//    res.render('team', {
+//      members: result.data,
+//      pageTestScript: '/qa/tests-team.js'
+//    });
+//  }
+//});
+
+//app.get('/team/henryshepher', (req, res) => {
+//  // TODO
+//  var result = team.one('henryshepher');
+//  if (!result.success) {
+//    notFound404(req, res);
+//  } else {
+//    res.render('team', {
+//      members: result.data,
+//      pageTestScript: '/qa/tests-team.js'
+//    });
+//  }
+//});
+
+//app.get('/team/dgandle', (req, res) => {
+//  // TODO
+//  var result = team.one('dgandle');
+//  if (!result.success) {
+//    notFound404(req, res);
+//  } else {
+//    res.render('team', {
+//      members: result.data,
+//      pageTestScript: '/qa/tests-team.js'
+//    });
+//  }
+//});
 
 //Route for about handlebars about view
 app.get('/about', (req, res) => {
