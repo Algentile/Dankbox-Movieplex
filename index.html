@@ -21,7 +21,22 @@
 			//Doug this is where the log will go. -->
 			<img src="/img/logo.png" alt="Meadowlark Travel" />
 				{{{body}}}
+				 <div>
+				 	{{title}}
+				 	{{slogan}}
+				 	<div>
+				 		<p>{{description}}</p>
+				 	</div>
 
+				 	<div>
+				 		<p>{{problems}}</p>
+				 	<div>
+				 		<li>
+				 		 {{#each uses}}
+				 		 	{{this}}
+				 		 {{/#each}}
+				 		</li>
+			    </div>
 		</script>
 		</div>
 
@@ -40,11 +55,11 @@
 			};
 
 			//array that will be iterated over with handlebars to provide the reasons people want to use our app.
-			var uses = [
-				use1: "Personalized movie suggestions based on YOU",
-				use2: "Keep track of your favorite movies",
-				use3: "Reviews of movies from other users",
-				use4: "Share your thoughts on movies with others on the web"
+			var uses = : [
+				"Personalized movie suggestions based on YOU",
+				"Keep track of your favorite movies",
+			    "Reviews of movies from other users",
+			    "Share your thoughts on movies with others on the web"
 
 			];
 
