@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Algentile/Dankbox-Movieplex/issues"
   },
-  "homepage": "https://github.com/Algentile/Dankbox-Movieplex#readme"
+  "homepage": "https://github.com/Algentile/Dankbox-Movieplex#readme",
+  "dependencies": {
+    "archiver": "^0.16.0",
+    "express-handlebars": "^2.0.1"
+  }
 }
