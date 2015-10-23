@@ -1,47 +1,17 @@
 <!DOCTYPE html>
 
-<html>
-	<head> 
-		<meta charset="utf-8">
-		<title>Team Project</title>
-		<!-- We are conditionally including test support if the showTests
-         variables has been set. -->
-		{{#if showTests}}
-			<link rel="stylesheet" href="/vendor/mocha.css">
-		{{/if}}
-
-		<!-- We add the jQuery library because we will be using it
-		     to manipulate HTML in the browser. -->
-		<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-	</head>
-
-	<body>
-	
 <!--The about class, this will be our about handlebars template. !-->
-		<div class = "about">
-		<script id = "about-template" type = "text/x-handlebars-template">
-			//Doug this is where the log will go. -->
-			<img src="/web_assets/DBMP_logo_white.png" alt="Meadowlark Travel" />
-				{{{body}}}
-				 <div>
-				 	{{title}}
-				 	{{{slogan}}}
-				 	<div>
-				 		<p>{{{description}}}</p>
-				 	</div>
 
-				 	<div>
+			<!-- //Doug this is where the log will go. -->
+
+			<img src="/web_assets/DBMP_logo_white.png" alt="Meadowlark Travel" /> 
+				 	<h1>{{{title}}}</h1>
+				 	<h2>{{{slogan}}}</h2>
+				 		<p>{{{description}}}</p>
 				 		<p>{{problems}}</p>
-				 	<div>
-				 		<li>
+				 		
+				 	<ul>
 				 		 {{#each uses}}
 				 		 	{{this}}
 				 		 {{/#each}}
-				 		</li>
-
-			    </div>
-		</script>
-		</div>
-
-		</body>
-	</html>
+				 	</ul>

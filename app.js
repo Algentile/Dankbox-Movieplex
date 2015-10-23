@@ -66,8 +66,8 @@ app.use(testmw);
   //function that is used for our about-view teamplate
     (function(){
       
-      var aboutSource = $('#about-template').html();
-      var aboutTemplate = Handlebars.compile(aboutSource);
+      // var aboutSource = $('#about-template').html();
+      // var aboutTemplate = Handlebars.compile(aboutSource);
 
       //Most of the data involved with selling our app, needs more content
       var pitch = {
@@ -183,8 +183,8 @@ app.get('/team/dgandle', (req, res) => {
   }
 });
 
-//Route for handlebars about view
-app.get('/about' function(req, res)){
+//Route for about handlebars about view
+app.get('/about', function(req, res){
   res.render('about');
 });
 
