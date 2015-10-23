@@ -1,17 +1,14 @@
+<!--The about class, this will be our about handlebars template. !-->
 <!DOCTYPE html>
 
-<!--The about class, this will be our about handlebars template. !-->
-
-			<!-- //Doug this is where the log will go. -->
-
-			<img src="/web_assets/DBMP_logo_white.png" alt="Meadowlark Travel" /> 
-				 	<h1>{{{title}}}</h1>
-				 	<h2>{{{slogan}}}</h2>
-				 		<p>{{{description}}}</p>
-				 		<p>{{problems}}</p>
+<h1>Dankbox Movieplex</h1>
+<h2>The central hub for all your dank movie needs!</h2>
 				 		
-				 	<ul>
-				 		 {{#each uses}}
-				 		 	{{this}}
-				 		 {{/#each}}
-				 	</ul>
+<p>{{{description}}}</p>
+<p>{{{problems}}}</p>
+				 		
+<ul>
+{{#each this}}
+	{{use}}
+{{/each}}
+</ul>

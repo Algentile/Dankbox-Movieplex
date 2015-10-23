@@ -80,19 +80,19 @@ app.use(testmw);
       //array that will be iterated over with handlebars to provide the reasons people want to use our app.
       var uses = [
       {
-           use1: "Personalized movie suggestions based on YOU",
+           use: "Personalized movie suggestions based on YOU",
       },
 
       {
-           use2: "Keep track of your favorite movies",
+           use: "Keep track of your favorite movies",
       },
 
       {
-           use3:  "Reviews of movies from other users",
+           use:  "Reviews of movies from other users",
       },
 
       {
-           use4: "Share your thoughts on movies with others on the web"
+           use: "Share your thoughts on movies with others on the web"
    
       }
 
@@ -184,11 +184,10 @@ app.get('/team/dgandle', (req, res) => {
 });
 
 //Route for about handlebars about view
-app.get('/about', function(req, res){
+app.get('/about', (req, res) => {
   res.render('about');
 });
 
-app.use('/public',express.static('public'));
 
 //////////////////////////////////////////////////////////////////////
 ///// Error Middleware ///////////////////////////////////////////////
