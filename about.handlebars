@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+<!--The about class, this will be our about handlebars template. !-->
+		<div class = "about">
+		<script id = "about-template" type = "text/x-handlebars-template">
+			//Doug this is where the log will go. -->
+			<img src="/web_assets/DBMP_logo_white.png" alt="Meadowlark Travel" />
+				{{{body}}}
+				 <div>
+				 	{{title}}
+				 	{{{slogan}}}
+				 	<div>
+				 		<p>{{{description}}}</p>
+				 	</div>
+
+				 	<div>
+				 		<p>{{problems}}</p>
+				 	<div>
+				 		<li>
+				 		 {{#each uses}}
+				 		 	{{this}}
+				 		 {{/#each}}
+				 		</li>
+
+			    </div>
+		</script>
+		</div>
+	</html>
+	

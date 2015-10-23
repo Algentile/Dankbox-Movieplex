@@ -183,7 +183,12 @@ app.get('/team/dgandle', (req, res) => {
   }
 });
 
+//Route for handlebars about view
+app.get('/about' function(req, res)){
+  res.render('about');
+});
 
+app.use('/public',express.static('public'));
 
 //////////////////////////////////////////////////////////////////////
 ///// Error Middleware ///////////////////////////////////////////////
