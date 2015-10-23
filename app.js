@@ -187,27 +187,13 @@ app.get('/team/dgandle', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about', {
     description: "DankBox Movieplex is a personalized movie-tracking website designed to remedy problems both casual and diehard cinemagoers experience. Everybody enjoys movies, both young and old, male and female. The problems lie not with enjoying movies, but remembering how much. Currently, there is no dedicated source for tracking the movies that a user has seen, along with their ratings and opinions on them. DankBox Movieplex seeks to remedy this by offering a website that tracks the movies an individual has seen, while also allowing them to rate and offer their opinions. These movies are then stored in a database, allowing any user to easily log into the website from any computer, anywhere, and retrieve their list of watched movies, in addition to their reviews. No more will people have to wonder whether they have seen a movie, or try to remember how they felt about a movie they have not seen in years." ,
-    problems: "There is no real movie journal on the internet. There is no place where you can effectively tag your own movie going experiences and  share those details among your friends in a user friendly way. New-Movie going experiences",
-
-    // var uses = [
-    //   {
-    //        use: "Personalized movie suggestions based on YOU",
-    //   },
-
-    //   {
-    //        use: "Keep track of your favorite movies",
-    //   },
-
-    //   {
-    //        use:  "Reviews of movies from other users",
-    //   },
-
-    //   {
-    //        use: "Share your thoughts on movies with others on the web"
-   
-    //   }
-
-    //   ];
+    problems: "There is no real movie journal on the internet. There is no place where you can effectively tag your own movie going experiences and  share those details among your friends in a user friendly way. New-Movie going experiences are only suggested based off of the supply of the company and not the demand of the user. Dankbox Movieplex aims to change that, by allowing the user to decide and supplying every choice option from every dank platform.",
+    uses: [ 
+    {use:"Personalized movie suggestions based on YOU"},
+    {use: "Keep track of your favorite movies"},
+    {use: "Reviews of movies from other users"},
+    {use: "Share your thoughts on movies with others on the web" }
+    ]
   });
 });
 

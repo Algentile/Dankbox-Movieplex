@@ -1,15 +1,15 @@
 <!--The about class, this will be our about handlebars template. !-->
 <!DOCTYPE html>
 
-<img src = "/img/logo.png" alt = "not working">
 <h1>Dankbox Movieplex</h1>
 <h2>The central hub for all your dank movie needs!</h2>
 				 		
 <p>{{{description}}}</p>
 <p>{{{problems}}}</p>
-				 		
-<ul>
-{{#each this}}
+			
+<h3>A person who visits Dankbox Movieplex, will enjoy the following features.</h3>	 		
+{{#each uses}}
+<li>
 	{{use}}
+</li>
 {{/each}}
-</ul>
