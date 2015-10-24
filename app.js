@@ -87,7 +87,13 @@ app.get('/team/mradford', (req, res) => {
   var result = team.one('mradford');
   if (!result.success) {
     notFound404(req, res);
-  } else {
+  }
+  if(req.querystring === 'user=mradford'){
+    res.render('team', {
+      members: result[1].data
+    })
+  }
+   else {
     res.render('team', {
       members: result.data,
       pageTestScript: '/qa/tests-team.js'
@@ -133,6 +139,8 @@ app.get('/team/dgandle', (req, res) => {
     });
   }
 });
+
+
 
 //Route for about handlebars about view
 app.get('/about', (req, res) => {
