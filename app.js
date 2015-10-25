@@ -1,3 +1,4 @@
+//app.js started by Professor Timothy Richards
 // This requires the necessary libraries for the webapp.
 // (1) express - this provides the express web framework
 // (2) handlebars - this provides the handlebars templating framework
