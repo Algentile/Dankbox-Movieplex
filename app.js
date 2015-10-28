@@ -143,6 +143,13 @@ app.get('/splash', (req,res) => {
   });
 });
 
+//Route for main page (called home to avoid confusion with main.handlebars)
+app.get('/main', (req,res) => {
+  res.render('home',{
+    
+  });
+});
+
 //Route for about handlebars about view
 app.get('/about', (req, res) => {
   res.render('about', {
