@@ -101,6 +101,47 @@ app.get('/team', (req, res) => {
   }
 });
 
+//Route for admin page
+app.get('/admin', (req,res) => {
+  res.render('admin',{
+
+  });
+});
+
+//Route for login page
+app.get('/login', (req,res) => {
+  res.render('login',{
+
+  });
+});
+
+//Route for Profile page
+app.get('/profile', (req,res) => {
+  res.render('profile',{
+
+  });
+});
+
+//Route for Search 
+app.get('/search', (req,res) => {
+  res.render('search',{
+
+  });
+});
+
+//Route for signup
+app.get('/signup', (req,res) => {
+  res.render('signup',{
+
+  });
+});
+
+//Route for splash page
+app.get('/splash', (req,res) => {
+  res.render('splash',{
+    
+  });
+});
 
 //Route for about handlebars about view
 app.get('/about', (req, res) => {
