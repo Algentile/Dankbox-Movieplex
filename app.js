@@ -7,11 +7,27 @@ var handlebars = require('express-handlebars');
 
 //Set up MongoDB 
 var mongoose   = require('mongoose');
-var db = mongoose.connect;
+var db         = mongoose.connect;
 
 db.on('error', console.error);
 db.once('open', function(){
   //Schemas should go here
+  var userResponse = new mongoose.Schema({
+    title: {type: String},
+    year : Number,
+    genre: String,
+    tag: [{body: String, date: Date}],
+    people:{
+      actors: String,
+      directors:String,
+    },
+    ratings:
+    {
+      imdbRating: String,
+      metascore : String,
+    }
+    
+  });
 });
 
 mongoose.connect('mongodb://localhost/temp');
