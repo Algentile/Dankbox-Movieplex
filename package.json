@@ -19,5 +19,8 @@
   "dependencies": {
     "archiver": "^0.16.0",
     "express-handlebars": "^2.0.1"
+  },
+  "devDependencies": {
+    "mongoose": "^4.2.5"
   }
 }

@@ -5,6 +5,16 @@
 var express    = require('express');
 var handlebars = require('express-handlebars');
 
+//Set up MongoDB 
+var mongoose   = require('mongoose');
+var db = mongoose.connect;
+
+db.on('error', console.error);
+db.once('open', function(){
+  //Schemas should go here
+});
+
+mongoose.connect('mongodb://localhost/temp');
 
 //////////////////////////////////////////////////////////////////////
 ///// Express App Setup //////////////////////////////////////////////
