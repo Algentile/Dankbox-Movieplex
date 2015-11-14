@@ -12,22 +12,18 @@ var db         = mongoose.connect;
 db.on('error', console.error);
 db.once('open', function(){
   //Schemas should go here
-  var userResponse = new mongoose.Schema({
-    title: {type: String},
-    year : Number,
-    genre: String,
-    tag: [{body: String, date: Date}],
-    people:{
-      actors: String,
-      directors:String,
-    },
-    ratings:
-    {
-      imdbRating: String,
-      metascore : String,
-    }
-    
+  var movieData = new mongoose.Schema({
+    userName: String,
+    tag: String,
+    comment: [{comment:String, date: Date}],
+    imdb_ID: String,
+    poster_URL:String
   });
+  
+  var profile = new mongoose.Schema({
+    userName: String,
+  });
+  
 });
 
 mongoose.connect('mongodb://localhost/temp');
