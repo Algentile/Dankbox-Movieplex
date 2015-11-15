@@ -1,8 +1,69 @@
-<h1>Dankbox Movieplex</h1>
-
-<h2>Search Page</h2>
-<img src="/img/wireframes/Search_Page.png" alt="wireframe"/>
-<p>
-	<a href="/main"> Main </a> <br>
-	<a href="/profile"> Profile </a> <br>
-</p>
+<!--Change the keywords as needed in final version-->
+<h1>Search Page</h1>
+<br>
+<h2>{{search}}</h2>
+<br>
+<form action="/main" method="get">
+    <input type="submit" value="Movies"
+           name="Main" id="search_main" />
+</form>
+<br>
+<form action="/tags" method="get">
+    <input type="submit" value="Tags"
+           name="Tags" id="search_tags" />
+</form>
+<br>
+<form action="/profile" method="get">
+    <input type="submit" value="Profile"
+           name="Profile" id="search_profile" />
+</form>
+<br>
+<form method="post" action="/search"> <!--Change this action value for real searches-->
+    Movie Title: <input type="text" name="movieSearch"> <br>
+    <button>Search</button>
+</form>
+<br>
+<table>
+    <tr>
+        <td>
+            Movie Title
+        </td>
+        <td>
+            Year
+        </td>
+        <td>
+            Director
+        </td>
+        <td>
+            Actors
+        </td>
+        <td>
+            Plot
+        </td>
+        <td>
+            Add?
+        </td>
+    </tr>
+    {{#each movieResults}}
+        <tr>
+            <td>
+                {{title}}
+            </td>
+            <td>
+                {{director}}
+            </td>
+            <td>
+                {{actors}}
+            </td>
+            <td>
+                {{plot}}
+            </td>
+            <td>
+                <form method="post" action="/addMovie"> <!--Change this action value for real movie additions-->
+                    <input type="hidden" name="IMDBid" value={{imdbID}}>
+                    <button>Add</button>
+                </form>
+            </td>
+        </tr>
+    {{/each}}
+</table>

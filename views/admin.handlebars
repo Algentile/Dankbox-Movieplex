@@ -1,8 +1,55 @@
-<h1>Dankbox Movieplex</h1>
+<h1>Admin Page</h1>
+<br>
+<form action="/main" method="get">
+    <input type="submit" value="Movies"
+           name="Main" id="admin_main" />
+</form>
+<br>
+<form action="/tags" method="get">
+    <input type="submit" value="Tags"
+           name="Tags" id="admin_tags" />
+</form>
+<br>
+<form action="/profile" method="get">
+    <input type="submit" value="Profile"
+           name="Profile" id="admin_profile" />
+</form>
+<br>
+<form method="post" action="/search"> <!--Change this action value for real searches-->
+    Movie Title: <input type="text" name="movieSearch"> <br>
+    <button>Search</button>
+</form>
+<br>
+<table>
+    <tr>
+        <td>
+            Username
+        </td>
+        <td>
+            View Profile
+        </td>
+        <td>
+            Ban User
+        </td>
 
-<h2>Admin Page</h2>
-<img src="/img/wireframes/Admin_Page.png" alt="wireframe"/>
-<p>
-	<a href="/main"> Main </a> <br>
-	<a href="/profile"> Profile </a> <br>
-</p>
+    </tr>
+    {{#each users}}
+        <tr>
+            <td>
+                {{username}}
+            </td>
+            <td>
+                <form method="post" action="/viewUserProfile"> <!--Change this action value for real movie additions-->
+                    <input type="hidden" name="userProfile" value={{username}}>
+                    <button>View</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" action="/banUser"> <!--Change this action value for real movie additions-->
+                    <input type="hidden" name="banUser" value={{username}}>
+                    <button>Ban</button>
+                </form>
+            </td>
+        </tr>
+    {{/each}}
+</table>

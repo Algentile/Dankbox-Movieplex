@@ -1,9 +1,40 @@
-<h1>Dankbox Movieplex</h1>
-
-<h2>Main Page</h2>
-<img src="/img/wireframes/Main_Page.png" alt="wireframe"/>
-<p>
-	<a href="/admin"> Admin </a> <br>
-	<a href="/profile"> Profile </a> <br>
-	<a href="/search"> Search </a> <br>
-</p>
+<!--Change the keywords as needed in final version-->
+<h1>Main Page</h1>
+<br>
+<form action="/tags" method="get">
+    <input type="submit" value="Tags"
+           name="Tags" id="main_tags" />
+</form>
+<br>
+<form action="/profile" method="get">
+    <input type="submit" value="Profile"
+           name="Profile" id="main_profile" />
+</form>
+<br>
+<form method="post" action="/search"> <!--Change this action value for real searches-->
+    Movie Title: <input type="text" name="movieSearch"> <br>
+    <button>Search</button>
+</form>
+<br>
+<h2>Tier Lists</h2>
+<br>
+<table>
+    <tr>
+        {{#each reviewCollection}}
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            {{movieName}}
+                        </td>
+                    </tr>
+                    <tr>
+                            <td>
+                                {{review}}
+                            </td>
+                    </tr>
+                </table>
+            </td>
+        {{/each}}
+    </tr>
+</table>

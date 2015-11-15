@@ -1,8 +1,81 @@
-<h1>Dankbox Movieplex</h1>
-
-<h2>Profile Page</h2>
-<img src="/img/wireframes/Profile_Page.png" alt="wireframe"/>
-<p>
-	<a href="/main"> Main </a> <br>
-	<a href="/search"> Search </a> <br>
-</p>
+<!--Change the keywords as needed in final version-->
+<h1>Profile Page</h1>
+<br>
+<form action="/main" method="get">
+    <input type="submit" value="Movies"
+           name="Main" id="profile_main" />
+</form>
+<br>
+<form action="/tags" method="get">
+    <input type="submit" value="Tags"
+           name="Tags" id="profile_tags" />
+</form>
+<br>
+<form method="post" action="/search"> <!--Change this action value for real searches-->
+    Movie Title: <input type="text" name="movieSearch"> <br>
+    <button>Search</button>
+</form>
+<br>
+<h2>Tier Lists</h2>
+<br>
+<table>
+    <tr>
+    {{#each tierListsCollection}}
+        <td>
+        <table>
+            <tr>
+                <td>
+                    {{tierListName}}
+                </td>
+            </tr>
+            <tr>
+                {{#each tierList}}
+                    <td>
+                        {{movieName}}
+                    </td>
+                {{/each}}
+            </tr>
+        </table>
+        </td>
+    {{/each}}
+    </tr>
+</table>
+<br>
+<h2>Movie Reviews</h2>
+<br>
+<table>
+    <tr>
+        <td>
+            Movie Title
+        </td>
+        <td>
+            Review
+        </td>
+    </tr>
+    {{#each movieReviews}}
+        <tr>
+            <td>
+                {{movieName}}
+            </td>
+            <td>
+                {{review}}
+            </td>
+        </tr>
+    {{/each}}
+</table>
+<br>
+<h2>Recently Added</h2>
+<table>
+    <tr>
+        <td>
+            Movie Title
+        </td>
+    </tr>
+    {{#each recentlyAdded}}
+        <tr>
+            <td>
+                {{movieName}}
+            </td>
+        </tr>
+    {{/each}}
+</table>

@@ -19,7 +19,7 @@ var movieData = new mongoose.Schema({
     imdb_ID: String,
     poster_URL:String
   });
-  
+
  var profile = new mongoose.Schema({
     userName: String,
   });
