@@ -7,12 +7,12 @@ var handlebars = require('express-handlebars');
 
 //Set up MongoDB 
 var mongoose   = require('mongoose');
-var db         = mongoose.connect;
+// var db         = mongoose.createConnection('mongodb://localhost/temp');
+mongoose.connect('mongodb://localhost/tem')
+//mongoose.connect(db);
 
-db.on('error', console.error);
-db.once('open', function(){
-  //Schemas should go here
-  var movieData = new mongoose.Schema({
+
+var movieData = new mongoose.Schema({
     userName: String,
     tag: String,
     comment: [{comment:String, date: Date}],
@@ -20,13 +20,16 @@ db.once('open', function(){
     poster_URL:String
   });
   
-  var profile = new mongoose.Schema({
+ var profile = new mongoose.Schema({
     userName: String,
   });
-  
-});
 
-mongoose.connect('mongodb://localhost/temp');
+  var movieData = mongoose.model('movieinfo', movieData);
+  var user_tag  = mongoose.model('userdata', profile);
+  
+
+  
+//mongoose.connect('mongodb://localhost/temp');
 
 //////////////////////////////////////////////////////////////////////
 ///// Express App Setup //////////////////////////////////////////////
