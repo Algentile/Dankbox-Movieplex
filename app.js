@@ -7,9 +7,14 @@ var handlebars = require('express-handlebars');
 
 //Set up MongoDB 
 var mongoose   = require('mongoose');
-// var db         = mongoose.createConnection('mongodb://localhost/temp');
-mongoose.connect('mongodb://localhost/tem')
-//mongoose.connect(db);
+mongoose.connect('mongodb://localhost/test');
+
+//Test if connection error occurs
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function (callback) {
+  console.log('Connection lines are open');
+});
 
 
 var movieData = new mongoose.Schema({

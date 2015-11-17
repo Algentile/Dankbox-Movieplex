@@ -18,7 +18,9 @@
   "homepage": "https://github.com/Algentile/Dankbox-Movieplex#readme",
   "dependencies": {
     "archiver": "^0.16.0",
-    "express-handlebars": "^2.0.1"
+    "express-handlebars": "^2.0.1",
+    "mongodb": "^2.0.48",
+    "mongoose": "^4.2.6"
   },
   "devDependencies": {
     "mongoose": "^4.2.5"
