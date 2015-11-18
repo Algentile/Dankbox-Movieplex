@@ -5,6 +5,26 @@
 var express    = require('express');
 var handlebars = require('express-handlebars');
 
+//The body parser is used to parse the body of an HTTP request
+var bodyParser = require('body-parser');
+
+// Require session library.
+var session    = require('express-session');
+
+// Require flash library.
+var flash      = require('connect-flash');
+
+// The cookie parser is used to parse cookies in an HTTP header.
+var cookieParser = require('cookie-parser');
+
+// Morgan for server logging.
+var morgan = require('morgan');
+
+
+//////////////////////////////////////////////////////////////////////
+///// MongoDB Setup //////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
 //Set up MongoDB 
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
@@ -12,29 +32,30 @@ mongoose.connect('mongodb://localhost/test');
 //Test if connection error occurs
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
+db.once('open', function (){
   console.log('Connection lines are open');
 });
 
 
 var movieData = new mongoose.Schema({
-    userName: String,
-    tag: String,
+    user_name: String,
+    tag: [],
     comment: [{comment:String, date: Date}],
     imdb_ID: String,
     poster_URL:String
   });
 
  var profile = new mongoose.Schema({
-    userName: String,
+    user_name: String,
+    password: String,
+    email: String
   });
 
   var movieData = mongoose.model('movieinfo', movieData);
   var user_tag  = mongoose.model('userdata', profile);
   
 
-  
-//mongoose.connect('mongodb://localhost/temp');
+
 
 //////////////////////////////////////////////////////////////////////
 ///// Express App Setup //////////////////////////////////////////////
