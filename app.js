@@ -2,28 +2,16 @@
 // This requires the necessary libraries for the webapp.
 // (1) express - this provides the express web framework
 // (2) handlebars - this provides the handlebars templating framework
+// (2) session - this provides the session framework
 var express    = require('express');
 var handlebars = require('express-handlebars');
 
-//The body parser is used to parse the body of an HTTP request
-var bodyParser = require('body-parser');
-
-// Require session library.
 var session    = require('express-session');
 
-// Require flash library.
-var flash      = require('connect-flash');
-
-// The cookie parser is used to parse cookies in an HTTP header.
 var cookieParser = require('cookie-parser');
 
-// Morgan for server logging.
-var morgan = require('morgan');
-
-
-//////////////////////////////////////////////////////////////////////
-///// MongoDB Setup //////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
+// Require flash library
+var flash      = require('connect-flash');
 
 //Set up MongoDB 
 var mongoose   = require('mongoose');
@@ -32,30 +20,29 @@ mongoose.connect('mongodb://localhost/test');
 //Test if connection error occurs
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (){
+db.once('open', function (callback) {
   console.log('Connection lines are open');
 });
 
 
 var movieData = new mongoose.Schema({
-    user_name: String,
-    tag: [],
+    userName: String,
+    tag: String,
     comment: [{comment:String, date: Date}],
     imdb_ID: String,
     poster_URL:String
   });
 
  var profile = new mongoose.Schema({
-    user_name: String,
-    password: String,
-    email: String
+    userName: String,
   });
 
   var movieData = mongoose.model('movieinfo', movieData);
   var user_tag  = mongoose.model('userdata', profile);
   
 
-
+  
+//mongoose.connect('mongodb://localhost/temp');
 
 //////////////////////////////////////////////////////////////////////
 ///// Express App Setup //////////////////////////////////////////////
@@ -64,6 +51,21 @@ var movieData = new mongoose.Schema({
 // The express library is a simple function. When you invoke this
 // function it returns an express web application that you build from.
 var app = express();
+
+// This will enable our application to support parsing cookies
+app.use(cookieParser());
+// This will enable our application to support sessions. The secret
+// provides security to our session data. Both saveUnitialized and 
+// resave are deprecated but should be false.
+app.use(session({
+  secret: '123456789',
+  // libraries can be rather annoying!
+  saveUninitialized: false, 
+  resave: false
+}));
+
+// This will enable our application to support flash
+app.use(flash());
 
 // This will set an "application variable". An application variable is
 // a variable that can be retrieved from your app later on. It is
@@ -162,9 +164,17 @@ app.get('/admin', (req,res) => {
 
 //Route for login page
 app.get('/login', (req,res) => {
-  res.render('login',{
+  //Insures nobody is logged in before redirecting to login
+  var user = req.session.user;
+  // Redirect to main if session and user is online:
+  if (user){//&& users[user.name]) {
+    res.redirect('/main');
+  }else{
+    console.log('No user is currently logged in');
+    res.render('login',{
 
-  });
+    });
+  }
 });
 
 //Route for Profile page
