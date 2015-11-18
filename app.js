@@ -15,6 +15,14 @@ var flash      = require('connect-flash');
 
 //Set up MongoDB 
 var mongoose   = require('mongoose');
+
+var morgan     = require('morgan');
+
+
+//////////////////////////////////////////////////////////////////////
+///// MongoDB Setup///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
 mongoose.connect('mongodb://localhost/test');
 
 //Test if connection error occurs
@@ -26,15 +34,17 @@ db.once('open', function (callback) {
 
 
 var movieData = new mongoose.Schema({
-    userName: String,
-    tag: String,
+    user_name: String,
+    tag: [],
     comment: [{comment:String, date: Date}],
     imdb_ID: String,
     poster_URL:String
   });
 
  var profile = new mongoose.Schema({
-    userName: String,
+    user_name: String,
+    password: String,
+    email: String
   });
 
   var movieData = mongoose.model('movieinfo', movieData);
@@ -42,8 +52,6 @@ var movieData = new mongoose.Schema({
   
 
   
-//mongoose.connect('mongodb://localhost/temp');
-
 //////////////////////////////////////////////////////////////////////
 ///// Express App Setup //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////

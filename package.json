@@ -4,7 +4,8 @@
   "description": "A movie tracking website ",
   "main": "app.js",
   "scripts": {
-    "test": "\"echo \\ ErrorL no test specified\\\" && exit 1\""
+    "test": "\"echo \\ ErrorL no test specified\\\" && exit 1\"",
+    "start" : "node app.js"
   },
   "repository": {
     "type": "git",
