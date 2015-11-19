@@ -18,6 +18,11 @@ var mongoose   = require('mongoose');
 
 var morgan     = require('morgan');
 
+var mongo      = require('mongod');
+
+//Used as a lightweight easy to use request module. We will use this to send
+//requests to send requests to OMDB.
+var requestify = require('requestify'); 
 
 //////////////////////////////////////////////////////////////////////
 ///// MongoDB Setup///////////////////////////////////////////////////
@@ -28,7 +33,7 @@ mongoose.connect('mongodb://localhost/test');
 //Test if connection error occurs
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
+db.once('open', function () {
   console.log('Connection lines are open');
 });
 
@@ -202,6 +207,12 @@ app.get('/search', (req,res) => {
 //Route for signup
 app.get('/signup', (req,res) => {
   res.render('signup',{
+    // var user = req.session.user;
+
+    // if(user){
+    //   res.flash('username already in use.');
+    //   res.resdirect('/main');
+    // }
 
   });
 });
@@ -234,6 +245,10 @@ app.get('/about', (req, res) => {
   });
 });
 
+//Get JSON objects from OMDB
+requestify.get('http://www.omdbapi.com/?').then(function(response){
+  response.getBody();
+});
 
 //////////////////////////////////////////////////////////////////////
 ///// Error Middleware ///////////////////////////////////////////////
