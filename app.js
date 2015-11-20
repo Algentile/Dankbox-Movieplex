@@ -28,26 +28,23 @@ var requestify = require('requestify');
 ///// MongoDB Setup///////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-mongoose.connect('mongodb://localhost/test');
 
 //Test if connection error occurs
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-  console.log('Connection lines are open');
-});
-
+var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox'
+var db = mongoose.connect(uri);
+Schema = mongoose.Schema;
 
 var movieData = new mongoose.Schema({
-    user_name: String,
+    username: String,
     tag: [],
+    tierList: [],
     comment: [{comment:String, date: Date}],
     imdb_ID: String,
     poster_URL:String
   });
 
  var profile = new mongoose.Schema({
-    user_name: String,
+    username: String,
     password: String,
     email: String
   });
@@ -55,6 +52,19 @@ var movieData = new mongoose.Schema({
   var movieData = mongoose.model('movieinfo', movieData);
   var user_tag  = mongoose.model('userdata', profile);
   
+  //Test mongo
+  // var test = new user_tag({username:'test',password:'test',email:'test'});
+  // console.log("me: " + test)
+
+  // test.save(function (err, test) {
+  //   console.log("saved?")
+  //   if (err) {
+  //     console.log("error");
+  //     return console.error(err);
+  //   }
+  //   console.log("saved!")
+  // });
+  // console.log("after save");
 
   
 //////////////////////////////////////////////////////////////////////
