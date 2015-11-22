@@ -3,26 +3,43 @@
 // (1) express - this provides the express web framework
 // (2) handlebars - this provides the handlebars templating framework
 // (2) session - this provides the session framework
-var express    = require('express');
-var handlebars = require('express-handlebars');
+var express       = require('express');
+var handlebars    = require('express-handlebars');
 
-var session    = require('express-session');
+var session       = require('express-session');
 
-var cookieParser = require('cookie-parser');
+var cookieParser  = require('cookie-parser');
 
 // Require flash library
-var flash      = require('connect-flash');
+var flash         = require('connect-flash');
 
 //Set up MongoDB 
-var mongoose   = require('mongoose');
+var mongoose      = require('mongoose');
+  
+var morgan        = require('morgan');
 
-var morgan     = require('morgan');
-
-var mongo      = require('mongod');
+var mongo         = require('mongod');
 
 //Used as a lightweight easy to use request module. We will use this to send
 //requests to send requests to OMDB.
-var requestify = require('requestify'); 
+var requestify    = require('requestify'); 
+
+//npm package required to use functions from omdb
+var omdb          = require('omdb');
+
+var cookieSession = require('cookie-session');
+
+var bodyParser    = require('body-parser');
+
+var bson = require('bson');
+
+
+
+// app.use(bodyParser.json());
+
+// app.use(bodyParser.urlencoded({
+//   extended: true
+// }));
 
 //////////////////////////////////////////////////////////////////////
 ///// MongoDB Setup///////////////////////////////////////////////////
@@ -51,20 +68,6 @@ var movieData = new mongoose.Schema({
 
   var movieData = mongoose.model('movieinfo', movieData);
   var user_tag  = mongoose.model('userdata', profile);
-  
-  //Test mongo
-  // var test = new user_tag({username:'test',password:'test',email:'test'});
-  // console.log("me: " + test)
-
-  // test.save(function (err, test) {
-  //   console.log("saved?")
-  //   if (err) {
-  //     console.log("error");
-  //     return console.error(err);
-  //   }
-  //   console.log("saved!")
-  // });
-  // console.log("after save");
 
   
 //////////////////////////////////////////////////////////////////////
@@ -144,6 +147,16 @@ app.use(testmw);
 //////////////////////////////////////////////////////////////////////
 ///// User Defined Routes ////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
+
+//Functions that allow us to use body-parser
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json());
+
+
+
 var team = require('./lib/team.js');
 
 app.get('/', (req, res) => {
@@ -181,7 +194,7 @@ app.get('/team', (req, res) => {
 //Route for admin page
 app.get('/admin', (req,res) => {
   res.render('admin',{
-
+    
   });
 });
 
@@ -208,29 +221,44 @@ app.get('/profile', (req,res) => {
 });
 
 //Route for Search 
-app.get('/search', (req,res) => {
+app.get('/search', (req,res) =>{
   res.render('search',{
+    mov
+  })
+});
 
+app.post('/search', (req,res) => {
+  var user_search = req.body.movieSearch;
+    omdb.search(user_search,function(err,movies){
+    if(err){
+      return console.log(err);
+    }
+
+    if(movies.length < 1){
+      return console.log("There were no movies found. Please search again");
+    }
+
+    movies.forEach(function(movie){
+    mov:[
+        {title: movie.title},
+        {plot: movie.plot},
+        {imdbID: movie.imdb}
+      ]
+    });
   });
 });
 
 //Route for signup
 app.get('/signup', (req,res) => {
   res.render('signup',{
-    // var user = req.session.user;
-
-    // if(user){
-    //   res.flash('username already in use.');
-    //   res.resdirect('/main');
-    // }
 
   });
 });
 
-//Route for splash page
+//Route for splash page only the template needs to be rendered.
 app.get('/splash', (req,res) => {
+  var user = req.session.user;
   res.render('splash',{
-    
   });
 });
 
@@ -256,9 +284,6 @@ app.get('/about', (req, res) => {
 });
 
 //Get JSON objects from OMDB
-requestify.get('http://www.omdbapi.com/?').then(function(response){
-  response.getBody();
-});
 
 //////////////////////////////////////////////////////////////////////
 ///// Error Middleware ///////////////////////////////////////////////
