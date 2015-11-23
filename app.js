@@ -56,7 +56,7 @@ var movieData = new mongoose.Schema({
     tag: [],
     tierList: [],
     comment: [{comment:String, date: Date}],
-    imdb_ID: String,
+    imdbID: String,
     poster_URL:String
   });
 
@@ -201,13 +201,6 @@ app.get('/profile', (req,res) => {
   });
 });
 
-//Route for Search 
-//app.get('/search', (req,res) =>{
-//  res.render('search',{
-//    mov
-//  })
-//});
-
 app.post('/search', (req,res) => {
   var user_search = req.body.movieSearch;
   var searchTerms = {
@@ -250,6 +243,16 @@ app.post('/search', (req,res) => {
       });
     };
   });
+});
+
+
+//This saves to database but weird ids show up needs looking into from mongos end.
+app.post('/addMovie',(req,res) => {
+  var user = req.session.user;
+  var id   = req.body.IMDBid;
+  var newMovie = new movieData();
+  console.log(id);
+  newMovie.save({imdbID: id});
 });
 
 //Route for signup
