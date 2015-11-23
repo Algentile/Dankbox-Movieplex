@@ -223,8 +223,8 @@ app.post('/search', (req,res) => {
       return console.log("There were no movies found. Please search again");
     }
     var displayMovies = [];
-    movies.forEach(function(movie) {
-      omdb.get({imdb: movie.imdb}, function(error, result){
+    for(i = 0; i < movies.length; i++){
+      omdb.get({imdb: movies[i].imdb}, function(error, result){
         if(error){
           return console.log(error);
         }
@@ -241,9 +241,14 @@ app.post('/search', (req,res) => {
           imdbID: result.imdb.id
         }
         displayMovies.push(movieToBeDisplayed);
+        console.log(displayMovies.length);
+        console.log(movies.length);
+        if(displayMovies.length === movies.length){
+          res.render('search', { user_search   : user_search,
+                               displayMovies : displayMovies});
+        }
       });
-    });
-    console.log(displayMovies)
+    };
   });
 });
 
