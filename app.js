@@ -10,6 +10,11 @@ var session       = require('express-session');
 
 var cookieParser  = require('cookie-parser');
 
+var bcrypt   = require('bcrypt-nodejs');
+
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 // Require flash library
 var flash         = require('connect-flash');
 
@@ -47,7 +52,8 @@ var bson = require('bson');
 
 
 //Test if connection error occurs
-var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox'
+var uri = 'mongodb://will:dank@ds047622.mongolab.com:47622/dbmp';//uncomment below and comment this.
+// var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox'
 var db = mongoose.connect(uri);
 Schema = mongoose.Schema;
 
@@ -60,14 +66,23 @@ var movieData = new mongoose.Schema({
     poster_URL:String
   });
 
- var profile = new mongoose.Schema({
+var profile = mongoose.Schema({
+  local: {
     username: String,
-    password: String,
-    email: String
-  });
+    email: String,
+    password: String
+  },
+  facebook:{
+    id : String,
+    token : String,
+    displayName : String,
+    username : String
+  }
+});
 
-  var movieData = mongoose.model('movieinfo', movieData);
-  var user_tag  = mongoose.model('userdata', profile);
+var movieData = mongoose.model('movieinfo', movieData);
+var User = mongoose.model('User', profile);
+// var user_tag  = mongoose.model('userdata', profile);
 
   
 //////////////////////////////////////////////////////////////////////
@@ -142,6 +157,61 @@ function testmw(req, res, next) {
 
 // This adds our testing middleware to the express app.
 app.use(testmw);
+
+// Initializing passport
+app.use(passport.initialize());
+
+//////////////////////////////////////////////////////////////////////
+///// Passport Setup /////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+// More in-depth description can be found here: http://passportjs.org/docs
+// Essentially the serialization/deserialization of the user is necessary
+// for supporting login sessions.
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+  
+// Regular, non-facebook, Signup
+passport.use('regular-signup', new LocalStrategy({
+  usernameField : 'userName',
+  passwordField : 'userPass',
+  passReqToCallback : true 
+},
+function(req, userName, userPass, done){
+  User.findOne({ 'local.username' :  userName }, function(err, user) {
+    // Insures that the username is not already taken and that there were no
+    // errors that occured while querying the DB.
+    if(err){
+      return done(err);
+    }else if(user){
+      return done(null, false, req.flash('signup', 'Username is not available'));
+    }else{
+      console.log('Creating new user');
+      // Create a new user account and fill-in the username and password fields.
+      // Once the attributes have been filled, save the user and insure that no
+      // errors occured while saving the user.
+      var userAccount = new User();
+      userAccount.local.email = userName;
+      userAccount.local.password = userPass;
+      userAccount.save(function(err){
+        // Error check to insure that the information was successfully saved
+        if(err){
+          return done(error);
+        }return done(null, userAccount);
+      });
+    }
+  }); 
+}));
+
+//To Be Continued: Add Login information for passport
+
 
 
 //////////////////////////////////////////////////////////////////////
@@ -290,6 +360,22 @@ app.get('/about', (req, res) => {
   });
 });
 
+// Post request for logging in. Success and failure represent redirects based on whether
+// or not logging in was successful/unsuccessful
+app.post('/login', passport.authenticate('regular-login', {
+  successRedirect : '/main',
+  failureRedirect : '/login',
+  failureFlash : true
+}));
+
+// Post request for signing up. Success and failure represent redirects based on whether
+// or not signing up was successful/unsuccessful
+app.post('/signup', passport.authenticate('regular-signup', {
+  successRedirect : '/main',
+  failureRedirect : '/signup',
+  failureFlash : true 
+}));
+
 //Get JSON objects from OMDB
 
 //////////////////////////////////////////////////////////////////////
@@ -317,6 +403,13 @@ function internalServerError500(err, req, res, next) {
   res.status(500);
   res.render('500');
 }
+
+// This is a DB method which checks to see if the current password 
+// matches the users password. If the password and the user password
+// do not match then an error will be returned.
+profile.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
 
 // This adds the two middleware functions as the last two middleware
 // functions. Because they are at the end they will only be invoked if
