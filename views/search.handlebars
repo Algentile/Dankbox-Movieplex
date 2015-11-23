@@ -1,7 +1,7 @@
 <!--Change the keywords as needed in final version-->
 <h1>Search Page</h1>
 <br>
-<h2>{{search}}</h2>
+<h2>{{user_search}}</h2>
 <br>
 <form action="/main" method="get">
     <input type="submit" value="Movies"
@@ -45,10 +45,13 @@
             Add?
         </td>
     </tr>
-    {{#each movies}}
+    {{#each displayMovies}}
         <tr>
             <td>
                 {{title}}
+            </td>
+            <td>
+                {{year}}
             </td>
             <td>
                 {{director}}

@@ -160,41 +160,22 @@ app.use(bodyParser.json());
 var team = require('./lib/team.js');
 
 app.get('/', (req, res) => {
-  var result = team.all();
-  if (!result.success) {
-    notFound404(req, res);
-  } else {
-    res.render('team', {
-      members: result.data,
-      pageTestScript: '/qa/tests-team.js'
+  //Insures nobody is logged in before redirecting to login
+  var user = req.session.user;
+  // Redirect to main if session and user is online:
+  if (user){//&& users[user.name]) {
+    res.redirect('/main');
+  }else{
+    console.log('No user is currently logged in');
+    res.render('login',{
     });
-  }
-});
-
-app.get('/team', (req, res) => {
-  var result = team.one(req.query.user);
-  if(!result.success){
-	result = team.all();
-	if (!result.success) {
-      notFound404(req, res);
-    } else {
-      res.render('team', {
-        members: result.data,
-        pageTestScript: '/qa/tests-team.js'
-      });
-    }
-  } else {
-    res.render('team', {
-	  members: result.data,
-	  pageTestScript: '/qa/tests-team.js'
-	});
   }
 });
 
 //Route for admin page
 app.get('/admin', (req,res) => {
   res.render('admin',{
-    
+
   });
 });
 
@@ -221,15 +202,19 @@ app.get('/profile', (req,res) => {
 });
 
 //Route for Search 
-app.get('/search', (req,res) =>{
-  res.render('search',{
-    mov
-  })
-});
+//app.get('/search', (req,res) =>{
+//  res.render('search',{
+//    mov
+//  })
+//});
 
 app.post('/search', (req,res) => {
   var user_search = req.body.movieSearch;
-    omdb.search(user_search,function(err,movies){
+  var searchTerms = {
+    terms: user_search,
+    type: 'movie'
+  }
+  omdb.search(searchTerms,function(err,movies){
     if(err){
       return console.log(err);
     }
@@ -237,14 +222,28 @@ app.post('/search', (req,res) => {
     if(movies.length < 1){
       return console.log("There were no movies found. Please search again");
     }
+    var displayMovies = [];
+    movies.forEach(function(movie) {
+      omdb.get({imdb: movie.imdb}, function(error, result){
+        if(error){
+          return console.log(error);
+        }
 
-    movies.forEach(function(movie){
-    mov:[
-        {title: movie.title},
-        {plot: movie.plot},
-        {imdbID: movie.imdb}
-      ]
+        if(result === undefined){
+          return console.log("Something went wrong with the movie data retrieval");
+        }
+        var movieToBeDisplayed = {
+          title: result.title,
+          year: result.year,
+          director: result.director,
+          actors: result.actors,
+          plot: result.plot,
+          imdbID: result.imdb.id
+        }
+        displayMovies.push(movieToBeDisplayed);
+      });
     });
+    console.log(displayMovies)
   });
 });
 
