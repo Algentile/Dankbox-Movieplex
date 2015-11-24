@@ -52,8 +52,8 @@ var bson = require('bson');
 
 
 //Test if connection error occurs
-// var uri = 'mongodb://will:dank@ds047622.mongolab.com:47622/dbmp';
-var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox'
+var uri = 'mongodb://will:dank@ds047622.mongolab.com:47622/dbmp';
+// var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox';
 var db = mongoose.connect(uri);
 Schema = mongoose.Schema;
 
@@ -185,12 +185,14 @@ passport.use('regular-signup', new LocalStrategy({
   passReqToCallback : true 
 },
 function(req, userName, userPass, done){
-  User.findOne({ 'local.username' :  userName }, function(err, user) {
+  User.findOne({ 'local.email' :  userName }, function(err, user) {
     // Insures that the username is not already taken and that there were no
     // errors that occured while querying the DB.
     if(err){
+      console.log(err);
       return done(err);
     }else if(user){
+        console.log('Username is not available');
       return done(null, false, req.flash('signup', 'Username is not available'));
     }else{
       console.log('Creating new user');
