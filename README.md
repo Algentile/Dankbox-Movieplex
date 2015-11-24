@@ -1,10 +1,11 @@
-<h1>Dankbox-Movieplex</h1>
+<h1>Dankbox Movieplex</h1>
 
 <h2>Overview:</h2>
 <p>Dankbox Movieplex is a personalized movie-tracking website designed to remedy problems both casual and diehard cinemagoers experience. Everybody enjoys movies, both young and old, male and female. The problems lie not with enjoying movies, but remembering movies that one has seen, or information about those movies. Currently, there is no dedicated source for tracking the movies that a user has seen, along with what the user thought of them. Dankbox Movieplex seeks to remedy this by offering a website that tracks the movies an individual has seen, while also allowing them to rate and offer their opinions. These movies are then stored in a database, allowing any user to easily log into the website from any computer, anywhere, and retrieve their list of watched movies, in addition to their reviews. No more will people have to wonder whether they have seen a movie, or try to remember how they felt about a movie they have not seen in years.</p>
 
 <h2>How to Run:</h2>
-<p>From the Dankbox Movieplex directory, type "node app.js" without quotes into the terminal.</p>
+<p>From the Dankbox Movieplex directory, enter the following command into the terminal.</p>
+<pre><code>node app.js</code></pre>
 
 <h2>Libraries:</h2>
 <ul>
@@ -26,7 +27,7 @@
 <ul>
 <li>404- This view is rendered when a resource is not found. This happens when a route path can't be followed.</li>
 <li>500- This view is rendered when there is an internal server error. When this view is rendered, we also print the stack trace of the error to the console.</li>
-<li>About- The about view provides some information about Dankbox Movieplex and its function and purpose. </li>
+<li>About- The about view provides some information about Dankbox Movieplex, along with its function and purpose. </li>
 <li>Admin- This is the profile page for administrators. From this page, an admin can do anything that a user can do from their profile page. In addition, they can perform administrative actions such as view the profiles of other users or ban users.</li>
 <li>Home- The homepage is what users first see when they login. It provides an overview of movies that the user has rated and reviewed, and allows them to search for new movies.</li>
 <li>Login- This is where a user logs in by entering their username and password.</li>
