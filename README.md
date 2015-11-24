@@ -16,11 +16,9 @@ Flash-
 Mongoose- We use Mongoose for mongoDB object modeling. We use it to create schemata that make it simple to interact with our database. http://mongoosejs.com/
 Morgan-
 MongoDB- Mongo is a document-oriented NoSQL database. We use it to store all of the information that Dankbox Movieplex needs about its users and the movies that they rate and review. We found it to be easy to use in a web app environment, and decided it was a great fit for our project. https://www.mongodb.org/
-Requestify- Requestify is a lightweight , easy to use request module. We use it to send requests to OMDB. https://github.com/ranm8/requestify
 OMDB- OMDB is a web service that obtains movie information. This is crucial to Dankbox Movieplex's functionality, as we use it to get all of the information we need about movies that users watch. http://www.omdbapi.com/
 CookieSession-
 BodyParser-
-Bson-
 
 Views:
 404- This view is rendered when a resource is not found. This happens when a route path can't be found.
@@ -40,3 +38,24 @@ Team- This view displays information about the amazing, talented and dank team b
 Statefulness:
 
 Persistence:
+Dankbox Movieplex makes use of MongoDB to store information. We use the following schemata:
+
+var movieData = new mongoose.Schema({
+    username: String,
+    tag: [],
+    tierList: [],
+    comment: [{comment:String, date: Date}],
+    imdbID: String,
+    poster_URL:String
+  });
+
+ var profile = new mongoose.Schema({
+    username: String,
+    password: String,
+    email: String
+  });
+
+The first one, movieData, is used to store information about movies that a user adds. It keeps track of the user's username, any tags that the user assigned to that movie, and any tierLists that the movie belongs to. It also keeps track of comments that the user leaves about the movie. In addition, we store the imdbID of the string, which allows us to get information about the movie without having to store everything, and the URL of the movie's poster.
+The second one, profile, is used to store all of our users. It keeps track of the user's username, password and email.
+
+To be continued...
