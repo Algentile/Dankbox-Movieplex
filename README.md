@@ -1,8 +1,7 @@
-# Dankbox-Movieplex
-A movie tracking website
+<h1>Dankbox-Movieplex</h1>
 
 <h2>Overview:</h2>
-<p>Dankbox Movieplex is a personalized movie-tracking website designed to remedy problems both casual and diehard cinemagoers experience. Everybody enjoys movies, both young and old, male and female. The problems lie not with enjoying movies, but remembering how much. Currently, there is no dedicated source for tracking the movies that a user has seen, along with what the user though of them. DankBox Movieplex seeks to remedy this by offering a website that tracks the movies an individual has seen, while also allowing them to rate and offer their opinions. These movies are then stored in a database, allowing any user to easily log into the website from any computer, anywhere, and retrieve their list of watched movies, in addition to their reviews. No more will people have to wonder whether they have seen a movie, or try to remember how they felt about a movie they have not seen in years.</p>
+<p>Dankbox Movieplex is a personalized movie-tracking website designed to remedy problems both casual and diehard cinemagoers experience. Everybody enjoys movies, both young and old, male and female. The problems lie not with enjoying movies, but remembering movies that one has seen, or information about those movies. Currently, there is no dedicated source for tracking the movies that a user has seen, along with what the user thought of them. Dankbox Movieplex seeks to remedy this by offering a website that tracks the movies an individual has seen, while also allowing them to rate and offer their opinions. These movies are then stored in a database, allowing any user to easily log into the website from any computer, anywhere, and retrieve their list of watched movies, in addition to their reviews. No more will people have to wonder whether they have seen a movie, or try to remember how they felt about a movie they have not seen in years.</p>
 
 <h2>How to Run:</h2>
 <p>From the Dankbox Movieplex directory, type "node app.js" without quotes into the terminal.</p>
@@ -13,8 +12,8 @@ A movie tracking website
 <li>CookieParser- CookieParser is middleware used to parse cookies in an HTTP header. We are not fully using this right now, but it will be used in the future to parse cookies. https://github.com/expressjs/cookie-parser</li>
 <li>CookieSession- CookieSession is session middleware that is cookie based. We are not currently using it right now, but it will be used in the future to handle sessions. https://github.com/expressjs/cookie-session</li>
 <li>Express- "Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications." The express framework is the base for many of the libraries that we use, and is a necessity in any web app. http://expressjs.com/</li>
-<li>Flash- Flash is middleware that is used for flash messages. We use flash messages to convey information to users when needed. For example, when a user tries to log in with a username and password that don't match, we use a flash message to inform them of that.https://github.com/jaredhanson/connect-flash</li>
-<li>Handlebars- Handlebars is our view engine. It dynamically generates HTML as we need it. We use this to create all of our views. https://github.com/wycats/handlebars.js/</li>
+<li>Flash- Flash is middleware that is used for flash messages. We use flash messages to convey information to users when needed. For example, when a user tries to log in with a username and password that do not match, we use a flash message to inform them of that. https://github.com/jaredhanson/connect-flash</li>
+<li>Handlebars- Handlebars is our view engine. It dynamically generates HTML as we need it. We use this to create all of our views as it allows us to manipulate what a user sees. https://github.com/wycats/handlebars.js/</li>
 <li>MongoDB- Mongo is a document-oriented NoSQL database. We use it to store all of the information that Dankbox Movieplex needs about its users and the movies that they rate and review. We found it to be easy to use in a web app environment, and decided it was a great fit for our project. https://www.mongodb.org/</li>
 <li>Mongoose- Mongoose is used for object modeling for MongoDB. We use Mongoose for creating schemata for the objects that we store in our database. In addition, we use Mongoose to connect to and interact with our database. http://mongoosejs.com/</li>
 <li>Morgan- Morgan is used for server logging. We are not fully using this right now, but it will be used in the future for server logging. https://github.com/expressjs/morgan</li>
@@ -25,7 +24,7 @@ A movie tracking website
 
 <h2>Views:</h2>
 <ul>
-<li>404- This view is rendered when a resource is not found. This happens when a route path can't be found.</li>
+<li>404- This view is rendered when a resource is not found. This happens when a route path can't be followed.</li>
 <li>500- This view is rendered when there is an internal server error. When this view is rendered, we also print the stack trace of the error to the console.</li>
 <li>About- The about view provides some information about Dankbox Movieplex and its function and purpose. </li>
 <li>Admin- This is the profile page for administrators. From this page, an admin can do anything that a user can do from their profile page. In addition, they can perform administrative actions such as view the profiles of other users or ban users.</li>
