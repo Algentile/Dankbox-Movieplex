@@ -1,13 +1,13 @@
 # Dankbox-Movieplex
 A movie tracking website
 
-<h1>Overview:</h1>
+<h2>Overview:</h2>
 <p>Dankbox Movieplex is a personalized movie-tracking website designed to remedy problems both casual and diehard cinemagoers experience. Everybody enjoys movies, both young and old, male and female. The problems lie not with enjoying movies, but remembering how much. Currently, there is no dedicated source for tracking the movies that a user has seen, along with what the user though of them. DankBox Movieplex seeks to remedy this by offering a website that tracks the movies an individual has seen, while also allowing them to rate and offer their opinions. These movies are then stored in a database, allowing any user to easily log into the website from any computer, anywhere, and retrieve their list of watched movies, in addition to their reviews. No more will people have to wonder whether they have seen a movie, or try to remember how they felt about a movie they have not seen in years.</p>
 
-<h1>How to Run:</h1>
+<h2>How to Run:</h2>
 <p>From the Dankbox Movieplex directory, type "node app.js" without quotes into the terminal.</p>
 
-<h1>Libraries:</h1>
+<h2>Libraries:</h2>
 <ul>
 <li>Express- "Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications." http://expressjs.com/</li>
 <li>Handlebars- Handlebars is our view engine. It dynamically generates HTML as we need it. We use this to create all of our views. https://github.com/wycats/handlebars.js/</li>
@@ -23,7 +23,7 @@ A movie tracking website
 <li>Passport- Passport is middleware that is used to authernticate users. We use it here to ensure that users are able to create their accounts without any errors, such as having a username that is the same as an existing user. It will also be used in the near future to authenticate users using Facebook. https://github.com/jaredhanson/passport</li>
 </ul>
 
-<h1>Views:</h1>
+<h2>Views:</h2>
 <ul>
 <li>404- This view is rendered when a resource is not found. This happens when a route path can't be found.</li>
 <li>500- This view is rendered when there is an internal server error. When this view is rendered, we also print the stack trace of the error to the console.</li>
@@ -40,12 +40,12 @@ A movie tracking website
 <li>Team- This view displays information about the amazing, talented and dank team behind Dankbox Movieplex. It was created for TPA02 and is currently inaccessible.</li>
 </ul>
 
-<h1>Statefulness:</h1>
+<h2>Statefulness:</h2>
 
-<h1>Persistence:</h1>
+<h2>Persistence:</h2>
 <p>Dankbox Movieplex makes use of MongoDB to store information. We use the following schemata:</p>
 
-<code>var movieData = new mongoose.Schema({
+<pre><code>var movieData = new mongoose.Schema({
     username: String,
     tag: [],
     tierList: [],
@@ -58,7 +58,7 @@ A movie tracking website
     username: String,
     password: String,
     email: String
-  });</code>
+  });</code></pre>
 <p>The first one, movieData, is used to store information about movies that a user adds. It keeps track of the user's username, any tags that the user assigned to that movie, and any tierLists that the movie belongs to. It also keeps track of comments that the user leaves about the movie. In addition, we store the imdbID of the string, which allows us to get information about the movie without having to store everything, and the URL of the movie's poster.</p>
 
 <p>The second one, profile, is used to store all of our users. It keeps track of the user's username, password and email.</p>
