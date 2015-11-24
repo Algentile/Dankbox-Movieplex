@@ -9,18 +9,18 @@ A movie tracking website
 
 <h2>Libraries:</h2>
 <ul>
-<li>Express- "Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications." http://expressjs.com/</li>
+<li>BodyParser- This is middleware used in body parsing. We are not fully using this right now, but it will be used in the future for parsing bodies. https://github.com/expressjs/body-parser</li>
+<li>CookieParser- CookieParser is middleware used to parse cookies in an HTTP header. We are not fully using this right now, but it will be used in the future to parse cookies. https://github.com/expressjs/cookie-parser</li>
+<li>CookieSession- CookieSession is session middleware that is cookie based. We are not currently using it right now, but it will be used in the future to handle sessions. https://github.com/expressjs/cookie-session</li>
+<li>Express- "Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications." The express framework is the base for many of the libraries that we use, and is a necessity in any web app. http://expressjs.com/</li>
+<li>Flash- Flash is middleware that is used for flash messages. We use flash messages to convey information to users when needed. For example, when a user tries to log in with a username and password that don't match, we use a flash message to inform them of that.https://github.com/jaredhanson/connect-flash</li>
 <li>Handlebars- Handlebars is our view engine. It dynamically generates HTML as we need it. We use this to create all of our views. https://github.com/wycats/handlebars.js/</li>
-<li>Session- Session is our session framework. Using it allows Dankbox Movieplex to support sessions, which ensures that users are able to access their data and no one else's. https://github.com/expressjs/session</li>
-<li>CookieParser-</li>
-<li>Flash-</li>
-<li>Mongoose- We use Mongoose for mongoDB object modeling. We use it to create schemata that make it simple to interact with our database. http://mongoosejs.com/</li>
-<li>Morgan-</li>
 <li>MongoDB- Mongo is a document-oriented NoSQL database. We use it to store all of the information that Dankbox Movieplex needs about its users and the movies that they rate and review. We found it to be easy to use in a web app environment, and decided it was a great fit for our project. https://www.mongodb.org/</li>
+<li>Mongoose- Mongoose is used for object modeling for MongoDB. We use Mongoose for creating schemata for the objects that we store in our database. In addition, we use Mongoose to connect to and interact with our database. http://mongoosejs.com/</li>
+<li>Morgan- Morgan is used for server logging. We are not fully using this right now, but it will be used in the future for server logging. https://github.com/expressjs/morgan</li>
 <li>OMDB- OMDB is a web service that obtains movie information. This is crucial to Dankbox Movieplex's functionality, as we use it to get all of the information we need about movies that users watch. http://www.omdbapi.com/</li>
-<li>CookieSession-</li>
-<li>BodyParser-</li>
 <li>Passport- Passport is middleware that is used to authernticate users. We use it here to ensure that users are able to create their accounts without any errors, such as having a username that is the same as an existing user. It will also be used in the near future to authenticate users using Facebook. https://github.com/jaredhanson/passport</li>
+<li>Session- Session is our session framework. Using it allows Dankbox Movieplex to support sessions, which ensures that users are able to access their data and no one else's. https://github.com/expressjs/session</li>
 </ul>
 
 <h2>Views:</h2>
