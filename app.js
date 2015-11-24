@@ -212,7 +212,41 @@ function(req, userName, userPass, done){
   }); 
 }));
 
-//To Be Continued: Add Login information for passport
+  // Login Authentication
+  
+  // This is a DB method which checks to see if the current password 
+  // matches the users password. If the password and the user password
+  // do not match then an error will be returned.
+  // THIS IS CURRENTLY NOT IN USE!!
+  profile.methods.validPassword = function(password){
+      return bcrypt.compareSync(password, this.local.password);
+  };
+  //
+  
+  passport.use('regular-login', new LocalStrategy({
+    usernameField : 'user_name',
+    passwordField : 'user_pass',
+    passReqToCallback : true 
+  },
+  function(req, user_name, user_pass, done){
+    User.findOne({ 'local.email' :  user_name }, function(err, user){
+      // Insures there were no errors retrieving the data, that the user is
+      // a valid user, and that the valid user's password is correct. If all are
+      // true, the user is logged in and redirected to the main page.
+      if(err){
+        // flash msg?
+        return done(err);
+      }else if(!user){
+        // flash msg?
+        return done(null, false, req.flash('login', 'Invalid user'))
+      }else if(user.local.password !== user_pass){
+        // flash msg?
+        return done(null, false, req.flash('login', 'Invalid password'));
+      }else{
+        return done(null, user);
+      }
+    }) ;
+  }));
 
 
 
@@ -253,13 +287,12 @@ app.get('/admin', (req,res) => {
 
 //Route for login page
 app.get('/login', (req,res) => {
-  //Insures nobody is logged in before redirecting to login
-  var user = req.session.user;
-  // Redirect to main if session and user is online:
-  if (user){//&& users[user.name]) {
+  var sessionUser = req.session.user;
+  if (sessionUser){
+    //flash msg?
     res.redirect('/main');
   }else{
-    console.log('No user is currently logged in');
+    //flash msg?
     res.render('login',{
 
     });
@@ -329,9 +362,18 @@ app.post('/addMovie',(req,res) => {
 
 //Route for signup
 app.get('/signup', (req,res) => {
-  res.render('signup',{
+  var sessionUser = req.session.user;
+  if(sessionUser){
+    //flash msg?
+    res.render('main',{
 
-  });
+    });
+  }else{
+    //flash msg?
+  res.render('signup',{
+    
+    });
+  }
 });
 
 //Route for splash page only the template needs to be rendered.
@@ -405,13 +447,6 @@ function internalServerError500(err, req, res, next) {
   res.status(500);
   res.render('500');
 }
-
-// This is a DB method which checks to see if the current password 
-// matches the users password. If the password and the user password
-// do not match then an error will be returned.
-profile.methods.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.local.password);
-};
 
 // This adds the two middleware functions as the last two middleware
 // functions. Because they are at the end they will only be invoked if
