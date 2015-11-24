@@ -52,8 +52,8 @@ var bson = require('bson');
 
 
 //Test if connection error occurs
-var uri = 'mongodb://will:dank@ds047622.mongolab.com:47622/dbmp';
-// var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox';
+// var uri = 'mongodb://will:dank@ds047622.mongolab.com:47622/dbmp';
+var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox';
 var db = mongoose.connect(uri);
 Schema = mongoose.Schema;
 
