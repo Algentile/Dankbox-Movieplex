@@ -19,6 +19,7 @@ MongoDB- Mongo is a document-oriented NoSQL database. We use it to store all of 
 OMDB- OMDB is a web service that obtains movie information. This is crucial to Dankbox Movieplex's functionality, as we use it to get all of the information we need about movies that users watch. http://www.omdbapi.com/
 CookieSession-
 BodyParser-
+Passport- Passport is middleware that is used to authernticate users. We use it here to ensure that users are able to create their accounts without any errors, such as having a username that is the same as an existing user. It will also be used in the near future to authenticate users using Facebook. https://github.com/jaredhanson/passport
 
 Views:
 404- This view is rendered when a resource is not found. This happens when a route path can't be found.
