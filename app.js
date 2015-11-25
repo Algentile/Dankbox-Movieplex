@@ -10,7 +10,7 @@ var session       = require('express-session');
 
 var cookieParser  = require('cookie-parser');
 
-var bcrypt   = require('bcrypt-nodejs');
+//var bcrypt   = require('bcrypt-nodejs');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -249,9 +249,9 @@ function(req, userName, userPass, done){
   // matches the users password. If the password and the user password
   // do not match then an error will be returned.
   // THIS IS CURRENTLY NOT IN USE!!
-  profile.methods.validPassword = function(password){
-      return bcrypt.compareSync(password, this.local.password);
-  };
+  //profile.methods.validPassword = function(password){
+  //    return bcrypt.compareSync(password, this.local.password);
+  //};
   //
   
   passport.use('regular-login', new LocalStrategy({
@@ -319,7 +319,7 @@ var tagsArray = [];
 app.get('/', (req, res) => {
   // Redirect to main if session and user is online:
   if(req.session && req.session.user){
-    // flash msg?
+    req.flash('main', 'You are already signed in');
     res.redirect('/main');
   }else{
     // flash msg?
@@ -338,7 +338,7 @@ app.get('/admin', (req,res) => {
 //Route for login page
 app.get('/login', (req,res) => {
   if(req.session && req.session.user){
-    //flash msg?
+    req.flash('main', 'You are already signed in');
     res.redirect('/main');
   }else{
     //flash msg?
@@ -350,8 +350,8 @@ app.get('/login', (req,res) => {
 
 //Route for logout 
 app.post('/logout', (req, res) => {
+  req.flash('login', 'Logged Out');
   req.session.destroy();
-  // flash msg?
   res.redirect('/login');
 });
 
@@ -392,7 +392,8 @@ app.post('/search', (req,res) => {
     }
 
     if(movies.length < 1){
-      return console.log("There were no movies found. Please search again");
+      req.flash('profile', 'There were no movies found. Please search again');
+      res.redirect('/profile');
     }
     var displayMovies = [];
     for(i = 0; i < movies.length; i++){
@@ -402,6 +403,8 @@ app.post('/search', (req,res) => {
         }
 
         if(result === undefined){
+        	req.flash('profile', 'Something went wrong with the movie data retrieval');
+      		res.redirect('/profile');
           return console.log("Something went wrong with the movie data retrieval");
         }
         var movieToBeDisplayed = {
@@ -435,7 +438,7 @@ app.post('/addMovie',(req,res) => {
 //Route for signup
 app.get('/signup', (req,res) => {
   if(req.session && req.session.user){
-    //flash msg?
+    req.flash('main', 'You are already signed in');
     res.redirect('/main');
   }else{
     //flash msg?
@@ -474,7 +477,7 @@ app.post('/editReviewSubmission', (req,res) => {
 
 app.post('/addTierList', (req, res) => {
   if(isNaN(req.body.tierListSize)){
-    console.log("Inputted value is not a number");
+    req.flash('profile', 'Inputted value is not a number');
     res.redirect("/profile");
   }
   else{
@@ -522,8 +525,8 @@ app.post('/deleteTierList', (req, res) => {
 app.post('/addTag', (req, res) => {
   for(i = 0; i < tagsArray.length; i++){
     if(tagsArray[i].name === req.body.tagName){
-      console.log("Duplicate Tag Names Aren't Allowed!");
-       return res.redirect('/profile');
+      req.flash('main', 'Duplicate Tag Names Aren\'t Allowed!');
+      return res.redirect('/profile');
     }
   }
   var newEntry = {
@@ -580,7 +583,7 @@ app.post('/submitPopulatedTags', (req, res) => {
       return res.redirect('/profile');
     }
   }
-  console.log("Movie could not be found!");
+  req.flash('main', 'Movie could not be found!');
   res.redirect('/profile');
 });
 
