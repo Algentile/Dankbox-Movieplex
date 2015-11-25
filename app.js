@@ -102,7 +102,7 @@ app.use(session({
   cookieName: 'session',
   secret: '123456789',
   duration: 1000000, //how long cookie is valid for
-  activeDuration: 1000, //defines how long to extend duration after interacting w/ site
+  activeDuration: 100000, //defines how long to extend duration after interacting w/ site
   // libraries can be rather annoying!
   saveUninitialized: false, 
   resave: false
@@ -346,6 +346,13 @@ app.get('/login', (req,res) => {
 
     });
   }
+});
+
+//Route for logout 
+app.post('/logout', (req, res) => {
+  req.session.destroy();
+  // flash msg?
+  res.redirect('/login');
 });
 
 //Route for Profile page
