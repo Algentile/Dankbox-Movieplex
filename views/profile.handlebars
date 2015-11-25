@@ -1,6 +1,4 @@
 <!--Change the keywords as needed in final version-->
-<h1>Profile Page</h1>
-<br>
 <form action="/main" method="get">
     <input type="submit" value="Movies"
            name="Main" id="profile_main" />
@@ -11,12 +9,67 @@
            name="Tags" id="profile_tags" />
 </form>
 <br>
+<form action="/tierLists" method="get">
+    <input type="submit" value="Tier Lists"
+           name="tierLists" id="profile_tierLists" />
+</form>
+<br>
 <form method="post" action="/search"> <!--Change this action value for real searches-->
     Movie Title: <input type="text" name="movieSearch"> <br>
     <button>Search</button>
 </form>
 <br>
+<form action="/logout" method="post">
+    <input type="submit" value="Logout"
+           name="Logout" id="profile_logout" />
+</form>
+<br>
+<h1>Profile Page</h1>
+<br>
+<h2>Tags</h2>
+<br>
+<form action="/addTag" method="post">
+    Tag Name: <input type="text" name="tagName">
+    <input type="submit" value="Create New Tag"
+           name="Create New Tag" id="profile_addTag" />
+</form>
+<br>
+<table>
+    <tr>
+        {{#each tagsCollection}}
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            {{name}}
+                        </td>
+                        <td>
+                            <form method="post" action="/deleteTag"> <!--Change this action value for real movie additions-->
+                                <input type="hidden" name="index" value="{{@index}}">
+                                <button>Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{#each moviesList}}
+                        <tr>
+                            <td>
+                                {{this}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            </td>
+        {{/each}}
+    </tr>
+</table>
+<br>
 <h2>Tier Lists</h2>
+<br>
+<form action="/addTierList" method="post">
+    Tier List Size: <input type="text" name="tierListSize">
+    <input type="submit" value="Create New Tier List"
+           name="Create New Tier List" id="profile_addTierList" />
+</form>
 <br>
 <table>
     <tr>
@@ -25,16 +78,22 @@
         <table>
             <tr>
                 <td>
-                    {{tierListName}}
+                    {{name}}
+                </td>
+                <td>
+                    <form method="post" action="/deleteTierList"> <!--Change this action value for real movie additions-->
+                        <input type="hidden" name="index" value="{{@index}}">
+                        <button>Delete</button>
+                    </form>
                 </td>
             </tr>
+            {{#each tierList}}
             <tr>
-                {{#each tierList}}
                     <td>
-                        {{movieName}}
+                        {{name}}
                     </td>
-                {{/each}}
             </tr>
+            {{/each}}
         </table>
         </td>
     {{/each}}
@@ -44,21 +103,48 @@
 <h2>Movie Reviews</h2>
 <br>
 <table>
-    <tr>
-        <td>
-            Movie Title
-        </td>
-        <td>
-            Review
-        </td>
-    </tr>
-    {{#each movieReviews}}
+    {{#each reviewCollection}}
         <tr>
             <td>
-                {{movieName}}
-            </td>
-            <td>
-                {{review}}
+                <table>
+                    <tr>
+                        <td>
+                            {{name}}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
+                                <input type="hidden" name="name" value="{{name}}">
+                                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                                {{#each comment}}
+                                    <input type="hidden" name="comment" value="{{comment}}">
+                                {{/each}}
+                                <button>Edit Review</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
+                                <input type="hidden" name="name" value="{{name}}">
+                                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                                <button>Edit Tags</button>
+                            </form>
+                        </td>
+                        {{#each comment}}
+                            <td>
+                                {{comment}}
+                            </td>
+                        {{/each}}
+                    </tr>
+                    <tr>
+                        {{#each tags}}
+                            <td>
+                                {{this}}
+                            </td>
+                        {{/each}}
+                    </tr>
+                </table>
             </td>
         </tr>
     {{/each}}

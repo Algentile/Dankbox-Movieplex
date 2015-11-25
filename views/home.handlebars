@@ -1,9 +1,12 @@
 <!--Change the keywords as needed in final version-->
-<h1>Main Page</h1>
-<br>
 <form action="/tags" method="get">
     <input type="submit" value="Tags"
            name="Tags" id="main_tags" />
+</form>
+<br>
+<form action="/tierLists" method="get">
+    <input type="submit" value="Tier Lists"
+           name="tierLists" id="main_tierLists" />
 </form>
 <br>
 <form action="/profile" method="get">
@@ -16,25 +19,59 @@
     <button>Search</button>
 </form>
 <br>
-<h2>Tier Lists</h2>
+<form action="/logout" method="post">
+    <input type="submit" value="Logout"
+           name="Logout" id="main_logout" />
+</form>
+<br>
+<h1>Main Page</h1>
+<br>
+<h2>Movies List</h2>
 <br>
 <table>
-    <tr>
-        {{#each reviewCollection}}
+    {{#each reviewCollection}}
+        <tr>
             <td>
                 <table>
                     <tr>
                         <td>
-                            {{movieName}}
+                            {{name}}
+
                         </td>
                     </tr>
                     <tr>
+                        <td>
+                            <form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
+                                <input type="hidden" name="name" value="{{name}}">
+                                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                                {{#each comment}}
+                                    <input type="hidden" name="comment" value="{{comment}}">
+                                {{/each}}
+                                <button>Edit Review</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
+                                <input type="hidden" name="name" value="{{name}}">
+                                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                                <button>Edit Tags</button>
+                            </form>
+                        </td>
+                        {{#each comment}}
                             <td>
-                                {{review}}
+                                {{comment}}
                             </td>
+                        {{/each}}
+                    </tr>
+                    <tr>
+                        {{#each tags}}
+                            <td>
+                                {{this}}
+                            </td>
+                        {{/each}}
                     </tr>
                 </table>
             </td>
-        {{/each}}
-    </tr>
+        </tr>
+    {{/each}}
 </table>

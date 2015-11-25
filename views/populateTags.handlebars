@@ -1,0 +1,54 @@
+<!--Change the keywords as needed in final version-->
+<form action="/main" method="get">
+    <input type="submit" value="Movies"
+           name="Main" id="populateTags_main" />
+</form>
+<br>
+<form action="/tags" method="get">
+    <input type="submit" value="Tags"
+           name="Tags" id="populateTags_tags" />
+</form>
+<br>
+<form action="/profile" method="get">
+    <input type="submit" value="Profile"
+           name="Profile" id="populateTags_profile" />
+</form>
+<br>
+<form method="post" action="/search"> <!--Change this action value for real searches-->
+    Movie Title: <input type="text" name="movieSearch"> <br>
+    <button>Search</button>
+</form>
+<br>
+<form action="/logout" method="post">
+    <input type="submit" value="Logout"
+           name="Logout" id="populateTags_logout" />
+</form>
+<br>
+<h2>Add {{name}} Tags</h2>
+<br>
+<table>
+    <tr>
+        <form action="/submitPopulatedTags" method="post" id="tagsCheckboxes">
+                <td>
+                    <input type="hidden" name="name" value="{{name}}">
+                    <table>
+                    {{#each tags}}
+                        <tr>
+                            <td>
+                                <input type="checkbox" form="tagsCheckboxes" name="checkboxResults" value="{{name}}">{{name}}<br>
+                            </td>
+                        </tr>
+                    {{/each}}
+                        <tr>
+                            <td>
+                                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                                <button>Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+        </form>
+    </tr>
+    <tr>
+    </tr>
+</table>

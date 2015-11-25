@@ -1,8 +1,4 @@
 <!--Change the keywords as needed in final version-->
-<h1>Search Page</h1>
-<br>
-<h2>{{user_search}}</h2>
-<br>
 <form action="/main" method="get">
     <input type="submit" value="Movies"
            name="Main" id="search_main" />
@@ -13,7 +9,11 @@
            name="Tags" id="search_tags" />
 </form>
 <br>
-<html>
+<form action="/tierLists" method="get">
+    <input type="submit" value="Tier Lists"
+           name="tierLists" id="search_tierLists" />
+</form>
+<br>
 <form action="/profile" method="get">
     <input type="submit" value="Profile"
            name="Profile" id="search_profile" />
@@ -23,6 +23,14 @@
     Movie Title: <input type="text" name="movieSearch"> <br>
     <button>Search</button>
 </form>
+<br>
+<form action="/logout" method="post">
+    <input type="submit" value="Logout"
+           name="Logout" id="search_logout" />
+</form>
+<br>
+<h1>Search Page</h1>
+<h2>{{user_search}}</h2>
 <br>
 <table>
     <tr>
@@ -64,11 +72,10 @@
             </td>
             <td>
                 <form method="post" action="/addMovie"> <!--Change this action value for real movie additions-->
-                    <input type="hidden" name="IMDBid" value={{imdbID}}>
+                    <input type="hidden" name="imdbID" value={{imdbID}}>
                     <button>Add</button>
                 </form>
             </td>
         </tr>
     {{/each}}
 </table>
-</html>

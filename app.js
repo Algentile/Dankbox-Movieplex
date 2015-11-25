@@ -123,7 +123,33 @@ app.set('port', process.env.PORT || 3000);
 // lets your express app know what the view engine is. We then set an
 // app variable 'view engine' to 'handlebars'. This is mostly boiler
 // plate so you need not worry about the details.
-var view = handlebars.create({ defaultLayout: 'main' });
+var view = handlebars.create({
+  defaultLayout: 'main',
+
+  //Shamelessly used from http://stackoverflow.com/questions/11924452/handlebar-js-iterating-over-for-basic-loop
+  helpers: {
+    times:function (times, opts) {
+      var out = "";
+      var i;
+      var data = {};
+
+      if ( times ) {
+        for ( i = 0; i < times; i += 1 ) {
+          data.index = i;
+          out += opts.fn(this, {
+            data: data
+          });
+        }
+      } else {
+
+        out = opts.inverse(this);
+      }
+
+      return out;
+    }
+  }
+});
+
 app.engine('handlebars', view.engine);
 app.set('view engine', 'handlebars');
 
@@ -248,8 +274,6 @@ function(req, userName, userPass, done){
     }) ;
   }));
 
-
-
 //////////////////////////////////////////////////////////////////////
 ///// User Defined Routes ////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -264,6 +288,26 @@ app.use(bodyParser.json());
 
 
 var team = require('./lib/team.js');
+
+var movieData1 = {
+  tags: [],
+  tierList: [],
+  comment: [{comment:"this movie rocks and this review also happens to be very long. When will it wrap? who knows."}],
+  imdbID: "tt1623780",
+  name: "Titanic 1"
+}
+
+var movieData2 = {
+  tags: [],
+  tierList: [],
+  comment: [{comment: "this movie sucks"}],
+  imdbID: "tt2132504",
+  name: "Titanic 2"
+}
+
+var movieDataList = [movieData1, movieData2];
+var tierListArray = [];
+var tagsArray = [];
 
 app.get('/', (req, res) => {
   //Insures nobody is logged in before redirecting to login
@@ -301,8 +345,26 @@ app.get('/login', (req,res) => {
 
 //Route for Profile page
 app.get('/profile', (req,res) => {
+  for(i = 0; i < movieDataList.length; i++){
+    for(j = 0; j < movieDataList[i].tags.length; j++){
+      var found;
+      for(g = 0; g < tagsArray.length; g++){
+        if(movieDataList[i].tags[j] === tagsArray[g].name){
+          found = true;
+          break;
+        }
+        else{
+          if(g === tagsArray.length-1){
+            movieDataList[i].tags.splice(j, i);
+          }
+        }
+      }
+    }
+  }
   res.render('profile',{
-
+    reviewCollection: movieDataList,
+    tierListsCollection: tierListArray,
+    tagsCollection: tagsArray
   });
 });
 
@@ -339,8 +401,6 @@ app.post('/search', (req,res) => {
           imdbID: result.imdb.id
         }
         displayMovies.push(movieToBeDisplayed);
-        console.log(displayMovies.length);
-        console.log(movies.length);
         if(displayMovies.length === movies.length){
           res.render('search', { user_search   : user_search,
                                displayMovies : displayMovies});
@@ -354,7 +414,7 @@ app.post('/search', (req,res) => {
 //This saves to database but weird ids show up needs looking into from mongos end.
 app.post('/addMovie',(req,res) => {
   var user = req.session.user;
-  var id   = req.body.IMDBid;
+  var id   = req.body.imdbID;
   var newMovie = new movieData();
   console.log(id);
   newMovie.save({imdbID: id});
@@ -386,10 +446,142 @@ app.get('/splash', (req,res) => {
 //Route for main page (called home to avoid confusion with main.handlebars)
 app.get('/main', (req,res) => {
   res.render('home',{
-    
+    reviewCollection: movieDataList
   });
 });
 
+app.post('/editReview', (req,res) => {
+  res.render('editReview', {
+      name: req.body.name,
+      imdbID: req.body.imdbID,
+      comment: req.body.comment
+    });
+});
+
+app.post('/editReviewSubmission', (req,res) => {
+  //Use req.body.imdbID to find movie in db, update movie's comment[0].comment with req.body.newComment
+  res.redirect('/main');
+});
+
+app.post('/addTierList', (req, res) => {
+  if(isNaN(req.body.tierListSize)){
+    console.log("Inputted value is not a number");
+    res.redirect("/profile");
+  }
+  else{
+    res.render('addTierList', {
+      tierListSize: req.body.tierListSize,
+      movieCollection: movieDataList
+    });
+  }
+});
+
+app.post('/submitNewTierList', (req, res) => {
+  var newTierList = {
+    name: req.body.tierListName,
+    tierList: []
+  }
+  for(index = 0; index < req.body.tierListResults.length; index++){
+    omdb.get(req.body.tierListResults[index], function(err, movie){
+      if(err){
+        return console.log(err);
+      }
+      var detailedElement = {
+        name: movie.title,
+        imdbID: movie.imdb.id
+      }
+      newTierList.tierList.push(detailedElement);
+      if(newTierList.tierList.length === req.body.tierListResults.length){
+        tierListArray.push(newTierList);
+        return res.redirect('/profile');
+      }
+    });
+  }
+});
+
+app.get('/tierLists', (req, res) => {
+  res.render('tierLists',{
+      tierListsCollection: tierListArray
+    });
+});
+
+app.post('/deleteTierList', (req, res) => {
+  tierListArray.splice(req.body.index, 1);
+  res.redirect('/profile');
+});
+
+app.post('/addTag', (req, res) => {
+  for(i = 0; i < tagsArray.length; i++){
+    if(tagsArray[i].name === req.body.tagName){
+      console.log("Duplicate Tag Names Aren't Allowed!");
+       return res.redirect('/profile');
+    }
+  }
+  var newEntry = {
+    name: req.body.tagName,
+    moviesList: []
+  }
+  tagsArray.push(newEntry);
+  res.redirect('/profile');
+});
+
+app.post('/deleteTag', (req, res) => {
+  tagsArray.splice(req.body.index, 1);
+  res.redirect('/profile');
+});
+
+app.post('/populateTags', (req, res) => {
+  var movieTags;
+  res.render('populateTags', {
+    name: req.body.name,
+    imdbID: req.body.imdbID,
+    tags: tagsArray
+  });
+});
+
+app.post('/submitPopulatedTags', (req, res) => {
+  var checkboxResults = req.body.checkboxResults;
+  var checkboxResultsArray = [];
+  if(checkboxResults.constructor !== Array){
+    checkboxResultsArray.push(checkboxResults);
+  }
+  else{
+    checkboxResultsArray = req.body.checkboxResults;
+  }
+  for(j = 0; j < tagsArray.length; j++){
+    for(g = 0; g < checkboxResultsArray.length; g++){
+      if(tagsArray[j].name === checkboxResultsArray[g]){
+        if(tagsArray[j].moviesList.indexOf(req.body.name) === -1) {
+          tagsArray[j].moviesList.push(req.body.name);
+        }
+      }
+      else{
+        if(checkboxResultsArray.indexOf(tagsArray[j].name) === -1){
+        var index = tagsArray[j].moviesList.indexOf(req.body.name);
+          if(index !== -1){
+            tagsArray[j].moviesList.splice(index, 1);
+          }
+        }
+      }
+    }
+  }
+  for(i = 0; i < movieDataList.length; i++){
+    if(movieDataList[i].imdbID === req.body.imdbID){
+      movieDataList[i].tags = checkboxResultsArray;
+      return res.redirect('/profile');
+    }
+  }
+  console.log("Movie could not be found!");
+  res.redirect('/profile');
+});
+
+app.get('/tags', (req, res) => {
+  res.render('tags', {
+      tagsCollection: tagsArray
+    });
+});
+
+app.post('')
 //Route for about handlebars about view
 app.get('/about', (req, res) => {
   res.render('about', {
@@ -466,4 +658,9 @@ app.listen(app.get('port'), () => {
   console.log('Express started on http://localhost:' +
               app.get('port') + '; press Ctrl-C to terminate');
 });
+
+//////////////////////////////////////////////////////////////////////
+///// Handlebars Helper //////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
 

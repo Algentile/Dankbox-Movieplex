@@ -1,0 +1,43 @@
+<form action="/main" method="get">
+    <input type="submit" value="Movies"
+           name="Main" id="addTierList_main" />
+</form>
+<br>
+<form action="/tags" method="get">
+    <input type="submit" value="Tags"
+           name="Tags" id="addTierList_tags" />
+</form>
+<br>
+<form action="/tierLists" method="get">
+    <input type="submit" value="Tier Lists"
+           name="tierLists" id="addTierList_tierLists" />
+</form>
+<br>
+<form action="/profile" method="get">
+    <input type="submit" value="Profile"
+           name="Profile" id="addTierList_profile" />
+</form>
+<br>
+<form method="post" action="/search"> <!--Change this action value for real searches-->
+    Movie Title: <input type="text" name="movieSearch"> <br>
+    <button>Search</button>
+</form>
+<br>
+<form action="/logout" method="post">
+    <input type="submit" value="Logout"
+           name="Logout" id="addTierList_logout" />
+</form>
+<br>
+<h1>Create a New Tier List</h1>
+<br>
+<form method="post" action="/submitNewTierList" id="addTierList"> <!--Change this action value for real movie additions-->
+    Tier List Name: <input type="text" name="tierListName"> <br>
+    {{#times tierListSize}}
+        <select name="tierListResults" form="addTierList">
+            {{#each movieCollection}}
+                <option value="{{imdbID}}">{{name}}</option>
+            {{/each}}
+        </select> <br>
+    {{/times}}
+    <button>Save</button>
+</form>
