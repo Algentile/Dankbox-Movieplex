@@ -10,8 +10,6 @@ var session       = require('express-session');
 
 var cookieParser  = require('cookie-parser');
 
-var bcrypt   = require('bcrypt-nodejs');
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -60,7 +58,6 @@ Schema = mongoose.Schema;
 var movieData = new mongoose.Schema({
     username: String,
     tag: [],
-    tierList: [],
     comment: [{comment:String, date: Date}],
     imdbID: String,
     poster_URL:String
@@ -70,7 +67,9 @@ var profile = mongoose.Schema({
   local: {
     username: String,
     email: String,
-    password: String
+    password: String,
+    tierList: [],
+    tag: []
   },
   facebook:{
     id : String,
@@ -214,7 +213,7 @@ passport.use('regular-signup', new LocalStrategy({
   passReqToCallback : true 
 },
 function(req, userName, userPass, done){
-  User.findOne({ 'local.email' :  userName }, function(err, user) {
+  User.findOne({ 'local.username' :  userName }, function(err, user) {
     // Insures that the username is not already taken and that there were no
     // errors that occured while querying the DB.
     if(err){
@@ -229,7 +228,7 @@ function(req, userName, userPass, done){
       // Once the attributes have been filled, save the user and insure that no
       // errors occured while saving the user.
       var userAccount = new User();
-      userAccount.local.email = userName;
+      userAccount.local.username = userName;
       userAccount.local.password = userPass;
       userAccount.save(function(err){
         // Error check to insure that the information was successfully saved
@@ -249,10 +248,10 @@ function(req, userName, userPass, done){
   // matches the users password. If the password and the user password
   // do not match then an error will be returned.
   // THIS IS CURRENTLY NOT IN USE!!
-  profile.methods.validPassword = function(password){
-      return bcrypt.compareSync(password, this.local.password);
-  };
-  //
+  // profile.methods.validPassword = function(password){
+  //     return bcrypt.compareSync(password, this.local.password);
+  // };
+  // //
   
   passport.use('regular-login', new LocalStrategy({
     usernameField : 'user_name',
@@ -260,7 +259,7 @@ function(req, userName, userPass, done){
     passReqToCallback : true 
   },
   function(req, user_name, user_pass, done){
-    User.findOne({ 'local.email' :  user_name }, function(err, user){
+    User.findOne({ 'local.username' :  user_name, 'local.password' : user_pass}, function(err, user){
       // Insures there were no errors retrieving the data, that the user is
       // a valid user, and that the valid user's password is correct. If all are
       // true, the user is logged in and redirected to the main page.
