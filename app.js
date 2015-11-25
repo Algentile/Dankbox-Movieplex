@@ -52,8 +52,8 @@ var bson = require('bson');
 
 
 //Test if connection error occurs
-// var uri = 'mongodb://will:dank@ds047622.mongolab.com:47622/dbmp';
-var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox';
+var uri = 'mongodb://will:dank@ds047622.mongolab.com:47622/dbmp';
+// var uri = 'mongodb://admin:admin@ds053784.mongolab.com:53784/dankbox';
 var db = mongoose.connect(uri);
 Schema = mongoose.Schema;
 
@@ -99,11 +99,14 @@ app.use(cookieParser());
 // provides security to our session data. Both saveUnitialized and 
 // resave are deprecated but should be false.
 app.use(session({
+  cookieName: 'session',
   secret: '123456789',
+  duration: 1000000, //how long cookie is valid for
+  activeDuration: 1000, //defines how long to extend duration after interacting w/ site
   // libraries can be rather annoying!
   saveUninitialized: false, 
   resave: false
-}));
+}));//comment this
 
 // This will enable our application to support flash
 app.use(flash());
@@ -232,7 +235,9 @@ function(req, userName, userPass, done){
         // Error check to insure that the information was successfully saved
         if(err){
           return done(error);
-        }return done(null, userAccount);
+        }
+        req.session.user = user;
+        return done(null, userAccount);
       });
     }
   }); 
@@ -269,6 +274,8 @@ function(req, userName, userPass, done){
         // flash msg?
         return done(null, false, req.flash('login', 'Invalid password'));
       }else{
+        // flash msg?
+        req.session.user = user;
         return done(null, user);
       }
     }) ;
@@ -310,13 +317,12 @@ var tierListArray = [];
 var tagsArray = [];
 
 app.get('/', (req, res) => {
-  //Insures nobody is logged in before redirecting to login
-  var user = req.session.user;
   // Redirect to main if session and user is online:
-  if (user){//&& users[user.name]) {
+  if(req.session && req.session.user){
+    // flash msg?
     res.redirect('/main');
   }else{
-    console.log('No user is currently logged in');
+    // flash msg?
     res.render('login',{
     });
   }
@@ -331,8 +337,7 @@ app.get('/admin', (req,res) => {
 
 //Route for login page
 app.get('/login', (req,res) => {
-  var sessionUser = req.session.user;
-  if (sessionUser){
+  if(req.session && req.session.user){
     //flash msg?
     res.redirect('/main');
   }else{
@@ -422,15 +427,12 @@ app.post('/addMovie',(req,res) => {
 
 //Route for signup
 app.get('/signup', (req,res) => {
-  var sessionUser = req.session.user;
-  if(sessionUser){
+  if(req.session && req.session.user){
     //flash msg?
-    res.render('main',{
-
-    });
+    res.redirect('/main');
   }else{
     //flash msg?
-  res.render('signup',{
+    res.render('signup',{
     
     });
   }
