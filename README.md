@@ -84,7 +84,6 @@
 <pre><code>var movieData = new mongoose.Schema({
     username: String,
     tag: [],
-    tierList: [],
     comment: [{comment:String, date: Date}],
     imdbID: String,
     poster_URL:String
@@ -94,7 +93,9 @@
   local: {
     username: String,
     email: String,
-    password: String
+    password: String,
+    tierList:[],
+    tag: []
   },
   facebook:{
     id : String,
