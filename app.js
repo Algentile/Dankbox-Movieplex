@@ -10,11 +10,6 @@ var session       = require('express-session');
 
 var cookieParser  = require('cookie-parser');
 
-<<<<<<< HEAD
-=======
-//var bcrypt   = require('bcrypt-nodejs');
-
->>>>>>> b7236531bb3ce3b726cd272cc859a892985c58af
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -163,7 +158,7 @@ app.set('view engine', 'handlebars');
 // This does the setup for static file serving. It uses express'
 // static middleware to look for files in /public if no other route
 // matches. We use the __dirname special variable which indicates the
-// directory this server is running in and append it to '/public'.
+// directory this server is running in and on(append it to '/public'.
 app.use(express.static(__dirname + '/public'));
 
 // The `testmw` function represents out testing middleware. We use
@@ -253,18 +248,16 @@ function(req, userName, userPass, done){
   // matches the users password. If the password and the user password
   // do not match then an error will be returned.
   // THIS IS CURRENTLY NOT IN USE!!
-<<<<<<< HEAD
+
   // profile.methods.validPassword = function(password){
   //     return bcrypt.compareSync(password, this.local.password);
   // };
   // //
-=======
+
   //profile.methods.validPassword = function(password){
   //    return bcrypt.compareSync(password, this.local.password);
   //};
-  //
->>>>>>> b7236531bb3ce3b726cd272cc859a892985c58af
-  
+
   passport.use('regular-login', new LocalStrategy({
     usernameField : 'user_name',
     passwordField : 'user_pass',
@@ -437,13 +430,11 @@ app.post('/search', (req,res) => {
 });
 
 
-//This saves to database but weird ids show up needs looking into from mongos end.
+//This saves to database the imdbID of the movie the user clicks on. 
 app.post('/addMovie',(req,res) => {
-  var user = req.session.user;
   var id   = req.body.imdbID;
-  var newMovie = new movieData();
-  console.log(id);
-  newMovie.save({imdbID: id});
+  var newMovie = new movieData({imdbID:id});
+  newMovie.save();
 });
 
 //Route for signup
