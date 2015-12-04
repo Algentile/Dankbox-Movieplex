@@ -1,4 +1,3 @@
-<h1>Dankbox Movieplex</h1>
 ![alt text](https://github.com/Algentile/Dankbox-Movieplex/blob/master/public/img/logo.png "Logo")
 
 <h2>Overview:</h2>
