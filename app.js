@@ -316,7 +316,7 @@ var tagsArray = [];
 app.get('/', (req, res) => {
   // Redirect to main if session and user is online:
   if(req.session && req.session.user){
-    req.flash('main', 'You are already signed in');
+    req.flash('login', 'You are already signed in');
     res.redirect('/main');
   }else{
     // flash msg?
@@ -335,12 +335,12 @@ app.get('/admin', (req,res) => {
 //Route for login page
 app.get('/login', (req,res) => {
   if(req.session && req.session.user){
-    req.flash('main', 'You are already signed in');
+    req.flash('login', 'You are already signed in');
     res.redirect('/main');
   }else{
-    //flash msg?
+    var message = req.flash('login') || '';
     res.render('login',{
-
+    	message : message
     });
   }
 });
@@ -370,7 +370,9 @@ app.get('/profile', (req,res) => {
       }
     }
   }
+  var message = req.flash('profile') || '';
   res.render('profile',{
+  	message: message,
     reviewCollection: movieDataList,
     tierListsCollection: tierListArray,
     tagsCollection: tagsArray
@@ -436,7 +438,7 @@ app.post('/addMovie',(req,res) => {
 //Route for signup
 app.get('/signup', (req,res) => {
   if(req.session && req.session.user){
-    req.flash('main', 'You are already signed in');
+    req.flash('login', 'You are already signed in');
     res.redirect('/main');
   }else{
     //flash msg?
@@ -523,7 +525,7 @@ app.post('/deleteTierList', (req, res) => {
 app.post('/addTag', (req, res) => {
   for(i = 0; i < tagsArray.length; i++){
     if(tagsArray[i].name === req.body.tagName){
-      req.flash('main', 'Duplicate Tag Names Aren\'t Allowed!');
+      req.flash('profile', 'Duplicate Tag Names Are Not Allowed!');
       return res.redirect('/profile');
     }
   }
@@ -581,7 +583,7 @@ app.post('/submitPopulatedTags', (req, res) => {
       return res.redirect('/profile');
     }
   }
-  req.flash('main', 'Movie could not be found!');
+  req.flash('profile', 'Movie could not be found!');
   res.redirect('/profile');
 });
 
