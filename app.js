@@ -486,10 +486,16 @@ app.post('/editReview', (req,res) => {
     });
 });
 
+//Edits the comment field and adds that comment to the object stored in the DB
 app.post('/editReviewSubmission', (req,res) => {
-  var movie = req.body.imdbID;
-  console.log(movie);
-  
+  // var id = req.body.imdbID;
+  // var comment = req.body.newComment
+  // console.log(movie);
+  // movieData.findone({'omdbID: id'}, function(err,movieData){
+  //   if(err) return console.log('we have a problem');
+  // var newMovie = new movieData({comment: comment})
+  // });
+
   //Use req.body.imdbID to find movie in db, update movie's comment[0].comment with req.body.newComment
   res.redirect('/main');
 });
