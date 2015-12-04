@@ -1,4 +1,5 @@
 <h1>Dankbox Movieplex</h1>
+![alt text](/public/img/logo.jpg "Logo")
 
 <h2>Overview:</h2>
 <p>Dankbox Movieplex is a personalized movie-tracking website designed to remedy problems both casual and diehard cinemagoers experience. Everybody enjoys movies, both young and old, male and female. The problems lie not with enjoying movies, but remembering movies that one has seen, or information about those movies. Currently, there is no dedicated source for tracking the movies that a user has seen, along with what the user thought of them. Dankbox Movieplex seeks to remedy this by offering a website that tracks the movies an individual has seen, while also allowing them to rate and offer their opinions. These movies are then stored in a database, allowing any user to easily log into the website from any computer, anywhere, and retrieve their list of watched movies, in addition to their reviews. No more will people have to wonder whether they have seen a movie, or try to remember how they felt about a movie they have not seen in years.</p>
@@ -107,5 +108,3 @@
 <p>The first one, movieData, is used to store information about movies that a user adds. It keeps track of the user's username, any tags that the user assigned to that movie, and any tierLists that the movie belongs to. It also keeps track of comments that the user leaves about the movie. In addition, we store the imdbID of the string, which allows us to get information about the movie without having to store everything, and the URL of the movie's poster.</p>
 
 <p>The second one, profile, is used to store all of our users. It keeps track of the user's username, password and email. In addition, if the user was authenticated using their Facebook account, then it keeps track of their Facebook information.</p>
-
-To be continued...
