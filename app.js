@@ -37,13 +37,6 @@ var bodyParser    = require('body-parser');
 var bson = require('bson');
 
 
-
-// app.use(bodyParser.json());
-
-// app.use(bodyParser.urlencoded({
-//   extended: true
-// }));
-
 //////////////////////////////////////////////////////////////////////
 ///// MongoDB Setup///////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -433,9 +426,11 @@ app.post('/search', (req,res) => {
 //This saves to database the imdbID of the movie the user clicks on. 
 app.post('/addMovie',(req,res) => {
   var user = req.session.user;
+  console.log(user);
   var id   = req.body.imdbID;
   var newMovie = new movieData({imdbID:id});;
   newMovie.save();
+  res.redirect('/main');
 });
 
 //Route for signup
@@ -464,7 +459,7 @@ app.get('/main', (req,res) => {
     reviewCollection: movieDataList
   });
 });
-
+https://github.com/Algentile/Dankbox-Movieplex
 app.post('/editReview', (req,res) => {
   res.render('editReview', {
       name: req.body.name,
