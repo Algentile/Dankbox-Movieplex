@@ -1,5 +1,5 @@
 <h1>Dankbox Movieplex</h1>
-![alt text](/img/logo.jpg "Logo")
+![alt text](https://github.com/Algentile/Dankbox-Movieplex/blob/master/public/img/logo.png "Logo")
 
 <h2>Overview:</h2>
 <p>Dankbox Movieplex is a personalized movie-tracking website designed to remedy problems both casual and diehard cinemagoers experience. Everybody enjoys movies, both young and old, male and female. The problems lie not with enjoying movies, but remembering movies that one has seen, or information about those movies. Currently, there is no dedicated source for tracking the movies that a user has seen, along with what the user thought of them. Dankbox Movieplex seeks to remedy this by offering a website that tracks the movies an individual has seen, while also allowing them to rate and offer their opinions. These movies are then stored in a database, allowing any user to easily log into the website from any computer, anywhere, and retrieve their list of watched movies, in addition to their reviews. No more will people have to wonder whether they have seen a movie, or try to remember how they felt about a movie they have not seen in years.</p>
