@@ -430,7 +430,11 @@ app.post('/search', (req,res) => {
 //Right now this allows user to add duplicates so small bug.
 app.post('/addMovie',(req,res) => {
   var user = req.session.user;
-
+  for(var i = 0; i < movieDataList.length; i++){
+    if(movieDataList[i].imdbID === req.body.imdbID){
+      res.flash('Movie already added')
+    }
+  }
   if(user){
   var id   = req.body.imdbID;
   var name = user.local.username;
@@ -485,6 +489,7 @@ app.post('/editReview', (req,res) => {
 app.post('/editReviewSubmission', (req,res) => {
   var movie = req.body.imdbID;
   console.log(movie);
+  
   //Use req.body.imdbID to find movie in db, update movie's comment[0].comment with req.body.newComment
   res.redirect('/main');
 });
