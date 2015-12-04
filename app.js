@@ -427,10 +427,10 @@ app.post('/search', (req,res) => {
 
 //This saves to database the imdbID of the movie the user clicks on. 
 app.post('/addMovie',(req,res) => {
-  var user = req.session.user;
-  console.log(user);
-  var id   = req.body.imdbID;
-  var newMovie = new movieData({imdbID:id});;
+  var user     = req.session.user;
+  var id       = req.body.imdbID;
+  var name     = user.local.username;
+  var newMovie = new movieData({imdbID:id, username: name});
   newMovie.save();
   res.redirect('/main');
 });
