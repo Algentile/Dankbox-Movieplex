@@ -106,7 +106,7 @@ app.use(flash());
 // This will set an "application variable". An application variable is
 // a variable that can be retrieved from your app later on. It is
 // simply a key/value mapping. In this case, we are mapping the key
-// 'port' to a port number. The port number will either be what you
+// 'port' to a port number. The portedit number will either be what you
 // set for PORT as an environment variable (google this if you do not
 // know what an evironment variable is) or port 3000.
 app.set('port', process.env.PORT || 3000);
@@ -293,23 +293,24 @@ app.use(bodyParser.json());
 
 var team = require('./lib/team.js');
 
-var movieData1 = {
-  tags: [],
-  tierList: [],
-  comment: [{comment:"this movie rocks and this review also happens to be very long. When will it wrap? who knows."}],
-  imdbID: "tt1623780",
-  name: "Titanic 1"
-}
+// var movieData1 = {
+//   tags: [],
+//   tierList: [],
+//   comment: [{comment:"this movie rocks and this review also happens to be very long. When will it wrap? who knows."}],
+//   imdbID: "tt1623780",
+//   name: "Titanic 1"
+// }
 
-var movieData2 = {
-  tags: [],
-  tierList: [],
-  comment: [{comment: "this movie sucks"}],
-  imdbID: "tt2132504",
-  name: "Titanic 2"
-}
+// var movieData2 = {
+//   tags: [],
+//   tierList: [],
+//   comment: [{comment: "this movie sucks"}],
+//   imdbID: "tt2132504",
+//   name: "Titanic 2"
+// }
 
-var movieDataList = [movieData1, movieData2];
+// var movieDataList = [movieData1, movieData2];
+var movieDataList = [];
 var tierListArray = [];
 var tagsArray = [];
 
@@ -426,13 +427,24 @@ app.post('/search', (req,res) => {
 
 
 //This saves to database the imdbID of the movie the user clicks on. 
+//Right now this allows user to add duplicates so small bug.
 app.post('/addMovie',(req,res) => {
-  var user     = req.session.user;
-  var id       = req.body.imdbID;
-  var name     = user.local.username;
+  var user = req.session.user;
+
+  if(user){
+  var id   = req.body.imdbID;
+  var name = user.local.username;
   var newMovie = new movieData({imdbID:id, username: name});
   newMovie.save();
+  movieDataList.push(newMovie); //Push the movie object to the movieDataList
   res.redirect('/main');
+}
+
+else {
+  res.redirect('/login');
+  res.flash('User session expired please login');
+}
+
 });
 
 //Route for signup
@@ -471,6 +483,8 @@ app.post('/editReview', (req,res) => {
 });
 
 app.post('/editReviewSubmission', (req,res) => {
+  var movie = req.body.imdbID;
+  console.log(movie);
   //Use req.body.imdbID to find movie in db, update movie's comment[0].comment with req.body.newComment
   res.redirect('/main');
 });
