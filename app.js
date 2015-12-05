@@ -51,7 +51,7 @@ Schema = mongoose.Schema;
 var movieData = new mongoose.Schema({
     username: String,
     tag: [],
-    comment: [{comment:String, date: Date}],
+    comment: String,
     imdbID: String,
     poster_URL:String
   });
@@ -293,23 +293,6 @@ app.use(bodyParser.json());
 
 var team = require('./lib/team.js');
 
-// var movieData1 = {
-//   tags: [],
-//   tierList: [],
-//   comment: [{comment:"this movie rocks and this review also happens to be very long. When will it wrap? who knows."}],
-//   imdbID: "tt1623780",
-//   name: "Titanic 1"
-// }
-
-// var movieData2 = {
-//   tags: [],
-//   tierList: [],
-//   comment: [{comment: "this movie sucks"}],
-//   imdbID: "tt2132504",
-//   name: "Titanic 2"
-// }
-
-// var movieDataList = [movieData1, movieData2];
 var movieDataList = [];
 var tierListArray = [];
 var tagsArray = [];
@@ -432,13 +415,14 @@ app.post('/addMovie',(req,res) => {
   var user = req.session.user;
   for(var i = 0; i < movieDataList.length; i++){
     if(movieDataList[i].imdbID === req.body.imdbID){
-      res.flash('Movie already added')
+      res.flash('Movie already added');
     }
   }
   if(user){
   var id   = req.body.imdbID;
+  console.log(id);
   var name = user.local.username;
-  var newMovie = new movieData({imdbID:id, username: name});
+  var newMovie = new movieData({imdbID:id, username: name,comment: ''});
   newMovie.save();
   movieDataList.push(newMovie); //Push the movie object to the movieDataList
   res.redirect('/main');
@@ -488,13 +472,19 @@ app.post('/editReview', (req,res) => {
 
 //Edits the comment field and adds that comment to the object stored in the DB
 app.post('/editReviewSubmission', (req,res) => {
-  // var id = req.body.imdbID;
-  // var comment = req.body.newComment
-  // console.log(movie);
-  // movieData.findone({'omdbID: id'}, function(err,movieData){
-  //   if(err) return console.log('we have a problem');
-  // var newMovie = new movieData({comment: comment})
-  // });
+  var id = req.body.imdbID; 
+  console.log(id);
+  movieData.find(id, function(err,movieData){
+    console.log(id);
+    if(err){
+      console.log('imdbID is not found');
+    }
+    else{
+      movieData.comment = req.body.newComment;
+      console.log(movieData.comment);
+      
+    }
+  })
 
   //Use req.body.imdbID to find movie in db, update movie's comment[0].comment with req.body.newComment
   res.redirect('/main');
@@ -547,7 +537,9 @@ app.post('/deleteTierList', (req, res) => {
   res.redirect('/profile');
 });
 
+//adds a new tag to the database
 app.post('/addTag', (req, res) => {
+var id = req.body.imdbID;
   for(i = 0; i < tagsArray.length; i++){
     if(tagsArray[i].name === req.body.tagName){
       req.flash('profile', 'Duplicate Tag Names Are Not Allowed!');
@@ -559,9 +551,18 @@ app.post('/addTag', (req, res) => {
     moviesList: []
   }
   tagsArray.push(newEntry);
+  movieData.find(id,function(err,movieData){
+    if(err){
+      console.log('imdbID not found');
+    }
+    else{
+      movieData.save({tag: tagsArray});
+    }
+  });
   res.redirect('/profile');
 });
 
+//deletes tag from the database
 app.post('/deleteTag', (req, res) => {
   tagsArray.splice(req.body.index, 1);
   res.redirect('/profile');
