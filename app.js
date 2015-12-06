@@ -420,9 +420,8 @@ app.post('/addMovie',(req,res) => {
   }
   if(user){
   var id   = req.body.imdbID;
-  console.log(id);
   var name = user.local.username;
-  var newMovie = new movieData({imdbID:id, username: name,comment: ''});
+  var newMovie = new movieData({imdbID:id, username: name });
   newMovie.save();
   movieDataList.push(newMovie); //Push the movie object to the movieDataList
   res.redirect('/main');
@@ -432,7 +431,6 @@ else {
   res.redirect('/login');
   res.flash('User session expired please login');
 }
-
 });
 
 //Route for signup
@@ -471,6 +469,7 @@ app.post('/editReview', (req,res) => {
 });
 
 //Edits the comment field and adds that comment to the object stored in the DB
+//Check this section out it seems like it mi
 app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
   console.log(id);
@@ -478,6 +477,7 @@ app.post('/editReviewSubmission', (req,res) => {
     console.log(id);
     if(err){
       console.log('imdbID is not found');
+      res.flash('The id was not found');
     }
     else{
       movieData.comment = req.body.newComment;
@@ -550,17 +550,27 @@ var id = req.body.imdbID;
     name: req.body.tagName,
     moviesList: []
   }
+  //This is where the db section starts for for me, check this out Joshua.
   tagsArray.push(newEntry);
-  movieData.find(id,function(err,movieData){
+  movieData.findOne({imdbID: id}, function(err,movie){
     if(err){
-      console.log('imdbID not found');
+      if(!movie){
+      movie = new movieData();
+      movie.imdbID = id;
+      }
     }
-    else{
-      movieData.save({tag: tagsArray});
-    }
+    movie.tag = tagsArray;
+    movie.save(function(err){
+      if(!err){
+        console.log('Comment is update to:' + movie.tag);
+      }
+      else{
+        cosnole.log('Could not save the movie comment: ' + movie.tag);
+      }
+    })
+  })
+    res.redirect('/profile');
   });
-  res.redirect('/profile');
-});
 
 //deletes tag from the database
 app.post('/deleteTag', (req, res) => {
