@@ -1,24 +1,3 @@
-<!--Change the keywords as needed in final version-->
-<form action="/main" method="get">
-    <input type="submit" value="Movies"
-           name="Main" id="tags_main" />
-</form>
-<br>
-<form action="/profile" method="get">
-    <input type="submit" value="Profile"
-           name="Profile" id="tags_profile" />
-</form>
-<br>
-<form method="post" action="/search"> <!--Change this action value for real searches-->
-    Movie Title: <input type="text" name="movieSearch"> <br>
-    <button>Search</button>
-</form>
-<br>
-<form action="/logout" method="post">
-    <input type="submit" value="Logout"
-           name="Logout" id="tags_logout" />
-</form>
-<br>
 <h2>Tags</h2>
 <form action="/addTag" method="post">
     Tag Name: <input type="text" name="tagName">

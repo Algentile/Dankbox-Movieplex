@@ -1,83 +1,65 @@
 <!--Change the keywords as needed in final version-->
 <div>{{message}}</div><br>
-<form action="/main" method="get">
-    <input type="submit" value="Movies"
-           name="Main" id="search_main" />
-</form>
-<br>
-<form action="/tags" method="get">
-    <input type="submit" value="Tags"
-           name="Tags" id="search_tags" />
-</form>
-<br>
-<form action="/tierLists" method="get">
-    <input type="submit" value="Tier Lists"
-           name="tierLists" id="search_tierLists" />
-</form>
-<br>
-<form action="/profile" method="get">
-    <input type="submit" value="Profile"
-           name="Profile" id="search_profile" />
-</form>
-<br>
-<form method="post" action="/search"> <!--Change this action value for real searches-->
-    Movie Title: <input type="text" name="movieSearch"> <br>
-    <button>Search</button>
-</form>
-<br>
-<form action="/logout" method="post">
-    <input type="submit" value="Logout"
-           name="Logout" id="search_logout" />
-</form>
-<br>
-<h1>Search Page</h1>
-<h2>{{user_search}}</h2>
-<br>
-<table>
-    <tr>
-        <td>
-            Movie Title
-        </td>
-        <td>
-            Year
-        </td>
-        <td>
-            Director
-        </td>
-        <td>
-            Actors
-        </td>
-        <td>
-            Plot
-        </td>
-        <td>
-            Add?
-        </td>
-    </tr>
-    {{#each displayMovies}}
+<div class="jumbotron pageHeader" >
+    <div class="container">
+        <h1>{{user_search}}</h1>
+    </div>
+</div>
+<table class="table table-hover" id="searchTable">
+    <thead>
         <tr>
-            <td>
-                {{title}}
-            </td>
-            <td>
-                {{year}}
-            </td>
-            <td>
-                {{director}}
-            </td>
-            <td>
-                {{actors}}
-            </td>
-            <td>
-                {{plot}}
-            </td>
-            <td>
-                <form method="post" action="/addMovie"> <!--Change this action value for real movie additions-->
-                    <input type="hidden" name="imdbID" value={{imdbID}}>
-                    <input type="hidden" name="title" value ={{title}}>
-                    <button>Add</button>
-                </form>
-            </td>
+            <th class="text-center">
+                Poster
+            </th>
+            <th class="text-center">
+                Movie Title
+            </th>
+            <th class="text-center">
+                Year
+            </th>
+            <th class="text-center">
+                Director
+            </th>
+            <th class="text-center">
+                Actors
+            </th>
+            <th class="text-center">
+                Plot
+            </th>
+            <th class="text-center">
+                Add?
+            </th>
         </tr>
-    {{/each}}
+    </thead>
+    <tbody>
+        {{#each displayMovies}}
+            <tr>
+                <td>
+                    <img src="{{poster}}" alt="HTML5 Icon" style="width:178px;height:270px;">
+                </td>
+                <td>
+                    {{title}}
+                </td>
+                <td>
+                    {{year}}
+                </td>
+                <td>
+                    {{director}}
+                </td>
+                <td>
+                    {{actors}}
+                </td>
+                <td>
+                    {{plot}}
+                </td>
+                <td>
+                    <form method="post" action="/addMovie"> <!--Change this action value for real movie additions-->
+                        <input type="hidden" name="imdbID" value={{imdbID}}>
+                        <input type="hidden" name="title" value ={{title}}>
+                        <button class="btn btn-default" type="submit">Add</button>
+                    </form>
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
 </table>
