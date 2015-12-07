@@ -120,7 +120,7 @@ app.set('port', process.env.PORT || 3000);
 // plate so you need not worry about the details.
 var view = handlebars.create({
   defaultLayout: 'main',
-
+  partialsDir: 'views/partials/',
   //Shamelessly used from http://stackoverflow.com/questions/11924452/handlebar-js-iterating-over-for-basic-loop
   helpers: {
     times:function (times, opts) {
@@ -304,7 +304,7 @@ app.get('/', (req, res) => {
     res.redirect('/main');
   }else{
     // flash msg?
-    res.render('login',{
+    res.render('splash',{
     });
   }
 });

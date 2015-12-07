@@ -1,0 +1,21 @@
+<nav class="navbar navbar-inverse navbar-fixed-top darkNav">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li class="darkNavText"><a class="darkNavText" href="http://localhost:3000/main">Movies</a></li>
+            <li class="darkNavText"><a class="darkNavText" href="http://localhost:3000/tags">Tags</a></li>
+            <li class="darkNavText"><a class="darkNavText" href="http://localhost:3000/tierLists">Tier Lists</a></li>
+            <li class="darkNavText"><a class="darkNavText" href="http://localhost:3000/Profile">Profile</a></li>
+            <li><form class="navbar-form navbar-left" role="search" method="post" action="/search">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="movieSearch" placeholder="Movie Title">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            </form></li>
+            <li><form class="navbar-form navbar-left" id="logoutForm" action="/logout" method="post">
+                <div class="form-group">
+                    <button id="logout" type="submit" class="btn btn-default">Logout</button>
+                </div>
+            </form></li>
+        </ul>
+    </div>
+</nav>
