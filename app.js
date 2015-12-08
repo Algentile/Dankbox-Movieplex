@@ -546,8 +546,18 @@ app.get('/tierLists', (req, res) => {
 });
 
 app.post('/deleteTierList', (req, res) => {
-  tierListArray.splice(req.body.index, 1);
-  
+  var index = req.body.index;
+  tierListArray.splice(index, 1);
+  User.remove({tierList: req.body.tierList[index]},function(err){
+    if(err){
+      console.log('tierlist not found');
+      res.flash('tierlist is not found please check tierlists');
+    }
+    else{
+      console.log('tierlsit removed');
+      res.flash('tierlist successfully removed from the database');
+    }
+  })
   res.redirect('/profile');
 });
 
@@ -605,6 +615,8 @@ app.post('/deleteTag', (req, res) => {
 
   res.redirect('/profile');
 });
+
+
 
 app.post('/populateTags', (req, res) => {
   var movieTags;
