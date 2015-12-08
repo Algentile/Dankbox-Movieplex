@@ -312,7 +312,6 @@ app.get('/', (req, res) => {
 //Route for admin page
 app.get('/admin', (req,res) => {
   res.render('admin',{
-
   });
 });
 
@@ -545,6 +544,9 @@ app.get('/tierLists', (req, res) => {
     });
 });
 
+//Removes the tierlist in the tierlist section of the User schema
+//at the specific index value. Check the submitaddtierlist function
+//before checking to see if this functions works accordingly.
 app.post('/deleteTierList', (req, res) => {
   var index = req.body.index;
   tierListArray.splice(index, 1);
@@ -577,6 +579,10 @@ var tagsArray = req.body.tag;
     name: req.body.tagName,
   }
   tagsArray.push(newEntry);
+
+  //Currently this returns a 500 error due to taglist legnth, this is 
+  //mainly because taglist is dummy data but right now the way it is placed 
+  //in the code I use it as a container to the carry over saved data. 
   movieData.findOne({imdbID: id}, function(err,movie){
     if(err){
       if(!movie){
@@ -589,9 +595,11 @@ var tagsArray = req.body.tag;
       if(!err){
         console.log('Comment is update to:' + movie.tag);
       }
+
       else{
         console.log('Could not save the movie comment: ' + movie.tag);
       }
+      
     })
   })
     res.redirect('/profile');
