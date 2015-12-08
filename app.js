@@ -470,7 +470,8 @@ app.post('/editReview', (req,res) => {
 });
 
 //Edits the comment field and adds that comment to the object stored in the DB
-//Check this section out it seems like it
+//Check this section out it seems like it finds the comment id but does not successfully save
+//to the OID in mongo.
 app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
   movieData.find(id, function(err,movieData){
@@ -599,7 +600,7 @@ var tagsArray = req.body.tag;
       else{
         console.log('Could not save the movie comment: ' + movie.tag);
       }
-      
+
     })
   })
     res.redirect('/profile');
