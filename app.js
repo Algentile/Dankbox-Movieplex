@@ -120,7 +120,7 @@ app.set('port', process.env.PORT || 3000);
 // plate so you need not worry about the details.
 var view = handlebars.create({
   defaultLayout: 'main',
-  partialsDir: 'views/partials/',
+
   //Shamelessly used from http://stackoverflow.com/questions/11924452/handlebar-js-iterating-over-for-basic-loop
   helpers: {
     times:function (times, opts) {
@@ -304,7 +304,7 @@ app.get('/', (req, res) => {
     res.redirect('/main');
   }else{
     // flash msg?
-    res.render('splash',{
+    res.render('login',{
     });
   }
 });
@@ -396,8 +396,7 @@ app.post('/search', (req,res) => {
           director: result.director,
           actors: result.actors,
           plot: result.plot,
-          imdbID: result.imdb.id,
-          poster: result.poster
+          imdbID: result.imdb.id
         }
         displayMovies.push(movieToBeDisplayed);
         if(displayMovies.length === movies.length){
@@ -434,6 +433,7 @@ else {
 }
 });
 
+
 //Route for signup
 app.get('/signup', (req,res) => {
   if(req.session && req.session.user){
@@ -460,6 +460,7 @@ app.get('/main', (req,res) => {
     reviewCollection: movieDataList
   });
 });
+
 https://github.com/Algentile/Dankbox-Movieplex
 app.post('/editReview', (req,res) => {
   res.render('editReview', {
@@ -470,12 +471,10 @@ app.post('/editReview', (req,res) => {
 });
 
 //Edits the comment field and adds that comment to the object stored in the DB
-//Check this section out it seems like it mi
+//Check this section out it seems like it
 app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
-  console.log(id);
   movieData.find(id, function(err,movieData){
-    console.log(id);
     if(err){
       console.log('imdbID is not found');
       res.flash('The id was not found');
@@ -510,7 +509,7 @@ app.post('/submitNewTierList', (req, res) => {
     tierList: []
   }
   for(index = 0; index < req.body.tierListResults.length; index++){
-    omdb.get(req.body.tierListResults[index], function(err, movie){
+    omdb.get(req.body.tierListReslhost/ults[index], function(err, movie){
       if(err){
         return console.log(err);
       }
@@ -521,6 +520,19 @@ app.post('/submitNewTierList', (req, res) => {
       newTierList.tierList.push(detailedElement);
       if(newTierList.tierList.length === req.body.tierListResults.length){
         tierListArray.push(newTierList);
+
+        //Find the username of the User and save the tierlist to an array of their tierLists
+      User.find({username: req.body.username}, function(err,user){
+        if(err){
+          console.log('Username not found.');
+          res.flash('User session not found');
+        }
+        else{
+          User.save({tierList: tierListArray});
+          res.flash('TierList saved');
+
+        }
+      })
         return res.redirect('/profile');
       }
     });
@@ -535,12 +547,16 @@ app.get('/tierLists', (req, res) => {
 
 app.post('/deleteTierList', (req, res) => {
   tierListArray.splice(req.body.index, 1);
+  
   res.redirect('/profile');
 });
 
-//adds a new tag to the database
+//adds a new tag to the database to the User tag section
+//If the movie does not already exist it will make a new form
+//of that movie Data, otherwise save the User tag into the user tag array,
 app.post('/addTag', (req, res) => {
 var id = req.body.imdbID;
+var tagsArray = req.body.tag;
   for(i = 0; i < tagsArray.length; i++){
     if(tagsArray[i].name === req.body.tagName){
       req.flash('profile', 'Duplicate Tag Names Are Not Allowed!');
@@ -549,9 +565,7 @@ var id = req.body.imdbID;
   }
   var newEntry = {
     name: req.body.tagName,
-    moviesList: []
   }
-  //This is where the db section starts for for me, check this out Joshua.
   tagsArray.push(newEntry);
   movieData.findOne({imdbID: id}, function(err,movie){
     if(err){
@@ -566,16 +580,29 @@ var id = req.body.imdbID;
         console.log('Comment is update to:' + movie.tag);
       }
       else{
-        cosnole.log('Could not save the movie comment: ' + movie.tag);
+        console.log('Could not save the movie comment: ' + movie.tag);
       }
     })
   })
     res.redirect('/profile');
   });
 
-//deletes tag from the database
+//deletes tag from the database in the movieInfos schema 
+//finds the tag in the tagArray at the return @index value
 app.post('/deleteTag', (req, res) => {
-  tagsArray.splice(req.body.index, 1);
+  var index = req.body.index;
+  tagsArray.splice(index, 1);
+  movieData.remove({tag: req.body.tag[index]}, function(err){
+    if(err){
+      console.log("Tag was not found");
+      res,flash('Tag was not found');
+    }
+    else{
+      console.log('Tag found and sucessfully removed.');
+      res.flash('Tag was deleted.');
+    } 
+  })
+
   res.redirect('/profile');
 });
 
