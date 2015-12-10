@@ -395,7 +395,8 @@ app.post('/search', (req,res) => {
           director: result.director,
           actors: result.actors,
           plot: result.plot,
-          imdbID: result.imdb.id
+          imdbID: result.imdb.id,
+          poster: "/img/noPoster.png"
         }
         displayMovies.push(movieToBeDisplayed);
         if(displayMovies.length === movies.length){
