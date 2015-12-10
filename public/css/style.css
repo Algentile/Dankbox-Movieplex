@@ -67,3 +67,16 @@ body{
     background-color: white !important;
     text-align: center !important;
 }
+
+.row {
+  width: 100%;
+  margin: 0 auto;
+}
+.block {
+  width: 200px;
+  display: inline-block;
+}
+
+.secret {
+	visibility: hidden;
+}
