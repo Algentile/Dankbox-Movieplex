@@ -1,9 +1,87 @@
-<h1> Splash Page </h1>
-<form action="/login" method="get">
-    <input type="submit" value="Login"
-           name="Login" id="splash_login" />
-</form>
-<form action="/signup" method="get">
-    <input type="submit" value="Signup"
-           name="Signup" id="splash_signup" />
-</form>
+<!--Styling here is necessary to get background color unique to splash page-->
+<style>
+    body {
+        background: rgba(172,154,19,1);
+        background: -moz-linear-gradient(left, rgba(172,154,19,1) 0%, rgba(135,83,15,1) 48%, rgba(135,10,10,1) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(172,154,19,1)), color-stop(48%, rgba(135,83,15,1)), color-stop(100%, rgba(135,10,10,1)));
+        background: -webkit-linear-gradient(left, rgba(172,154,19,1) 0%, rgba(135,83,15,1) 48%, rgba(135,10,10,1) 100%);
+        background: -o-linear-gradient(left, rgba(172,154,19,1) 0%, rgba(135,83,15,1) 48%, rgba(135,10,10,1) 100%);
+        background: -ms-linear-gradient(left, rgba(172,154,19,1) 0%, rgba(135,83,15,1) 48%, rgba(135,10,10,1) 100%);
+        background: linear-gradient(to right, rgba(172,154,19,1) 0%, rgba(135,83,15,1) 48%, rgba(135,10,10,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ac9a13', endColorstr='#870a0a', GradientType=1 );
+    }
+</style>
+{{#if message}}
+    <div id="messageModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                    <div class="modal-body">
+                        {{message}}
+                    </div>
+                    <div class="modal-footer">
+                        <div class="modalButtonDiv">
+                            <button type="button" class="btn btn-default modalButtons" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+{{/if}}
+<div id="splash">
+    <img id = "logo" src="/img/DBMP_logo_transparent.png" alt="Dankbox Movieplex" height="466" width="800"/>
+    <div id="splashTagline">
+        <p id="taglineText">A Movie-Tracking Website</p>
+    </div>
+    <form action="/signup" method="post">
+        <div class="form-group signupUser">
+            <input type="text" class="form-control signupInput" id="inputUsername" placeholder="Username" name="userName">
+        </div>
+        <div class="form-group signupPass">
+            <input type="password" class="form-control signupInput" id="inputPassword" placeholder="Password" name="userPass">
+        </div>
+        <div id="signupButtonDiv">
+            <button type="submit" class="btn btn-default" id="signupButton">Signup</button>
+        </div>
+    </form>
+        <div id="loginButtonDiv">
+            <button class="btn btn-default" id="loginButton" data-toggle="modal" data-target="#myModal">Want to Sign In?</button>
+        </div>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Log In</h4>
+            </div>
+            <form action="/login" method="post">
+                <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control loginInput" id="inputUsername" placeholder="Username" name="user_name">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control loginInput" id="inputPassword" placeholder="Password" name="user_pass">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modalButtonDiv">
+                        <button class="btn btn-default modalButtons">Sign In</button>
+                    </div>
+                    <div class="modalButtonDiv">
+                        <button type="button" class="btn btn-default modalButtons" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

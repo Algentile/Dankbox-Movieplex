@@ -67,3 +67,115 @@ body{
     background-color: white !important;
     text-align: center !important;
 }
+
+#splash{
+   width: 820px;
+    height: 50%;
+    background-color: transparent !important;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#logo{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.signupUser{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 65px;
+}
+
+.signupPass{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+}
+.signupInput{
+    background-color: transparent;
+    font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
+    border: 0px !important;
+    box-shadow: inset 3px 3px 3px 3px rgba(0,0,0,.075) !important;
+    color: #d9d9d9 !important;
+}
+
+.signupInput::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #d9d9d9;
+}
+.signupInput:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #d9d9d9;
+    opacity:  1;
+}
+.signupInput::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #d9d9d9;
+    opacity:  1;
+}
+.signupInput:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #d9d9d9;
+}
+
+#signupButton{
+    width: 100%;
+    background-color: transparent;
+    font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
+    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, .2);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+    color: #d9d9d9 !important;
+}
+
+#signupButtonDiv{
+    width: 100px;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 100px;
+}
+
+#loginButtonDiv{
+    position: absolute;
+    width: 150px;
+    top: 0px;
+    left: 0px;
+}
+
+#loginButton{
+    width: 100%;
+    background-color: transparent;
+    background-color: rgba(100, 100, 100, .3);
+    font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
+    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, .2);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+    color: #d9d9d9 !important;
+}
+
+#taglineText{
+    font-size: 350%;
+    font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
+    color: #cccccc !important;
+}
+
+.loginInput{
+    font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif
+    width: 50%;
+    margin: auto;
+}
+
+.modalButtonDiv{
+    width: 100px;
+    display: inline-block;
+}
+
+.modalButtons{
+    width: 100%;
+    font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
+    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, .2);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+}

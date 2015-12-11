@@ -316,24 +316,11 @@ app.get('/admin', (req,res) => {
   });
 });
 
-//Route for login page
-app.get('/login', (req,res) => {
-  if(req.session && req.session.user){
-    req.flash('login', 'You are already signed in');
-    res.redirect('/main');
-  }else{
-    var message = req.flash('login') || '';
-    res.render('login',{
-    	message : message
-    });
-  }
-});
-
 //Route for logout 
 app.post('/logout', (req, res) => {
-  req.flash('login', 'Logged Out');
+  req.flash('splash', 'Logged Out');
   req.session.destroy();
-  res.redirect('/login');
+  res.redirect('/splash');
 });
 
 //Route for Profile page
@@ -432,19 +419,6 @@ else {
   res.redirect('/login');
   res.flash('User session expired please login');
 }
-});
-
-//Route for signup
-app.get('/signup', (req,res) => {
-  if(req.session && req.session.user){
-    req.flash('login', 'You are already signed in');
-    res.redirect('/main');
-  }else{
-    //flash msg?
-    res.render('signup',{
-    
-    });
-  }
 });
 
 //Route for splash page only the template needs to be rendered.
@@ -649,7 +623,7 @@ app.get('/about', (req, res) => {
 // or not logging in was successful/unsuccessful
 app.post('/login', passport.authenticate('regular-login', {
   successRedirect : '/main',
-  failureRedirect : '/login',
+  failureRedirect : '/splash',
   failureFlash : true
 }));
 
@@ -657,7 +631,7 @@ app.post('/login', passport.authenticate('regular-login', {
 // or not signing up was successful/unsuccessful
 app.post('/signup', passport.authenticate('regular-signup', {
   successRedirect : '/main',
-  failureRedirect : '/signup',
+  failureRedirect : '/splash',
   failureFlash : true 
 }));
 
