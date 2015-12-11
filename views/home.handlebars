@@ -3,50 +3,35 @@
 <br>
 <h2>Movies List</h2>
 <br>
-<table>
-    {{#each reviewCollection}}
-        <tr>
-            <td>
-                <table>
-                    <tr>
-                        <td>
-                            {{name}}
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
-                                <input type="hidden" name="name" value="{{name}}">
-                                <input type="hidden" name="imdbID" value="{{imdbID}}">
-                                {{#each comment}}
-                                    <input type="hidden" name="comment" value="{{comment}}">
-                                {{/each}}
-                                <button>Edit Review</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
-                                <input type="hidden" name="name" value="{{name}}">
-                                <input type="hidden" name="imdbID" value="{{imdbID}}">
-                                <button>Edit Tags</button>
-                            </form>
-                        </td>
-                        {{#each comment}}
-                            <td>
-                                {{comment}}
-                            </td>
-                        {{/each}}
-                    </tr>
-                    <tr>
-                        {{#each tags}}
-                            <td>
-                                {{this}}
-                            </td>
-                        {{/each}}
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    {{/each}}
-</table>
+<div class="row">
+{{#each reviewCollection}}
+	<div class="block" onclick="toggleDescription({{title}})">
+		<center>{{title}}</center>
+		<br>
+		<img src="{{poster}}" alt="HTML5 Icon" style="width:178px;height:270px;">
+		<div id={{title}}>
+			{{year}}<br>
+			{{plot}}
+			<form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
+                <input type="hidden" name="name" value="{{name}}">
+                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                {{#each comment}}
+                <input type="hidden" name="comment" value="{{comment}}">
+                {{/each}}
+                <button>Edit Review</button>
+            </form>
+        	<form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
+            	<input type="hidden" name="name" value="{{name}}">
+                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                <button>Edit Tags</button>
+            </form>
+		</div>
+	</div>
+{{/each}}
+</div>
+<script>
+function toggleDescription(desc) {
+    $('#row.block.secret').hide();
+    $('#row.block.' + desc').show();
+}
+</script>

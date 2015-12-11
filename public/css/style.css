@@ -171,11 +171,24 @@ body{
     display: inline-block;
 }
 
-.modalButtons{
+.modalButtons {
     width: 100%;
     font-family: "Helvetica Neue Light", "Lucida Grande", "Calibri", "Arial", sans-serif;
     border: 1px solid rgb(0, 0, 0);
     border: 1px solid rgba(0, 0, 0, .2);
     -webkit-background-clip: padding-box; /* for Safari */
     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+}
+
+.row {
+  width: 100%;
+  margin: 0 auto;
+}
+.block {
+  width: 200px;
+  display: inline-block;
+}
+
+.secret {
+	visibility: hidden;
 }
