@@ -311,8 +311,14 @@ app.get('/', (req, res) => {
 
 //Route for admin page
 app.get('/admin', (req,res) => {
-  res.render('admin',{
-  });
+var user = req.session.user;
+if(!user){
+  res.redirect('/splash');
+  req.flash('splash','admin session not notFound');
+  }
+
+  else res.render('admin',{
+     });
 });
 
 //Route for logout 
@@ -324,6 +330,9 @@ app.post('/logout', (req, res) => {
 
 //Route for Profile page
 app.get('/profile', (req,res) => {
+  var user = req.session.user;
+  
+  if (user){
   for(i = 0; i < movieDataList.length; i++){
     for(j = 0; j < movieDataList[i].tags.length; j++){
       var found;
@@ -347,6 +356,13 @@ app.get('/profile', (req,res) => {
     tierListsCollection: tierListArray,
     tagsCollection: tagsArray
   });
+}
+
+  else{
+    console.log('User session not found');
+    res.redirect('/splash');
+  }
+
 });
 
 app.post('/search', (req,res) => {
@@ -419,7 +435,7 @@ app.post('/addMovie',(req,res) => {
 }
 
 else {
-  res.redirect('/login');
+  res.redirect('/splash');
   res.flash('User session expired please login');
 }
 });
@@ -433,9 +449,18 @@ app.get('/splash', (req,res) => {
 
 //Route for main page (called home to avoid confusion with main.handlebars)
 app.get('/main', (req,res) => {
+  var user = req.session.user;
+  if(!user){
+    console.log('User session currently not active');
+    res.flash('User session is not active, please sign in.');
+    res.redirect('/splash');
+  }
+  else{
   res.render('home',{
     reviewCollection: movieDataList
   });
+}
+
 });
 
 //https://github.com/Algentile/Dankbox-Movieplex
@@ -448,7 +473,7 @@ app.post('/editReview', (req,res) => {
 });
 
 //Edits the comment field and adds that comment to the object stored in the DB
-//Check this section out it seems like it finds the comment id but does not successfully save
+//Check this section out it seems like https://moodle.umass.edu/grade/report/user/index.php?id=24375it finds the comment id but does not successfully save
 //to the OID in mongo.
 app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
@@ -505,7 +530,7 @@ app.post('/submitNewTierList', (req, res) => {
           console.log('Username not found.');
           res.flash('User session not found');
         }
-        else{
+        else{https://piazza.com/umass/fall2015/cmpsci311/resources
           User.save({tierList: tierListArray});
           res.flash('TierList saved');
 
