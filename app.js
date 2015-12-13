@@ -450,34 +450,40 @@ app.get('/main', (req,res) => {
   else{
     User.findOne({username: user.username},function(err,user){
       if(err){console.log('user not found ');}
-        movieData.findOne({imdbID : id}, function(err,movie){
-          if(err){console.log('Error movie not found');}
+
             movieData.find({}, 'poster_URL', function(err,posters){
               if(err){console.log('Error movie posters not found');}
-               res.render('home',{
-               reviewCollection: movieDataList,
-               poster: posters
-          });
+
+               console.log(posters);
+
+               omdb.get(posters, function(err,poster){
+                  if(err){console.log('Error, we cant show that poster object');}
+                  
+                  res.render('home',{
+                    reviewCollection: movieDataList,
+                    poster: poster
+             }); 
+         });   
         });
      });
-          
-      });  
     }
- });
+  });  
 
 
 
 //https://github.com/Algentile/Dankbox-Movieplex
 //user session is not active, this is an issue for getting the data
-//because I do not have a user to reference.
+//because I do not have a user to ref erence.
 app.post('/editReview', (req,res) => {
   var user = req.session.user;
   var id = req.body.imdbID;
+
   User.findOne({username:user.username},function(err,user){
     if(err){console.log('Error: user not found');}
+
     movieData.findOne({imdbID: id}, function(movie,err){
       if(err){console.log('Error movie not found');}
-        console.log(movie);
+
         res.render('editReview', {
           name: req.body.name,
           imdbID: id
@@ -493,10 +499,13 @@ app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
   var user = req.session.user;
   var comment = req.body.newComment;
+
   User.findOne({username: user.username}, function(err){
     if (err){console.log('username not found');}
+
     movieData.findOne({imdbID: id}, function(err,movie){
       if(err){console.log('movie cannot be found');}
+
         movie.comment = comment; 
         movie.save(function(err){
           if(err){
@@ -556,7 +565,7 @@ app.post('/submitNewTierList', (req, res) => {
     });
   }
 });
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 app.get('/tierLists', (req, res) => {
   res.render('tierLists',{
       tierListsCollection: tierListArray
@@ -569,16 +578,7 @@ app.get('/tierLists', (req, res) => {
 app.post('/deleteTierList', (req, res) => {
   var index = req.body.index;
   tierListArray.splice(index, 1);
-  User.remove({tierList: req.body.tierList[index]},function(err){
-    if(err){
-      console.log('tierlist not found');
-      res.flash('tierlist is not found please check tierlists');
-    }
-    else{
-      console.log('tierlist removed');
-      res.flash('tierlist successfully removed from the database');
-    }
-  })
+
   res.redirect('/profile');
 });
 
@@ -605,7 +605,24 @@ app.post('/addTag', (req, res) => {
 //finds the tag in the tagArray at the return @index value
 app.post('/deleteTag', (req, res) => {
   var index = req.body.index;
+  var id    = req.body.imdbID;
+  var user  = req.session.user;
   tagsArray.splice(index, 1);
+
+  User.findOne({username: user.username},function(err,user){
+    if(err){console.log("Error user not found");}
+      user.remove(user.tag[index], function(err){
+        if(err){console.log('Error cannot find user tag at specific index.');}
+      });
+        movieData.findOne({imdbID: id}, function(err,movie){
+          if(err){console.log('Error movie not found.');}
+            movie.remove(movie.tag[index],function(err){
+              if(err){console.log('error tag not removed');}
+            });
+        });
+  });
+  
+
   res.redirect('/profile');
 });
 
