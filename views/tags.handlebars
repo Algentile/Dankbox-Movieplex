@@ -1,9 +1,9 @@
 {{>navbar}} <!--Navbar Partial-->
 <h2>Tags</h2>
-<form action="/addTag" method="post">
-    Tag Name: <input type="text" name="tagName">
+<form action="/addTag" method="post" class="form-inline">
+    Tag Name: <input type="text" name="tagName" class="form-control">
     <input type="submit" value="Create New Tag"
-           name="Create New Tag" id="profile_addTag" />
+           name="Create New Tag" id="profile_addTag" class="btn btn-default"/>
 </form>
 <br>
 <table>
@@ -16,9 +16,9 @@
                             {{name}}
                         </td>
                         <td>
-                            <form method="post" action="/deleteTag"> <!--Change this action value for real movie additions-->
+                            <form method="post" action="/deleteTag" class="form-inline"> <!--Change this action value for real movie additions-->
                                 <input type="hidden" name="index" value="{{@index}}">
-                                <button>Delete</button>
+                                <button class="btn btn-default">Delete</button>
                             </form>
                         </td>
                     </tr>
