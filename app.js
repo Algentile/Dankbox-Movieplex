@@ -295,7 +295,7 @@ var team = require('./lib/team.js');
 
 var movieDataList = [];
 var tierListArray = []; 
-tagsArray = [];
+var tagsArray = [];
 
 app.get('/', (req, res) => {
   // Redirect to main if session and user is online:
@@ -309,17 +309,6 @@ app.get('/', (req, res) => {
   }
 });
 
-//Route for admin page 
-app.get('/admin', (req,res) => {
-var user = req.session.user;
-if(!user){
-  res.redirect('/splash');
-  req.flash('splash','admin session not notFound');
-  }
-
-  else res.render('admin',{
-     });
-});
 
 //Route for logout 
 app.post('/logout', (req, res) => {
@@ -350,15 +339,16 @@ app.get('/profile', (req,res) => {
       }
     }
   }
-  var message = req.flash('profile') || '';
+  
+ 
+var message = req.flash('profile') || '';
   res.render('profile',{
-  	message: message,
+    message: message,
     reviewCollection: movieDataList,
     tierListsCollection: tierListArray,
     tagsCollection: tagsArray
-  });
+    });
 });
-
 
 
 app.post('/search', (req,res) => {
@@ -418,7 +408,8 @@ app.post('/addMovie',(req,res) => {
   var user = req.session.user;
   for(var i = 0; i < movieDataList.length; i++){
     if(movieDataList[i].imdbID === req.body.imdbID){
-      res.flash('Movie already added');
+      //res.flash('Movie already added');
+      console.log('movie added');
     }
   }
   if(user){
@@ -459,16 +450,22 @@ app.get('/main', (req,res) => {
   else{
     User.findOne({username: user.username},function(err,user){
       if(err){console.log('user not found ');}
-        movieData.find('poster_URL',function(err,posters){
-          if(err){console.log('movie poster not found');}
-          res.render('home',{
-           reviewCollection: movieDataList,
-           poster: posters
+        movieData.findOne({imdbID : id}, function(err,movie){
+          if(err){console.log('Error movie not found');}
+            movieData.find({}, 'poster_URL', function(err,posters){
+              if(err){console.log('Error movie posters not found');}
+               res.render('home',{
+               reviewCollection: movieDataList,
+               poster: posters
           });
-        });  
-    });
-}
-});
+        });
+     });
+          
+      });  
+    }
+ });
+
+
 
 //https://github.com/Algentile/Dankbox-Movieplex
 //user session is not active, this is an issue for getting the data
@@ -496,7 +493,6 @@ app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
   var user = req.session.user;
   var comment = req.body.newComment;
-  console.log(user);
   User.findOne({username: user.username}, function(err){
     if (err){console.log('username not found');}
     movieData.findOne({imdbID: id}, function(err,movie){
@@ -528,6 +524,8 @@ app.post('/addTierList', (req, res) => {
 
 //Submit a new tier list to the users list of tierlists and save to the db.
 app.post('/submitNewTierList', (req, res) => {
+  var user = req.session.user;
+  var id   = req.body.imdbID;
   var newTierList = {
     name: req.body.tierListName,
     tierList: []
@@ -545,6 +543,14 @@ app.post('/submitNewTierList', (req, res) => {
       if(newTierList.tierList.length === req.body.tierListResults.length){
         tierListArray.push(newTierList);
 
+        User.findOne({username: user.username}, function(err,user){
+          if(err){console.log('user session is not active');}
+          movieData.findOne({imdbID: id},function(err, movie){
+            if(err){console.log('cannot find movie');}
+              movieData.tierlist = tierListArray;
+
+          });
+        });
         return res.redirect('/profile');
       }
     });
@@ -589,6 +595,7 @@ app.post('/addTag', (req, res) => {
   var newEntry = {
     name: req.body.tagName,
   }
+
   tagsArray.push(newEntry);
   
   res.redirect('/profile');
@@ -599,17 +606,6 @@ app.post('/addTag', (req, res) => {
 app.post('/deleteTag', (req, res) => {
   var index = req.body.index;
   tagsArray.splice(index, 1);
-  movieData.remove({tag: req.body.tag[index]}, function(err){
-    if(err){
-      console.log("Tag was not found");
-      res,flash('Tag was not found');
-    }
-    else{
-      console.log('Tag found and sucessfully removed.');
-      res.flash('Tag was deleted.');
-    } 
-  })
-
   res.redirect('/profile');
 });
 
@@ -666,7 +662,6 @@ app.get('/tags', (req, res) => {
     });
 });
 
-app.post('')
 //Route for about handlebars about view
 app.get('/about', (req, res) => {
   res.render('about', {
