@@ -3,10 +3,10 @@
 <br>
 <h2>Tier Lists</h2>
 <br>
-<form action="/addTierList" method="post">
-    Tier List Size: <input type="text" name="tierListSize">
+<form action="/addTierList" method="post" class="form-inline">
+    Tier List Size: <input type="text" name="tierListSize" class="form-control" >
     <input type="submit" value="Create New Tier List"
-           name="Create New Tier List" id="tierLists_addTierList" />
+           name="Create New Tier List" id="tierLists_addTierList" class="btn btn-default"/>
 </form>
 <br>
 <table>
@@ -19,9 +19,9 @@
                             {{name}}
                         </td>
                         <td>
-                            <form method="post" action="/deleteTierList"> <!--Change this action value for real movie additions-->
+                            <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
                                 <input type="hidden" name="index" value="{{@index}}">
-                                <button>Delete</button>
+                                <button class="btn btn-default">Delete</button>
                             </form>
                         </td>
                     </tr>
