@@ -294,8 +294,8 @@ app.use(bodyParser.json());
 var team = require('./lib/team.js');
 
 var movieDataList = [];
-var tierListArray = [];
-var tagsArray = [];
+var tierListArray = []; 
+tagsArray = [];
 
 app.get('/', (req, res) => {
   // Redirect to main if session and user is online:
@@ -330,9 +330,10 @@ app.post('/logout', (req, res) => {
 
 //Route for Profile page
 app.get('/profile', (req,res) => {
-  var user = req.session.user;
-  
-  if (user){
+  // var user = req.session.user;
+  // console.log(user);
+  // if (!user){console.log('user session not found'); res.redirect('/splash')}
+
   for(i = 0; i < movieDataList.length; i++){
     for(j = 0; j < movieDataList[i].tags.length; j++){
       var found;
@@ -356,14 +357,9 @@ app.get('/profile', (req,res) => {
     tierListsCollection: tierListArray,
     tagsCollection: tagsArray
   });
-}
-
-  else{
-    console.log('User session not found');
-    res.redirect('/splash');
-  }
-
 });
+
+
 
 app.post('/search', (req,res) => {
   var user_search = req.body.movieSearch;
@@ -441,6 +437,7 @@ else {
 }
 });
 
+
 //Route for splash page only the template needs to be rendered.
 app.get('/splash', (req,res) => {
   var user = req.session.user;
@@ -453,16 +450,17 @@ app.get('/splash', (req,res) => {
 //then after a user is found it queries the user objects for a list of the poster_URLs.
 app.get('/main', (req,res) => {
   var user = req.session.user;
+  var id = req.body.imdbID;
+  console.log(id);
   if(!user){
     console.log('User session currently not active');
     res.redirect('/splash');
   }
   else{
-    User.findOne({username: user},function(err,user){
+    User.findOne({username: user.username},function(err,user){
       if(err){console.log('user not found ');}
-        movieData.find({},'poster_URL',function(err,posters){
+        movieData.find('poster_URL',function(err,posters){
           if(err){console.log('movie poster not found');}
-          //console.log(posters);
           res.render('home',{
            reviewCollection: movieDataList,
            poster: posters
@@ -473,12 +471,22 @@ app.get('/main', (req,res) => {
 });
 
 //https://github.com/Algentile/Dankbox-Movieplex
+//user session is not active, this is an issue for getting the data
+//because I do not have a user to reference.
 app.post('/editReview', (req,res) => {
-  res.render('editReview', {
-      name: req.body.name,
-      imdbID: req.body.imdbID,
-      comment: req.body.comment
+  var user = req.session.user;
+  var id = req.body.imdbID;
+  User.findOne({username:user.username},function(err,user){
+    if(err){console.log('Error: user not found');}
+    movieData.findOne({imdbID: id}, function(movie,err){
+      if(err){console.log('Error movie not found');}
+        console.log(movie);
+        res.render('editReview', {
+          name: req.body.name,
+          imdbID: id
+      });
     });
+  });
 });
 
 //Edits the comment field and adds that comment to the object stored in the DB
@@ -488,7 +496,7 @@ app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
   var user = req.session.user;
   var comment = req.body.newComment;
-  
+  console.log(user);
   User.findOne({username: user.username}, function(err){
     if (err){console.log('username not found');}
     movieData.findOne({imdbID: id}, function(err,movie){
@@ -572,8 +580,6 @@ app.post('/deleteTierList', (req, res) => {
 //If the movie does not already exist it will make a new form
 //of that movie Data, otherwise save the User tag into the user tag array,
 app.post('/addTag', (req, res) => {
-var id = req.body.imdbID;
-var tagsArray = req.body.tag;
   for(i = 0; i < tagsArray.length; i++){
     if(tagsArray[i].name === req.body.tagName){
       req.flash('profile', 'Duplicate Tag Names Are Not Allowed!');
@@ -584,30 +590,8 @@ var tagsArray = req.body.tag;
     name: req.body.tagName,
   }
   tagsArray.push(newEntry);
-
-  //Currently this returns a 500 error due to taglist legnth, this is 
-  //mainly because taglist is dummy data but right now the way it is placed 
-  //in the code I use it as a container to the carry over saved data. 
-  movieData.findOne({imdbID: id}, function(err,movie){
-    if(err){
-      if(!movie){
-      movie = new movieData();
-      movie.imdbID = id;
-      }
-    }
-    movie.tag = tagsArray;
-    movie.save(function(err){
-      if(!err){
-        console.log('Comment is update to:' + movie.tag);
-      }
-
-      else{
-        console.log('Could not save the movie comment: ' + movie.tag);
-      }
-
-    })
-  })
-    res.redirect('/profile');
+  
+  res.redirect('/profile');
   });
 
 //deletes tag from the database in the movieInfos schema 
