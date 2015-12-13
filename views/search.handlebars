@@ -53,9 +53,10 @@
                     {{plot}}
                 </td>
                 <td>
-                    <form method="post" action="/addMovie"> <!--Change this action value for real movie additions-->
+                    <form method="post" action="/addMovie" > <!--Change this action value for real movie additions-->
                         <input type="hidden" name="imdbID" value={{imdbID}}>
                         <input type="hidden" name="title" value ={{title}}>
+                        <input type="hidden" name="poster" value ={{poster}}>
                         <button class="btn btn-default" type="submit">Add</button>
                     </form>
                 </td>
