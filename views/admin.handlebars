@@ -19,15 +19,15 @@
                 {{username}}
             </td>
             <td>
-                <form method="post" action="/viewUserProfile"> <!--Change this action value for real movie additions-->
+                <form method="post" action="/viewUserProfile" class="form-inline"> <!--Change this action value for real movie additions-->
                     <input type="hidden" name="userProfile" value={{username}}>
-                    <button>View</button>
+                    <button class="btn btn-default">View</button>
                 </form>
             </td>
             <td>
-                <form method="post" action="/banUser"> <!--Change this action value for real movie additions-->
+                <form method="post" action="/banUser" class="form-inline"> <!--Change this action value for real movie additions-->
                     <input type="hidden" name="banUser" value={{username}}>
-                    <button>Ban</button>
+                    <button class="btn btn-default">Ban</button>
                 </form>
             </td>
         </tr>

@@ -5,11 +5,11 @@
 <br>
 <div class="row">
 {{#each reviewCollection}}
-	<div class="block" onclick="toggleDescription({{title}})">
+	<div class="block">
 		<center>{{title}}</center>
 		<br>
 		<img src="{{poster}}" alt="HTML5 Icon" style="width:178px;height:270px;">
-		<div id={{title}}>
+		<div class='secret'>
 			{{year}}<br>
 			{{plot}}
 			<form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
@@ -29,9 +29,23 @@
 	</div>
 {{/each}}
 </div>
+
 <script>
-function toggleDescription(desc) {
-    $('#row.block.secret').hide();
-    $('#row.block.' + desc').show();
+var secrets = document.getElementsByClassName('secret');
+var blocks = document.getElementsByClassName('block');
+var num = 0;
+while(num < secrets.length){
+	secrets[num].id = num;
+	blocks[num].setAttribute("onclick", "toggleDescription(" + num + ")");
+	num++;
+}
+function toggleDescription(num) {
+	var count = 0;
+    while(count < secrets.length){
+    	secrets[count].style.visibility='hidden';
+    	count++;
+    }
+    console.log(num);
+    document.getElementById(num).style.visibility='visible';
 }
 </script>
