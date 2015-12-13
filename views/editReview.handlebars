@@ -4,9 +4,9 @@
 <table>
     <tr>
         <textarea form="editReviewForm" name="newComment">{{comment}}</textarea>
-        <form method="post" action="/editReviewSubmission" id="editReviewForm"> <!--Change this action value for real movie additions-->
+        <form method="post" action="/editReviewSubmission" id="editReviewForm" class="form-control"> <!--Change this action value for real movie additions-->
             <input type="hidden" name="imdbID" value="{{imdbID}}">
-            <button>Save</button>
+            <button class="btn btn-default">Save</button>
         </form>
     </tr>
 </table>
