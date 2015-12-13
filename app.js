@@ -309,7 +309,7 @@ app.get('/', (req, res) => {
   }
 });
 
-//Route for admin page
+//Route for admin page 
 app.get('/admin', (req,res) => {
 var user = req.session.user;
 if(!user){
@@ -392,7 +392,7 @@ app.post('/search', (req,res) => {
       		res.redirect('/profile');
           return console.log("Something went wrong with the movie data retrieval");
         }
-        var posterResult = result.poster
+        posterResult = result.poster
         if(posterResult === undefined){
           posterResult = "/img/noPoster.png";
         }
@@ -427,8 +427,9 @@ app.post('/addMovie',(req,res) => {
   }
   if(user){
   var id   = req.body.imdbID;
+  var poster = req.body.poster;
   var name = user.local.username;
-  var newMovie = new movieData({imdbID:id, username: name });
+  var newMovie = new movieData({imdbID:id, username: name, poster_URL: poster, comment: ''});
   newMovie.save();
   movieDataList.push(newMovie); //Push the movie object to the movieDataList
   res.redirect('/main');
@@ -448,19 +449,27 @@ app.get('/splash', (req,res) => {
 });
 
 //Route for main page (called home to avoid confusion with main.handlebars)
+//Checks if user session is active if not it attempts to render posters by first querying for the user 
+//then after a user is found it queries the user objects for a list of the poster_URLs.
 app.get('/main', (req,res) => {
   var user = req.session.user;
   if(!user){
     console.log('User session currently not active');
-    res.flash('User session is not active, please sign in.');
     res.redirect('/splash');
   }
   else{
-  res.render('home',{
-    reviewCollection: movieDataList
-  });
+    User.findOne({username: user},function(err,user){
+      if(err){console.log('user not found ');}
+        movieData.find({},'poster_URL',function(err,posters){
+          if(err){console.log('movie poster not found');}
+          //console.log(posters);
+          res.render('home',{
+           reviewCollection: movieDataList,
+           poster: posters
+          });
+        });  
+    });
 }
-
 });
 
 //https://github.com/Algentile/Dankbox-Movieplex
@@ -477,18 +486,21 @@ app.post('/editReview', (req,res) => {
 //to the OID in mongo.
 app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
-  movieData.find(id, function(err,movieData){
-    if(err){
-      console.log('imdbID is not found');
-      res.flash('The id was not found');
-    }
-    else{
-      movieData.comment = req.body.newComment;
-      console.log(movieData.comment);
-      
-    }
-  })
-
+  var user = req.session.user;
+  var comment = req.body.newComment;
+  
+  User.findOne({username: user.username}, function(err){
+    if (err){console.log('username not found');}
+    movieData.findOne({imdbID: id}, function(err,movie){
+      if(err){console.log('movie cannot be found');}
+        movie.comment = comment; 
+        movie.save(function(err){
+          if(err){
+            console.log('Error did not save');
+          }
+        });
+    }); 
+  });
   //Use req.body.imdbID to find movie in db, update movie's comment[0].comment with req.body.newComment
   res.redirect('/main');
 });
@@ -506,6 +518,7 @@ app.post('/addTierList', (req, res) => {
   }
 });
 
+//Submit a new tier list to the users list of tierlists and save to the db.
 app.post('/submitNewTierList', (req, res) => {
   var newTierList = {
     name: req.body.tierListName,
@@ -524,18 +537,6 @@ app.post('/submitNewTierList', (req, res) => {
       if(newTierList.tierList.length === req.body.tierListResults.length){
         tierListArray.push(newTierList);
 
-        //Find the username of the User and save the tierlist to an array of their tierLists
-      User.find({username: req.body.username}, function(err,user){
-        if(err){
-          console.log('Username not found.');
-          res.flash('User session not found');
-        }
-        else{https://piazza.com/umass/fall2015/cmpsci311/resources
-          User.save({tierList: tierListArray});
-          res.flash('TierList saved');
-
-        }
-      })
         return res.redirect('/profile');
       }
     });
@@ -560,7 +561,7 @@ app.post('/deleteTierList', (req, res) => {
       res.flash('tierlist is not found please check tierlists');
     }
     else{
-      console.log('tierlsit removed');
+      console.log('tierlist removed');
       res.flash('tierlist successfully removed from the database');
     }
   })
@@ -578,7 +579,7 @@ var tagsArray = req.body.tag;
       req.flash('profile', 'Duplicate Tag Names Are Not Allowed!');
       return res.redirect('/profile');
     }
-  }
+  } 
   var newEntry = {
     name: req.body.tagName,
   }
