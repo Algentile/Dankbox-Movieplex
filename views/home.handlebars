@@ -18,12 +18,12 @@
                 {{#each comment}}
                 <input type="hidden" name="comment" value="{{comment}}">
                 {{/each}}
-                <button>Edit Review</button>
+                <button class="btn btn-default">Edit Review</button>
             </form>
         	<form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
             	<input type="hidden" name="name" value="{{name}}">
                 <input type="hidden" name="imdbID" value="{{imdbID}}">
-                <button>Edit Tags</button>
+                <button class="btn btn-default">Edit Tags</button>
             </form>
 		</div>
 	</div>
@@ -45,7 +45,6 @@ function toggleDescription(num) {
     	secrets[count].style.visibility='hidden';
     	count++;
     }
-    console.log(num);
     document.getElementById(num).style.visibility='visible';
 }
 </script>
