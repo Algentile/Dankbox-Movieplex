@@ -12,6 +12,7 @@
 <h2>Libraries:</h2>
 <ul>
 <li>BodyParser- This is middleware used in body parsing. We are not fully using this right now, but it will be used in the future for parsing bodies. https://github.com/expressjs/body-parser</li>
+<li>Bootstrap- Bootstrap is our style framework. We used it extensively in our CSS to make our site look as good as possible. http://getbootstrap.com/</li>
 <li>CookieParser- CookieParser is middleware used to parse cookies in an HTTP header. We are not fully using this right now, but it will be used in the future to parse cookies. https://github.com/expressjs/cookie-parser</li>
 <li>CookieSession- CookieSession is session middleware that is cookie based. We are not currently using it right now, but it will be used in the future to handle sessions. https://github.com/expressjs/cookie-session</li>
 <li>Express- "Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications." The express framework is the base for many of the libraries that we use, and is a necessity in any web app. http://expressjs.com/</li>

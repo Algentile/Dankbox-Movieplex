@@ -1,39 +1,41 @@
 {{>navbar}} <!--Navbar Partial-->
-<h1>Tier Lists Page</h1>
+<h2>Your Tier Lists</h2>
 <br>
-<h2>Tier Lists</h2>
-<br>
-<form action="/addTierList" method="post" class="form-inline">
-    Tier List Size: <input type="text" name="tierListSize" class="form-control" >
-    <input type="submit" value="Create New Tier List"
-           name="Create New Tier List" id="tierLists_addTierList" class="btn btn-default"/>
-</form>
-<br>
-<table>
-    <tr>
-        {{#each tierListsCollection}}
-            <td>
-                <table>
-                    <tr>
-                        <td>
-                            {{name}}
-                        </td>
-                        <td>
-                            <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
-                                <input type="hidden" name="index" value="{{@index}}">
-                                <button class="btn btn-default">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {{#each tierList}}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form action="/addTierList" method="post" class="form-inline">
+        Tier List Size: <input type="text" name="tierListSize" class="form-control" >
+        <input type="submit" value="Create New Tier List"
+               name="Create New Tier List" id="tierLists_addTierList" class="btn btn-default"/>
+    </form>
+    <br>
+    <table>
+        <tr>
+            {{#each tierListsCollection}}
+                <td>
+                    <table>
                         <tr>
                             <td>
                                 {{name}}
                             </td>
+                            <td>
+                                <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
+                                    <input type="hidden" name="index" value="{{@index}}">
+                                    <button class="btn btn-default">Delete</button>
+                                </form>
+                            </td>
                         </tr>
-                    {{/each}}
-                </table>
-            </td>
-        {{/each}}
-    </tr>
-</table>
+                        {{#each tierList}}
+                            <tr>
+                                <td>
+                                    {{name}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </table>
+                </td>
+            {{/each}}
+        </tr>
+    </table>
+  </div>
+</div>
