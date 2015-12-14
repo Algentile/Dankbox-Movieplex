@@ -482,10 +482,10 @@ app.post('/editReview', (req,res) => {
   var user = req.session.user;
   var id = req.body.imdbID;
 
-  User.findOne({'local.username':user.username},function(err,user){
+  User.findOne({'local.username':user.local.username},function(err,user){
     if(err){console.log('Error: user not found');}
 
-    movieData.findOne({imdbID: id}, function(movie,err){
+    movieData.findOne({'username' : user.local.username, imdbID: id}, function(movie,err){
       if(err){console.log('Error movie not found');}
 
         res.render('editReview', {
@@ -504,10 +504,10 @@ app.post('/editReviewSubmission', (req,res) => {
   var user = req.session.user;
   var comment = req.body.newComment;
 
-  User.findOne({'local.username': user.username}, function(err){
+  User.findOne({'local.username': user.local.username}, function(err){
     if (err){console.log('username not found');}
 
-    movieData.findOne({imdbID: id}, function(err,movie){
+    movieData.findOne({'username' : user.local.username, imdbID: id}, function(err,movie){
       if(err){console.log('movie cannot be found');}
 
         movie.comment = comment; 
