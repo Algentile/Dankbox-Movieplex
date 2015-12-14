@@ -187,6 +187,18 @@ body{
   margin: 0 auto;
 }
 .block {
-  width: 200px;
+  width: 225px;
   display: inline-block;
+  padding-bottom: 40px;
+}
+
+.title {
+	width: 150px;
+    text-indent: -38px;
+	word-wrap: break-word
+}
+
+textarea {
+	width: 500px;
+	height: 200px;
 }

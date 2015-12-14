@@ -1,12 +1,17 @@
 {{>navbar}} <!--Navbar Partial-->
 <h1>{{name}} Review</h1>
 <br>
-<table>
-    <tr>
-        <textarea form="editReviewForm" name="newComment">{{comment}}</textarea>
+<div class="panel panel-default">
+  <div class="panel-body">
+	<table>
+      <tr>
+        <textarea form="editReviewForm" name="newComment" placeholder="What did you think of {{name}}?">{{comment}}</textarea>
+        <br>
         <form method="post" action="/editReviewSubmission" id="editReviewForm" class="form-control"> <!--Change this action value for real movie additions-->
             <input type="hidden" name="imdbID" value="{{imdbID}}">
             <button class="btn btn-default">Save</button>
         </form>
-    </tr>
-</table>
+      </tr>
+	</table>
+  </div>
+</div>

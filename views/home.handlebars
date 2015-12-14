@@ -1,14 +1,12 @@
 {{>navbar}} <!--Navbar Partial-->
 <h2>Your Movies</h2>
 <br>
-<h2>Movies List</h2>
-<br>
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
             {{#each reviewCollection}}
             <div class="block">
-                <center>{{title}}</center>
+                <center><div class ="title">{{title}}</div></center>
                 <br>
                 <a data-target="#{{imdbID}}" role="button" data-toggle="modal">
                     <img src="{{poster_URL}}" alt="HTML5 Icon" style="width:178px;height:270px;">

@@ -322,39 +322,41 @@ app.post('/logout', (req, res) => {
 
 //Route for Profile page
 app.get('/profile', (req,res) => {
-  // var user = req.session.user;
-  // console.log(user);
-  // if (!user){console.log('user session not found'); res.redirect('/splash')}
+  var user = req.session.user;
+  if (!user){console.log('user session not found'); res.redirect('/splash')}
+  else{
 
-  for(i = 0; i < movieDataList.length; i++){
-    for(j = 0; j < movieDataList[i].tags.length; j++){
-      var found;
-      for(g = 0; g < tagsArray.length; g++){
-        if(movieDataList[i].tags[j] === tagsArray[g].name){
-          found = true;
-          break;
-        }
-        else{
-          if(g === tagsArray.length-1){
-            movieDataList[i].tags.splice(j, i);
+    for(i = 0; i < movieDataList.length; i++){
+      for(j = 0; j < movieDataList[i].tags.length; j++){
+        var found;
+        for(g = 0; g < tagsArray.length; g++){
+          if(movieDataList[i].tags[j] === tagsArray[g].name){
+            found = true;
+            break;
+          }
+          else{
+            if(g === tagsArray.length-1){
+              movieDataList[i].tags.splice(j, i);
+            }
           }
         }
       }
     }
-  }
   
  
-var message = req.flash('profile') || '';
-  res.render('profile',{
-    message: message,
-    reviewCollection: movieDataList,
-    tierListsCollection: tierListArray,
-    tagsCollection: tagsArray
-    });
+  var message = req.flash('profile') || '';
+    res.render('profile',{
+      message: message,
+      reviewCollection: movieDataList,
+      tierListsCollection: tierListArray,
+      tagsCollection: tagsArray
+     });
+   }
 });
 
 
 app.post('/search', (req,res) => {
+  var user = req.session.user;
   var user_search = req.body.movieSearch;
   var searchTerms = {
     terms: user_search,
@@ -382,7 +384,7 @@ app.post('/search', (req,res) => {
           return console.log("Something went wrong with the movie data retrieval");
         }
         posterResult = result.poster;
-        if(posterResult === undefined) {
+        if(!posterResult) {
           posterResult = "/img/noPoster.png";
         }
         var plot = "";
@@ -421,7 +423,12 @@ app.post('/addMovie',(req,res) => {
   }
   if(user){
   var id   = req.body.imdbID;
-  var poster = req.body.poster;
+  if(!req.body.poster){
+  	var poster = "/img/noPoster.png";
+  }
+  else{
+    var poster = req.body.poster;
+  }
   var name = user.local.username;
   var movieYear = req.body.year;
   var moviePlot = req.body.plot;
@@ -591,12 +598,14 @@ app.get('/tierLists', (req, res) => {
     console.log('User session currently not active');
     res.redirect('/splash');
   }
-  User.findOne({'local.username': user.local.username}, function(err,user) {
-      if(err){console.log('Error: user not found');}
-      res.render('tierLists', {
-        tierListsCollection: user.local.tierList
+  else{
+    User.findOne({'local.username': user.local.username}, function(err,user) {
+        if(err){console.log('Error: user not found');}
+        res.render('tierLists', {
+          tierListsCollection: user.local.tierList
+        });
       });
-    });
+  }
 });
 
 //Removes the tierlist in the tierlist section of the User schema
@@ -701,9 +710,13 @@ app.post('/submitPopulatedTags', (req, res) => {
 });
 
 app.get('/tags', (req, res) => {
-  res.render('tags', {
-      tagsCollection: tagsArray
-    });
+  var user = req.session.user;
+  if (!user){console.log('user session not found'); res.redirect('/splash')}
+  else{
+    res.render('tags', {
+        tagsCollection: tagsArray
+      });
+  }
 });
 
 //Route for about handlebars about view

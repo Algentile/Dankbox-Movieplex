@@ -1,8 +1,10 @@
 {{>navbar}} <!--Navbar Partial-->
 <h2>Add {{name}} Tags</h2>
 <br>
-<table>
-    <tr>
+<div class="panel panel-default">
+  <div class="panel-body">
+	<table>
+      <tr>
         <form action="/submitPopulatedTags" method="post" id="tagsCheckboxes" class="form-inline">
                 <td>
                     <input type="hidden" name="name" value="{{name}}">
@@ -10,12 +12,13 @@
                     {{#each tags}}
                         <tr>
                             <td>
-                                <input type="checkbox" form="tagsCheckboxes" name="checkboxResults" value="{{name}}">{{name}}<br>
+                                <label><input type="checkbox" form="tagsCheckboxes" name="checkboxResults" value="{{name}}">     {{name}}</label><br>
                             </td>
                         </tr>
                     {{/each}}
                         <tr>
                             <td>
+                            	<br>
                                 <input type="hidden" name="imdbID" value="{{imdbID}}">
                                 <button style="margin-left: 10px; margin-right: 30px;" class="btn btn-default">Submit</button>
                             </td>
@@ -23,7 +26,9 @@
                     </table>
                 </td>
         </form>
-    </tr>
-    <tr>
-    </tr>
-</table>
+      </tr>
+      <tr>
+      </tr>
+	</table>
+  </div>
+ </div>
