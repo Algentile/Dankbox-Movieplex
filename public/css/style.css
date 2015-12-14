@@ -190,5 +190,5 @@ body{
 }
 
 .secret {
-	visibility: hidden;
+	displayy: none;
 }

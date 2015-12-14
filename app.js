@@ -53,7 +53,10 @@ var movieData = new mongoose.Schema({
     tag: [],
     comment: String,
     imdbID: String,
-    poster_URL:String
+    poster_URL: String,
+    year: String,
+    plot: String,
+    title: String
   });
 
 var profile = mongoose.Schema({
@@ -378,16 +381,20 @@ app.post('/search', (req,res) => {
       		res.redirect('/profile');
           return console.log("Something went wrong with the movie data retrieval");
         }
-        posterResult = result.poster
-        if(posterResult === undefined){
+        posterResult = result.poster;
+        if(posterResult === undefined) {
           posterResult = "/img/noPoster.png";
+        }
+        var plot = "";
+        for(i in result.plot){
+          plot += result.plot[i];
         }
         var movieToBeDisplayed = {
           title: result.title,
           year: result.year,
           director: result.director,
           actors: result.actors,
-          plot: result.plot,
+          plot: plot,
           imdbID: result.imdb.id,
           poster: posterResult
         }
@@ -416,7 +423,10 @@ app.post('/addMovie',(req,res) => {
   var id   = req.body.imdbID;
   var poster = req.body.poster;
   var name = user.local.username;
-  var newMovie = new movieData({imdbID:id, username: name, poster_URL: poster, comment: ''});
+  var movieYear = req.body.year;
+  var moviePlot = req.body.plot;
+  var movieTitle = req.body.title;
+  var newMovie = new movieData({imdbID:id, username: name, poster_URL: poster, comment: '', year: movieYear, plot: moviePlot, title: movieTitle});
   newMovie.save();
   movieDataList.push(newMovie); //Push the movie object to the movieDataList
   res.redirect('/main');
@@ -442,32 +452,22 @@ app.get('/splash', (req,res) => {
 app.get('/main', (req,res) => {
   var user = req.session.user;
   var id = req.body.imdbID;
-  console.log(id);
   if(!user){
     console.log('User session currently not active');
     res.redirect('/splash');
   }
   else{
-    User.findOne({username: user.username},function(err,user){
+    User.findOne({'local.username': user.local.username},function(err,userObject){
       if(err){console.log('user not found ');}
-
-            movieData.find({}, 'poster_URL', function(err,posters){
-              if(err){console.log('Error movie posters not found');}
-
-               console.log(posters);
-
-               omdb.get(posters, function(err,poster){
-                  if(err){console.log('Error, we cant show that poster object');}
-                  
-                  res.render('home',{
-                    reviewCollection: movieDataList,
-                    poster: poster
-             }); 
-         });   
+      movieData.find({'username' : userObject.local.username}, 'imdbID poster_URL comment tag year plot title' , function(err,movieData){
+        if(err){console.log('Error movie posters not found');}
+        res.render('home', {
+          reviewCollection: movieData
         });
-     });
-    }
-  });  
+      });
+    });
+  }
+});
 
 
 
@@ -478,7 +478,7 @@ app.post('/editReview', (req,res) => {
   var user = req.session.user;
   var id = req.body.imdbID;
 
-  User.findOne({username:user.username},function(err,user){
+  User.findOne({'local.username':user.username},function(err,user){
     if(err){console.log('Error: user not found');}
 
     movieData.findOne({imdbID: id}, function(movie,err){
@@ -500,7 +500,7 @@ app.post('/editReviewSubmission', (req,res) => {
   var user = req.session.user;
   var comment = req.body.newComment;
 
-  User.findOne({username: user.username}, function(err){
+  User.findOne({'local.username': user.username}, function(err){
     if (err){console.log('username not found');}
 
     movieData.findOne({imdbID: id}, function(err,movie){
@@ -511,22 +511,36 @@ app.post('/editReviewSubmission', (req,res) => {
           if(err){
             console.log('Error did not save');
           }
+          res.redirect('/main');
         });
     }); 
   });
   //Use req.body.imdbID to find movie in db, update movie's comment[0].comment with req.body.newComment
-  res.redirect('/main');
 });
 
 app.post('/addTierList', (req, res) => {
+  var user = req.session.user;
+  console.log(user);
+  if(!user){
+    console.log('User session currently not active');
+    res.redirect('/splash');
+  }
   if(isNaN(req.body.tierListSize)){
     req.flash('profile', 'Inputted value is not a number');
     res.redirect("/profile");
   }
   else{
-    res.render('addTierList', {
-      tierListSize: req.body.tierListSize,
-      movieCollection: movieDataList
+    User.findOne({'local.username':user.local.username},function(err,user){
+      if(err){console.log('Error: user not found');}
+      console.log(user);
+      movieData.find({'username' : user.local.username}, 'imdbID title' , function(err,movieDataResults){
+          if(err){console.log('Error movie not found');}
+
+          res.render('addTierList', {
+            tierListSize: req.body.tierListSize,
+            movieCollection: movieDataResults
+          });
+        });
     });
   }
 });
@@ -534,13 +548,17 @@ app.post('/addTierList', (req, res) => {
 //Submit a new tier list to the users list of tierlists and save to the db.
 app.post('/submitNewTierList', (req, res) => {
   var user = req.session.user;
+  if(!user){
+    console.log('User session currently not active');
+    res.redirect('/splash');
+  }
   var id   = req.body.imdbID;
   var newTierList = {
     name: req.body.tierListName,
     tierList: []
   }
   for(index = 0; index < req.body.tierListResults.length; index++){
-    omdb.get(req.body.tierListReslhost/ults[index], function(err, movie){
+    omdb.get(req.body.tierListResults[index], function(err, movie){
       if(err){
         return console.log(err);
       }
@@ -550,25 +568,34 @@ app.post('/submitNewTierList', (req, res) => {
       }
       newTierList.tierList.push(detailedElement);
       if(newTierList.tierList.length === req.body.tierListResults.length){
-        tierListArray.push(newTierList);
-
-        User.findOne({username: user.username}, function(err,user){
+        User.findOne({'local.username': user.local.username}, function(err,user){
           if(err){console.log('user session is not active');}
-          movieData.findOne({imdbID: id},function(err, movie){
-            if(err){console.log('cannot find movie');}
-              movieData.tierlist = tierListArray;
-
+          var tierListArray = user.local.tierList;
+          tierListArray.push(newTierList);
+          user.local.tierList = tierListArray;
+          user.save(function(err){
+            if(err){
+              console.log('Error did not save');
+            }
+            res.redirect('/main');
           });
         });
-        return res.redirect('/profile');
       }
     });
   }
 });
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 app.get('/tierLists', (req, res) => {
-  res.render('tierLists',{
-      tierListsCollection: tierListArray
+  var user = req.session.user;
+  if(!user){
+    console.log('User session currently not active');
+    res.redirect('/splash');
+  }
+  User.findOne({'local.username': user.local.username}, function(err,user) {
+      if(err){console.log('Error: user not found');}
+      res.render('tierLists', {
+        tierListsCollection: user.local.tierList
+      });
     });
 });
 
