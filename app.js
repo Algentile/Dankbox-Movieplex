@@ -77,7 +77,6 @@ var profile = mongoose.Schema({
 
 var movieData = mongoose.model('movieinfo', movieData);
 var User = mongoose.model('User', profile);
-// var user_tag  = mongoose.model('userdata', profile);
 
   
 //////////////////////////////////////////////////////////////////////
@@ -410,8 +409,7 @@ app.post('/addMovie',(req,res) => {
   }
   else {
     var id = req.body.imdbID;
-    movieData.findOne({imdbID: id}, function (err, movie) {
-      console.log(movie);
+    movieData.findOne({'username': user.local.username, imdbID: id}, function (err, movie) {
       if (movie === null) {
         if (!req.body.poster) {
           var poster = "/img/noPoster.png";
