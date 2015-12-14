@@ -1,5 +1,5 @@
 {{>navbar}} <!--Navbar Partial-->
-<h2>Your Tags</h2>
+<h2 class="text-center">Your Tags</h2>
 <br>
 <div class="panel panel-default">
   <div class="panel-body">
@@ -21,7 +21,6 @@
                             <td>
                                 <form method="post" action="/deleteTag" class="form-inline"> <!--Change this action value for real movie additions-->
                                     <input type="hidden" name="index" value="{{@index}}">
-                                    <input type="hidden" name="imdbID" value="{{imdbID}}">
                                     <button style="margin-left: 10px; margin-right: 30px;" class="btn btn-default">Delete</button>
                                 </form>
                             </td>

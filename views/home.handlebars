@@ -1,15 +1,15 @@
 {{>navbar}} <!--Navbar Partial-->
-<h2>Your Movies</h2>
+<h2 class="text-center">Your Movies</h2>
 <br>
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
             {{#each reviewCollection}}
             <div class="block">
-                <center><div class ="title">{{title}}</div></center>
+                <div class ="title">{{title}}</div>
                 <br>
                 <a data-target="#{{imdbID}}" role="button" data-toggle="modal">
-                    <img src="{{poster_URL}}" alt="HTML5 Icon" style="width:178px;height:270px;">
+                    <img src="{{poster_URL}}" alt="No Poster" style="width:178px;height:270px;">
                 </a>
 
                 <div id="{{imdbID}}" class="modal fade" role="dialog">
@@ -22,6 +22,8 @@
                             </div>
                             <div class="modal-body">
                                 <b>Year:</b> {{year}}
+                                <br>
+                                <b>Tags:</b> {{tag}}
                                 <br>
                                 <b>Plot:</b> {{plot}}
                                 <br>

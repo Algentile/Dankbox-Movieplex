@@ -193,12 +193,26 @@ body{
 }
 
 .title {
-	width: 150px;
-    text-indent: -38px;
-	word-wrap: break-word
+	width: 178px;
+    text-align: center;
+	word-wrap: break-word;
+    font-weight: bold;
 }
 
 textarea {
 	width: 500px;
 	height: 200px;
+}
+
+.tierListTable {
+    width: auto !important;
+}
+
+.tierListTableStyling {
+    float: left;
+    margin-left: 10px;
+    text-align: center;
+}
+
+.tierListTableButton {
 }

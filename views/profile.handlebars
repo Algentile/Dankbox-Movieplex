@@ -1,174 +1,147 @@
 
 {{>navbar}} <!--Navbar Partial-->
 <div>{{message}}</div><br>
-<h1>Profile</h1>
-<br>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <h2>Tags</h2>
-    <br>
-    <form action="/addTag" method="post" class="form-inline">
-        Tag Name: <input type="text" name="tagName" class="form-control">
-        <input type="submit" value="Create New Tag"
-               name="Create New Tag" id="profile_addTag" class="btn btn-default"/>
-    </form>
-    <br>
-    <table>
-        <tr>
-            {{#each tagsCollection}}
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                                {{name}}
-                            </td>
-                            <td>
-                                <form method="post" action="/deleteTag" class="form-inline"> <!--Change this action value for real movie additions-->
-                                    <input type="hidden" name="index" value="{{@index}}">
-                                    <button style="margin-left: 10px; margin-right: 30px;" class="btn btn-default">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {{#each moviesList}}
-                            <tr>
-                                <td>
-                                    {{this}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </table>
-                </td>
-            {{/each}}
-        </tr>
-    </table>
-  </div>
-</div>
-<br>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <h2>Tier Lists</h2>
-    <br>
-    <form action="/addTierList" method="post" class="form-inline">
-        Tier List Size: <input type="text" name="tierListSize" class="form-control">
-        <input type="submit" value="Create New Tier List"
-               name="Create New Tier List" id="profile_addTierList" class="btn btn-default"/>
-    </form>
-    <br>
-    <table>
-        <tr>
-        {{#each tierListsCollection}}
-            <td>
-            <table>
-                <tr>
-                    <td>
-                        {{name}}
-                    </td>
-                    <td>
-                        <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
-                            <input type="hidden" name="index" value="{{@index}}">
-                            <buttonclass="btn btn-default">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {{#each tierList}}
-                <tr>
-                        <td>
-                            {{name}}
-                        </td>
-                </tr>
-                {{/each}}
-            </table>
-            </td>
-        {{/each}}
-        </tr>
-    </table>
-  </div>
-</div>
-<br>
-<div class="panel panel-default">
-  <div class="panel-body">
-<h2>Movies</h2>
+<h1 class="text-center">Profile</h1>
 <br>
 <div class="panel panel-default">
     <div class="panel-body">
-        <div class="row">
-            {{#each reviewCollection}}
-            <div class="block">
-                <center><div class ="title">{{title}}</div></center>
-                <br>
-                <a data-target="#{{imdbID}}" role="button" data-toggle="modal">
-                    <img src="{{poster_URL}}" alt="HTML5 Icon" style="width:178px;height:270px;">
-                </a>
-
-                <div id="{{imdbID}}" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">{{title}}</h4>
-                            </div>
-                            <div class="modal-body">
-                                <b>Year:</b> {{year}}
-                                <br>
-                                <b>Plot:</b> {{plot}}
-                                <br>
-                                <b>Review:</b> {{comment}}
-                            </div>
-                            <div class="modal-footer">
-                                <div class="modalButtonDiv">
-                                    <form method="post" action="/populateTags" id="mainPopulateTags">
-                                        <!--Change this action value for real movie additions-->
-                                        <input type="hidden" name="name" value="{{title}}">
-                                        <input type="hidden" name="imdbID" value="{{imdbID}}">
-                                        <button class="btn btn-default">Edit Tags</button>
+        <form action="/addTag" method="post" class="form-inline">
+            Tag Name: <input type="text" name="tagName" class="form-control">
+            <input type="submit" value="Create New Tag"
+                   name="Create New Tag" id="profile_addTag" class="btn btn-default"/>
+        </form>
+        <br>
+        <table>
+            <tr>
+                {{#each tagsCollection}}
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    {{name}}
+                                </td>
+                                <td>
+                                    <form method="post" action="/deleteTag" class="form-inline"> <!--Change this action value for real movie additions-->
+                                        <input type="hidden" name="index" value="{{@index}}">
+                                        <button style="margin-left: 10px; margin-right: 30px;" class="btn btn-default">Delete</button>
                                     </form>
-                                </div>
-                                <div class="modalButtonDiv">
-                                    <form method="post" action="/editReview" id="mainEditReview">
-                                        <!--Change this action value for real movie additions-->
-                                        <input type="hidden" name="name" value="{{title}}">
-                                        <input type="hidden" name="imdbID" value="{{imdbID}}">
-                                        {{#each comment}}
-                                            <input type="hidden" name="comment" value="{{comment}}">
-                                        {{/each}}
-                                        <button class="btn btn-default">Edit Review</button>
-                                    </form>
-                                </div>
-                                <div class="modalButtonDiv">
-                                    <button type="button" class="btn btn-default modalButtons" data-dismiss="modal">
-                                        Close
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-        </div>
+                                </td>
+                            </tr>
+                            {{#each moviesList}}
+                                <tr>
+                                    <td>
+                                        {{this}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </table>
+                    </td>
+                {{/each}}
+            </tr>
+        </table>
     </div>
 </div>
-  </div>
+<br>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form action="/addTierList" method="post" class="form-inline">
+            Tier List Size: <input type="text" name="tierListSize" class="form-control" >
+            <input type="submit" value="Create New Tier List"
+                   name="Create New Tier List" id="tierLists_addTierList" class="btn btn-default"/>
+        </form>
+        <br>
+        {{#each tierListsCollection}}
+            <div class="tierListTableStyling">
+                <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
+                    <input type="hidden" name="index" value="{{@index}}">
+                    <button class="btn btn-default tierListTableButton">Delete</button>
+                </form>
+                <table class="table table-striped tierListTable">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            {{name}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each tierList}}
+                        <tr>
+                            <td class="text-center">
+                                {{name}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        {{/each}}
+    </div>
 </div>
 <br>
 <div class="panel panel-default">
   <div class="panel-body">
-    <h2>Recently Added</h2>
-    <table>
-        <tr>
-            <td>
-                Movie Title
-            </td>
-        </tr>
-        {{#each recentlyAdded}}
-            <tr>
-                <td>
-                    {{movieName}}
-                </td>
-            </tr>
-        {{/each}}
-    </table>
-  </div>
-</div>
+<br>
+      <div class="panel panel-default">
+          <div class="panel-body">
+              <div class="row">
+                  {{#each reviewCollection}}
+                      <div class="block">
+                          <div class ="title">{{title}}</div>
+                          <br>
+                          <a data-target="#{{imdbID}}" role="button" data-toggle="modal">
+                              <img src="{{poster_URL}}" alt="No Poster" style="width:178px;height:270px;">
+                          </a>
+
+                          <div id="{{imdbID}}" class="modal fade" role="dialog">
+                              <div class="modal-dialog">
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h4 class="modal-title">{{title}}</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                          <b>Year:</b> {{year}}
+                                          <br>
+                                          <b>Tags:</b> {{tag}}
+                                          <br>
+                                          <b>Plot:</b> {{plot}}
+                                          <br>
+                                          <b>Review:</b> {{comment}}
+                                      </div>
+                                      <div class="modal-footer">
+                                          <div class="modalButtonDiv">
+                                              <form method="post" action="/populateTags" id="mainPopulateTags">
+                                                  <!--Change this action value for real movie additions-->
+                                                  <input type="hidden" name="name" value="{{title}}">
+                                                  <input type="hidden" name="imdbID" value="{{imdbID}}">
+                                                  <button class="btn btn-default">Edit Tags</button>
+                                              </form>
+                                          </div>
+                                          <div class="modalButtonDiv">
+                                              <form method="post" action="/editReview" id="mainEditReview">
+                                                  <!--Change this action value for real movie additions-->
+                                                  <input type="hidden" name="name" value="{{title}}">
+                                                  <input type="hidden" name="imdbID" value="{{imdbID}}">
+                                                  {{#each comment}}
+                                                      <input type="hidden" name="comment" value="{{comment}}">
+                                                  {{/each}}
+                                                  <button class="btn btn-default">Edit Review</button>
+                                              </form>
+                                          </div>
+                                          <div class="modalButtonDiv">
+                                              <button type="button" class="btn btn-default modalButtons" data-dismiss="modal">
+                                                  Close
+                                              </button>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                      </div>
+                  {{/each}}
+              </div>
+          </div>
+      </div>
