@@ -1,48 +1,52 @@
 {{>navbar}} <!--Navbar Partial-->
 <h2>Your Movies</h2>
 <br>
-<div class="row">
-{{#each reviewCollection}}
-	<div class="block">
-		<center>{{title}}</center>
-		<br>
-		<img src="{{poster}}" alt="HTML5 Icon" style="width:178px;height:270px;">
-		<div class='secret'>
-			{{year}}<br>
-			{{plot}}
-			<form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
-                <input type="hidden" name="name" value="{{name}}">
-                <input type="hidden" name="imdbID" value="{{imdbID}}">
-                {{#each comment}}
-                <input type="hidden" name="comment" value="{{comment}}">
-                {{/each}}
-                <button class="btn btn-default">Edit Review</button>
-            </form>
-        	<form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
-            	<input type="hidden" name="name" value="{{name}}">
-                <input type="hidden" name="imdbID" value="{{imdbID}}">
-                <button class="btn btn-default">Edit Tags</button>
-            </form>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="row">
+		{{#each reviewCollection}}
+			<div class="block">
+				<center>{{title}}</center>
+				<br>
+				<img src="{{poster}}" alt="HTML5 Icon" style="width:178px;height:270px;">
+				<div class='secret'>
+					{{year}}<br>
+					{{plot}}
+					<form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
+		                <input type="hidden" name="name" value="{{name}}">
+		                <input type="hidden" name="imdbID" value="{{imdbID}}">
+		                {{#each comment}}
+		                <input type="hidden" name="comment" value="{{comment}}">
+		                {{/each}}
+		                <button class="btn btn-default">Edit Review</button>
+		            </form>
+		        	<form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
+		            	<input type="hidden" name="name" value="{{name}}">
+		                <input type="hidden" name="imdbID" value="{{imdbID}}">
+		                <button class="btn btn-default">Edit Tags</button>
+		            </form>
+				</div>
+			</div>
+		{{/each}}
 		</div>
-	</div>
-{{/each}}
-</div>
 
-<script>
-var secrets = document.getElementsByClassName('secret');
-var blocks = document.getElementsByClassName('block');
-var num = 0;
-while(num < secrets.length){
-	secrets[num].id = num;
-	blocks[num].setAttribute("onclick", "toggleDescription(" + num + ")");
-	num++;
-}
-function toggleDescription(num) {
-	var count = 0;
-    while(count < secrets.length){
-    	secrets[count].style.visibility='hidden';
-    	count++;
-    }
-    document.getElementById(num).style.visibility='visible';
-}
-</script>
+		<script>
+		var secrets = document.getElementsByClassName('secret');
+		var blocks = document.getElementsByClassName('block');
+		var num = 0;
+		while(num < secrets.length){
+			secrets[num].id = num;
+			blocks[num].setAttribute("onclick", "toggleDescription(" + num + ")");
+			num++;
+		}
+		function toggleDescription(num) {
+			var count = 0;
+		    while(count < secrets.length){
+		    	secrets[count].style.visibility='hidden';
+		    	count++;
+		    }
+		    document.getElementById(num).style.visibility='visible';
+		}
+		</script>
+	</div>
+</div>
