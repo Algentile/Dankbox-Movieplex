@@ -1,13 +1,14 @@
+
 {{>navbar}} <!--Navbar Partial-->
 <div>{{message}}</div><br>
 <h1>Profile Page</h1>
 <br>
 <h2>Tags</h2>
 <br>
-<form action="/addTag" method="post">
-    Tag Name: <input type="text" name="tagName">
+<form action="/addTag" method="post" class="form-inline">
+    Tag Name: <input type="text" name="tagName" class="form-control">
     <input type="submit" value="Create New Tag"
-           name="Create New Tag" id="profile_addTag" />
+           name="Create New Tag" id="profile_addTag" class="btn btn-default"/>
 </form>
 <br>
 <table>
@@ -20,9 +21,9 @@
                             {{name}}
                         </td>
                         <td>
-                            <form method="post" action="/deleteTag"> <!--Change this action value for real movie additions-->
+                            <form method="post" action="/deleteTag" class="form-inline"> <!--Change this action value for real movie additions-->
                                 <input type="hidden" name="index" value="{{@index}}">
-                                <button>Delete</button>
+                                <button class="btn btn-default">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -41,10 +42,10 @@
 <br>
 <h2>Tier Lists</h2>
 <br>
-<form action="/addTierList" method="post">
-    Tier List Size: <input type="text" name="tierListSize">
+<form action="/addTierList" method="post" class="form-inline">
+    Tier List Size: <input type="text" name="tierListSize" class="form-control">
     <input type="submit" value="Create New Tier List"
-           name="Create New Tier List" id="profile_addTierList" />
+           name="Create New Tier List" id="profile_addTierList" class="btn btn-default"/>
 </form>
 <br>
 <table>
@@ -57,9 +58,9 @@
                     {{name}}
                 </td>
                 <td>
-                    <form method="post" action="/deleteTierList"> <!--Change this action value for real movie additions-->
+                    <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
                         <input type="hidden" name="index" value="{{@index}}">
-                        <button>Delete</button>
+                        <buttonclass="btn btn-default">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -78,53 +79,53 @@
 <br>
 <h2>Movie Reviews</h2>
 <br>
-<table>
-    {{#each reviewCollection}}
-        <tr>
-            <td>
-                <table>
-                    <tr>
-                        <td>
-                            {{name}}
+    <div class="row">
+{{#each reviewCollection}}
+    <div class="block">
+        <center>{{title}}</center>
+        <br>
+        <img src="{{poster}}" alt="HTML5 Icon" style="width:178px;height:270px;">
+        <div class='secret'>
+            {{year}}<br>
+            {{plot}}
+            <form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
+                <input type="hidden" name="name" value="{{name}}">
+                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                {{#each comment}}
+                <input type="hidden" name="comment" value="{{comment}}">
+                {{/each}}
+                <button class="btn btn-default">Edit Review</button>
+            </form>
+            <form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
+                <input type="hidden" name="name" value="{{name}}">
+                <input type="hidden" name="imdbID" value="{{imdbID}}">
+                <button class="btn btn-default">Edit Tags</button>
+            </form>
+        </div>
+    </div>
+{{/each}}
+</div>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form method="post" action="/editReview" id="mainEditReview"> <!--Change this action value for real movie additions-->
-                                <input type="hidden" name="name" value="{{name}}">
-                                <input type="hidden" name="imdbID" value="{{imdbID}}">
-                                {{#each comment}}
-                                    <input type="hidden" name="comment" value="{{comment}}">
-                                {{/each}}
-                                <button>Edit Review</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="/populateTags" id="mainPopulateTags"> <!--Change this action value for real movie additions-->
-                                <input type="hidden" name="name" value="{{name}}">
-                                <input type="hidden" name="imdbID" value="{{imdbID}}">
-                                <button>Edit Tags</button>
-                            </form>
-                        </td>
-                        {{#each comment}}
-                            <td>
-                                {{comment}}
-                            </td>
-                        {{/each}}
-                    </tr>
-                    <tr>
-                        {{#each tags}}
-                            <td>
-                                {{this}}
-                            </td>
-                        {{/each}}
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    {{/each}}
-</table>
+<script>
+var secrets = document.getElementsByClassName('secret');
+var blocks = document.getElementsByClassName('block');
+var num = 0;
+while(num < secrets.length){
+    secrets[num].id = num;
+    blocks[num].setAttribute("onclick", "toggleDescription(" + num + ")");
+    num++;
+}
+function toggleDescription(num) {
+    var count = 0;
+    while(count < secrets.length){
+        secrets[count].style.visibility='hidden';
+        count++;
+    };
+    document.getElementById(num).style.visibility='visible';
+}
+</script>
+
+
 <br>
 <h2>Recently Added</h2>
 <table>

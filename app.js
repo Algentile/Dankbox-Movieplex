@@ -294,7 +294,7 @@ app.use(bodyParser.json());
 var team = require('./lib/team.js');
 
 var movieDataList = [];
-var tierListArray = [];
+var tierListArray = []; 
 var tagsArray = [];
 
 app.get('/', (req, res) => {
@@ -304,22 +304,11 @@ app.get('/', (req, res) => {
     res.redirect('/main');
   }else{
     // flash msg?
-    res.render('login',{
+    res.render('splash',{
     });
   }
 });
 
-//Route for admin page 
-app.get('/admin', (req,res) => {
-var user = req.session.user;
-if(!user){
-  res.redirect('/splash');
-  req.flash('splash','admin session not notFound');
-  }
-
-  else res.render('admin',{
-     });
-});
 
 //Route for logout 
 app.post('/logout', (req, res) => {
@@ -330,9 +319,10 @@ app.post('/logout', (req, res) => {
 
 //Route for Profile page
 app.get('/profile', (req,res) => {
-  var user = req.session.user;
-  
-  if (user){
+  // var user = req.session.user;
+  // console.log(user);
+  // if (!user){console.log('user session not found'); res.redirect('/splash')}
+
   for(i = 0; i < movieDataList.length; i++){
     for(j = 0; j < movieDataList[i].tags.length; j++){
       var found;
@@ -349,21 +339,17 @@ app.get('/profile', (req,res) => {
       }
     }
   }
-  var message = req.flash('profile') || '';
+  
+ 
+var message = req.flash('profile') || '';
   res.render('profile',{
-  	message: message,
+    message: message,
     reviewCollection: movieDataList,
     tierListsCollection: tierListArray,
     tagsCollection: tagsArray
-  });
-}
-
-  else{
-    console.log('User session not found');
-    res.redirect('/splash');
-  }
-
+    });
 });
+
 
 app.post('/search', (req,res) => {
   var user_search = req.body.movieSearch;
@@ -422,7 +408,8 @@ app.post('/addMovie',(req,res) => {
   var user = req.session.user;
   for(var i = 0; i < movieDataList.length; i++){
     if(movieDataList[i].imdbID === req.body.imdbID){
-      res.flash('Movie already added');
+      //res.flash('Movie already added');
+      console.log('movie added');
     }
   }
   if(user){
@@ -441,6 +428,7 @@ else {
 }
 });
 
+
 //Route for splash page only the template needs to be rendered.
 app.get('/splash', (req,res) => {
   var user = req.session.user;
@@ -453,32 +441,55 @@ app.get('/splash', (req,res) => {
 //then after a user is found it queries the user objects for a list of the poster_URLs.
 app.get('/main', (req,res) => {
   var user = req.session.user;
+  var id = req.body.imdbID;
+  console.log(id);
   if(!user){
     console.log('User session currently not active');
     res.redirect('/splash');
   }
   else{
-    User.findOne({username: user},function(err,user){
+    User.findOne({username: user.username},function(err,user){
       if(err){console.log('user not found ');}
-        movieData.find({},'poster_URL',function(err,posters){
-          if(err){console.log('movie poster not found');}
-          //console.log(posters);
-          res.render('home',{
-           reviewCollection: movieDataList,
-           poster: posters
-          });
-        });  
-    });
-}
-});
+
+            movieData.find({}, 'poster_URL', function(err,posters){
+              if(err){console.log('Error movie posters not found');}
+
+               console.log(posters);
+
+               omdb.get(posters, function(err,poster){
+                  if(err){console.log('Error, we cant show that poster object');}
+                  
+                  res.render('home',{
+                    reviewCollection: movieDataList,
+                    poster: poster
+             }); 
+         });   
+        });
+     });
+    }
+  });  
+
+
 
 //https://github.com/Algentile/Dankbox-Movieplex
+//user session is not active, this is an issue for getting the data
+//because I do not have a user to ref erence.
 app.post('/editReview', (req,res) => {
-  res.render('editReview', {
-      name: req.body.name,
-      imdbID: req.body.imdbID,
-      comment: req.body.comment
+  var user = req.session.user;
+  var id = req.body.imdbID;
+
+  User.findOne({username:user.username},function(err,user){
+    if(err){console.log('Error: user not found');}
+
+    movieData.findOne({imdbID: id}, function(movie,err){
+      if(err){console.log('Error movie not found');}
+
+        res.render('editReview', {
+          name: req.body.name,
+          imdbID: id
+      });
     });
+  });
 });
 
 //Edits the comment field and adds that comment to the object stored in the DB
@@ -488,11 +499,13 @@ app.post('/editReviewSubmission', (req,res) => {
   var id = req.body.imdbID; 
   var user = req.session.user;
   var comment = req.body.newComment;
-  
+
   User.findOne({username: user.username}, function(err){
     if (err){console.log('username not found');}
+
     movieData.findOne({imdbID: id}, function(err,movie){
       if(err){console.log('movie cannot be found');}
+
         movie.comment = comment; 
         movie.save(function(err){
           if(err){
@@ -520,6 +533,8 @@ app.post('/addTierList', (req, res) => {
 
 //Submit a new tier list to the users list of tierlists and save to the db.
 app.post('/submitNewTierList', (req, res) => {
+  var user = req.session.user;
+  var id   = req.body.imdbID;
   var newTierList = {
     name: req.body.tierListName,
     tierList: []
@@ -537,12 +552,20 @@ app.post('/submitNewTierList', (req, res) => {
       if(newTierList.tierList.length === req.body.tierListResults.length){
         tierListArray.push(newTierList);
 
+        User.findOne({username: user.username}, function(err,user){
+          if(err){console.log('user session is not active');}
+          movieData.findOne({imdbID: id},function(err, movie){
+            if(err){console.log('cannot find movie');}
+              movieData.tierlist = tierListArray;
+
+          });
+        });
         return res.redirect('/profile');
       }
     });
   }
 });
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 app.get('/tierLists', (req, res) => {
   res.render('tierLists',{
       tierListsCollection: tierListArray
@@ -555,16 +578,7 @@ app.get('/tierLists', (req, res) => {
 app.post('/deleteTierList', (req, res) => {
   var index = req.body.index;
   tierListArray.splice(index, 1);
-  User.remove({tierList: req.body.tierList[index]},function(err){
-    if(err){
-      console.log('tierlist not found');
-      res.flash('tierlist is not found please check tierlists');
-    }
-    else{
-      console.log('tierlist removed');
-      res.flash('tierlist successfully removed from the database');
-    }
-  })
+
   res.redirect('/profile');
 });
 
@@ -572,8 +586,6 @@ app.post('/deleteTierList', (req, res) => {
 //If the movie does not already exist it will make a new form
 //of that movie Data, otherwise save the User tag into the user tag array,
 app.post('/addTag', (req, res) => {
-var id = req.body.imdbID;
-var tagsArray = req.body.tag;
   for(i = 0; i < tagsArray.length; i++){
     if(tagsArray[i].name === req.body.tagName){
       req.flash('profile', 'Duplicate Tag Names Are Not Allowed!');
@@ -583,48 +595,33 @@ var tagsArray = req.body.tag;
   var newEntry = {
     name: req.body.tagName,
   }
+
   tagsArray.push(newEntry);
-
-  //Currently this returns a 500 error due to taglist legnth, this is 
-  //mainly because taglist is dummy data but right now the way it is placed 
-  //in the code I use it as a container to the carry over saved data. 
-  movieData.findOne({imdbID: id}, function(err,movie){
-    if(err){
-      if(!movie){
-      movie = new movieData();
-      movie.imdbID = id;
-      }
-    }
-    movie.tag = tagsArray;
-    movie.save(function(err){
-      if(!err){
-        console.log('Comment is update to:' + movie.tag);
-      }
-
-      else{
-        console.log('Could not save the movie comment: ' + movie.tag);
-      }
-
-    })
-  })
-    res.redirect('/profile');
+  
+  res.redirect('/profile');
   });
 
 //deletes tag from the database in the movieInfos schema 
 //finds the tag in the tagArray at the return @index value
 app.post('/deleteTag', (req, res) => {
   var index = req.body.index;
+  var id    = req.body.imdbID;
+  var user  = req.session.user;
   tagsArray.splice(index, 1);
-  movieData.remove({tag: req.body.tag[index]}, function(err){
-    if(err){
-      console.log("Tag was not found");
-      res,flash('Tag was not found');
-    }
-    else{
-      console.log('Tag found and sucessfully removed.');
-      res.flash('Tag was deleted.');
-    } 
-  })
+
+  User.findOne({username: user.username},function(err,user){
+    if(err){console.log("Error user not found");}
+      user.remove(user.tag[index], function(err){
+        if(err){console.log('Error cannot find user tag at specific index.');}
+      });
+        movieData.findOne({imdbID: id}, function(err,movie){
+          if(err){console.log('Error movie not found.');}
+            movie.remove(movie.tag[index],function(err){
+              if(err){console.log('error tag not removed');}
+            });
+        });
+  });
+  
 
   res.redirect('/profile');
 });
@@ -682,7 +679,6 @@ app.get('/tags', (req, res) => {
     });
 });
 
-app.post('')
 //Route for about handlebars about view
 app.get('/about', (req, res) => {
   res.render('about', {
