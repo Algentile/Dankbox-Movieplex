@@ -304,7 +304,7 @@ app.get('/', (req, res) => {
     res.redirect('/main');
   }else{
     // flash msg?
-    res.render('login',{
+    res.render('splash',{
     });
   }
 });
