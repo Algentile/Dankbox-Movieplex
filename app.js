@@ -230,7 +230,7 @@ function(req, userName, userPass, done){
         if(err){
           return done(error);
         }
-        req.session.user = user;
+        req.session.user = userAccount;
         return done(null, userAccount);
       });
     }
