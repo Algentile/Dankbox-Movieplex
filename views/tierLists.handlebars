@@ -10,30 +10,30 @@
     </form>
     <br>
             {{#each tierListsCollection}}
-                <div class="tierListTableStyling">
-                    <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
-                        <input type="hidden" name="index" value="{{@index}}">
-                        <button class="btn btn-default tierListTableButton">Delete</button>
-                    </form>
-                    <table class="table table-striped tierListTable">
-                        <thead>
-                        <tr>
-                            <th class="text-center">
-                                {{name}}
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {{#each tierList}}
-                            <tr>
-                                <td class="text-center">
-                                    {{name}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                        </tbody>
-                    </table>
-            </div>
+                  <div class="tierListTableStyling">
+                      <form method="post" action="/deleteTierList" class="form-inline"> <!--Change this action value for real movie additions-->
+                          <input type="hidden" name="index" value="{{@index}}">
+                          <button class="btn btn-default tierListTableButton">Delete</button>
+                      </form>
+                      <table class="table table-striped tierListTable">
+                          <thead>
+                          <tr>
+                              <th class="text-center">
+                                  {{name}}
+                              </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {{#each tierList}}
+                              <tr>
+                                  <td class="text-center">
+                                      {{name}}
+                                  </td>
+                              </tr>
+                          {{/each}}
+                          </tbody>
+                      </table>
+                  </div>
             {{/each}}
   </div>
 </div>

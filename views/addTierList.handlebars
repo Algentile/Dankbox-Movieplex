@@ -4,11 +4,11 @@
 <form method="post" action="/submitNewTierList" id="addTierList" class= "form-inline"> <!--Change this action value for real movie additions-->
     Tier List Name: <input type="text" name="tierListName" class= "form-control"> <br>
     {{#times tierListSize}}
-        <select name="tierListResults" form="addTierList" class="form-control">
+        <select style="margin-top: 5px; margin-bottom: 5px;" name="tierListResults" form="addTierList" class="form-control">
             {{#each movieCollection}}
                 <option value="{{imdbID}}">{{title}}</option>
             {{/each}}
         </select> <br>
     {{/times}}
-    <button class="btn btn-default">Save</button>
+    <button style="margin-top: 5px;" class="btn btn-default">Save</button>
 </form>

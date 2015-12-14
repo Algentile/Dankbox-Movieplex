@@ -211,7 +211,11 @@ textarea {
 .tierListTableStyling {
     float: left;
     margin-left: 10px;
+    margin-right: 10px;
     text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-top: 10px;
 }
 
 .tierListTableButton {
